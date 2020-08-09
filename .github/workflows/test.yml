@@ -1,0 +1,21 @@
+name: Test
+
+on: pull_request
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.6
+      - name: Build and test
+        run: |
+          gem install bundler
+          bundle install --jobs 4 --retry 3
+          bundle exec rake test
+        env:
+          CODECOV_TOKEN: ${{secrets.CODECOV_TOKEN}}
