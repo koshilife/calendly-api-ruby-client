@@ -1,0 +1,52 @@
+{
+  "collection": [
+    {
+      "active": false,
+      "color": "#000003",
+      "created_at": "2020-07-03T03:00:00.000Z",
+      "description_html": "<p>description</p>",
+      "description_plain": "description",
+      "duration": 30,
+      "internal_note": null,
+      "kind": "group",
+      "name": "30 Minutes Meeting",
+      "pooling_type": null,
+      "profile": {
+        "name": "FooBar",
+        "owner": "https://api.calendly.com/users/U12345678",
+        "type": "User"
+      },
+      "scheduling_url": "https://calendly.com/foobar/30min",
+      "slug": "30min",
+      "type": "StandardEventType",
+      "updated_at": "2020-07-13T03:00:00.000Z",
+      "uri": "https://api.calendly.com/event_types/ET0003"
+    },
+    {
+      "active": false,
+      "color": "#000002",
+      "created_at": "2020-07-02T03:00:00.000Z",
+      "description_html": null,
+      "description_plain": null,
+      "duration": 60,
+      "internal_note": "foo bar notes",
+      "kind": "solo",
+      "name": "60 Minutes Meeting",
+      "pooling_type": null,
+      "profile": {
+        "name": "FooBar",
+        "owner": "https://api.calendly.com/users/U12345678",
+        "type": "User"
+      },
+      "scheduling_url": "https://calendly.com/foobar/60min",
+      "slug": "60min",
+      "type": "StandardEventType",
+      "updated_at": "2020-07-12T03:00:00.000Z",
+      "uri": "https://api.calendly.com/event_types/ET0002"
+    }
+  ],
+  "pagination": {
+    "count": 2,
+    "next_page": "https://api.calendly.com/event_types?count=2&page_token=NEXT_PAGE_TOKEN&user=https%3A%2F%2Fapi.calendly.com%2Fusers%2FU12345678"
+  }
+}

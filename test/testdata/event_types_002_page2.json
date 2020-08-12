@@ -1,0 +1,30 @@
+{
+  "collection": [
+    {
+      "active": true,
+      "color": "#000001",
+      "created_at": "2020-07-01T03:00:00.000Z",
+      "description_html": null,
+      "description_plain": null,
+      "duration": 15,
+      "internal_note": null,
+      "kind": "solo",
+      "name": "15 Minutes Meeting",
+      "pooling_type": null,
+      "profile": {
+        "name": "FooBar",
+        "owner": "https://api.calendly.com/users/U12345678",
+        "type": "User"
+      },
+      "scheduling_url": "https://calendly.com/foobar/15min",
+      "slug": "15min",
+      "type": "StandardEventType",
+      "updated_at": "2020-07-11T03:00:00.000Z",
+      "uri": "https://api.calendly.com/event_types/ET0001"
+    }
+  ],
+  "pagination": {
+    "count": 1,
+    "next_page": null
+  }
+}
