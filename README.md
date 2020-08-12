@@ -1,4 +1,4 @@
-# Simple Calendly APIs client
+# Calendly APIs client
 
 [![Test](https://github.com/koshilife/calendly-api-ruby-client/workflows/Test/badge.svg)](https://github.com/koshilife/calendly-api-ruby-client/actions?query=workflow%3ATest)
 [![codecov](https://codecov.io/gh/koshilife/calendly-api-ruby-client/branch/master/graph/badge.svg)](https://codecov.io/gh/koshilife/calendly-api-ruby-client)
@@ -20,7 +20,7 @@ As of now the supported statuses each Calendly API are as below.
   - [x] Get basic information about a user
 - EventType
   - [ ] Get Event Type (This endpoint hasn't been released yet.)
-  - [ ] User Event Types
+  - [x] User Event Types
 - Organization
   - [ ] Get Organization Invitation
   - [ ] Get Organization Invitations
@@ -70,15 +70,21 @@ end
 client = Calendly::Client.new
 
 # set token by Calendly::Client initializer.
-client = Calendly::Client.new('<ACCESS_TOKEN>')
+client = Calendly::Client.new '<ACCESS_TOKEN>'
 ```
 
 ```ruby
 # get a current user's information.
-user = client.current_user
-# => <Calendly::User:70295889934840 uuid:U123456789>
-user.scheduling_url
-# => "https://calendly.com/YOUR_SLUG"
+me = client.current_user
+# => <Calendly::User uuid:U123456789>
+me.scheduling_url
+# => "https://calendly.com/your_name"
+
+# get event_types
+event_types, next_params = client.event_types me.uri
+# => [[#<Calendly::EventType uuid:ET001>, #<Calendly::EventType uuid:ET002>, #<Calendly::EventType uuid:ET003>], nil]
+event_types.first.scheduling_url
+# => "https://calendly.com/your_name/30min"
 ```
 
 ## Contributing

@@ -8,7 +8,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ['Kenji Koshikawa']
   spec.email         = ['koshikawa2009@gmail.com']
 
-  spec.summary       = 'Client for accessing Calendly APIs'
+  spec.description   = 'Client for accessing Calendly APIs'
   spec.summary       = spec.description
   spec.homepage      = 'https://github.com/koshilife/calendly-api-ruby-client'
   spec.license       = 'MIT'
@@ -28,6 +28,7 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
 
+  spec.add_runtime_dependency 'faraday_middleware', '~> 1.0.0'
   spec.add_runtime_dependency 'oauth2', '~> 1.4.4'
   spec.add_runtime_dependency 'zeitwerk', '~> 2.3.0'
 

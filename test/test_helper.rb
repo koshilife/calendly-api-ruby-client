@@ -38,9 +38,8 @@ class CalendlyBaseTest < Minitest::Test
   end
 
   def load_test_data(filename)
-    filepath = File.join(File.dirname(__FILE__), 'testdata', filename)
-    file = File.new(filepath)
-    file.read
+    filepath = File.join File.dirname(__FILE__), 'testdata', filename
+    File.new(filepath).read
   end
 
   def add_stub_request(method, url, req_body: nil, req_headers: nil, res_status: nil, res_body: nil, res_headers: nil)
