@@ -30,10 +30,10 @@ As of now the supported statuses each Calendly API are as below.
   - [ ] Remove a User from an Organization
   - [ ] Revoke Organization Invitation
 - Organization
-  - [ ] Get Event
+  - [x] Get Event
   - [ ] Get Invitee of an Event
   - [ ] Get List of Event Invitees
-  - [ ] Get List of User Events
+  - [x] Get List of User Events
 - Webhook V2
   - These endpoints havn't been released yet.
 
@@ -56,12 +56,13 @@ Or install it yourself as:
 ## Usage
 
 The APIs client needs access token.
+This client setup step is below.
 
 ```ruby
 # set token by Calendly.configure methods.
 Calendly.configure do |config|
   config.token            = '<ACCESS_TOKEN>'
-  # follows are options. you can refresh access token if set it.
+  # follows are options. you can refresh access token if these are set.
   config.client_id        = '<CLIENT_ID>'
   config.client_secret    = '<CLIENT_SECRET>'
   config.refresh_token    = '<REFRESH_ACCESS_TOKEN>'
@@ -69,13 +70,16 @@ Calendly.configure do |config|
 end
 client = Calendly::Client.new
 
+
 # set token by Calendly::Client initializer.
 client = Calendly::Client.new '<ACCESS_TOKEN>'
 ```
 
+This client basic usage is below.
+
 ```ruby
 # get a current user's information.
-me = client.current_user
+me = client.me
 # => <Calendly::User uuid:U123456789>
 me.scheduling_url
 # => "https://calendly.com/your_name"
@@ -85,6 +89,17 @@ event_types, next_params = client.event_types me.uri
 # => [[#<Calendly::EventType uuid:ET001>, #<Calendly::EventType uuid:ET002>, #<Calendly::EventType uuid:ET003>], nil]
 event_types.first.scheduling_url
 # => "https://calendly.com/your_name/30min"
+
+# get scheduled events
+events, next_params = client.events me.uri
+# => => [[#<Calendly::Event uuid:EV001>, #<Calendly::Event uuid:EV002>, #<Calendly::Event uuid:EV003>], nil]
+ev = events.first
+ev.name
+# => "FooBar Meeting"
+ev.start_time
+# => 2020-07-22 01:30:00 UTC
+ev.end_time
+# => 2020-07-22 02:00:00 UTC
 ```
 
 ## Contributing

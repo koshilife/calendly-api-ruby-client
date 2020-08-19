@@ -9,8 +9,6 @@ if ENV['CI'] == 'true'
   SimpleCov.formatter = SimpleCov::Formatter::Codecov
 end
 require 'minitest/autorun'
-require 'minitest/reporters'
-Minitest::Reporters.use!
 require 'webmock/minitest'
 
 require 'calendly'
@@ -33,7 +31,7 @@ class CalendlyBaseTest < Minitest::Test
 
   def default_response_headers
     {
-      'Content-Type' => 'application/json; charset=utf-8',
+      'Content-Type' => 'application/json; charset=utf-8'
     }
   end
 
