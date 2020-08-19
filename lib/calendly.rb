@@ -7,8 +7,6 @@ loader.setup
 
 # module for Calendly apis client
 module Calendly
-  class Error < StandardError
-  end
   class << self
     def configure
       yield configuration

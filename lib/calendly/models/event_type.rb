@@ -5,11 +5,11 @@ module Calendly
   # A configuration for a schedulable event
   class EventType
     include ModelUtils
-    UUID_RE = %r{\A#{Client::API_HOST}/event_types/(.*)\z}.freeze
+    UUID_RE = %r{\A#{Client::API_HOST}/event_types/(\w+)\z}.freeze
     TIME_FIELDS = %i[created_at updated_at].freeze
 
     # @return [String]
-    # unique id of EventType object.
+    # unique id of the EventType object.
     attr_accessor :uuid
     # @return [String]
     # Canonical resource reference.
@@ -76,12 +76,14 @@ module Calendly
 
     def after_set_attributes(attrs)
       super attrs
-      return unless attrs[:profile]
+      if attrs[:profile]
 
-      @owner_uri = attrs[:profile][:owner]
-      @owner_uuid = User.extract_uuid @owner_uri
-      @owner_name = attrs[:profile][:name]
-      @owner_type = attrs[:profile][:type]
+        @owner_uri = attrs[:profile][:owner]
+        @owner_uuid = User.extract_uuid owner_uri
+        @owner_name = attrs[:profile][:name]
+        @owner_type = attrs[:profile][:type]
+      end
+      true
     end
   end
 end
