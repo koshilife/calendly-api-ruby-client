@@ -1,0 +1,70 @@
+{
+  "collection": [
+    {
+      "created_at": "2020-08-03T01:00:00.000000Z",
+      "email": "foobar@example.com",
+      "event": "https://api.calendly.com/scheduled_events/EV201",
+      "name": "FooBar",
+      "questions_and_answers": [
+        {
+          "answer": "A3",
+          "position": 1,
+          "question": "Radio Buttons Question"
+        },
+        {
+          "answer": "A3",
+          "position": 2,
+          "question": "Checkboxes Question"
+        }
+      ],
+      "status": "active",
+      "text_reminder_number": null,
+      "timezone": "Asia/Tokyo",
+      "tracking": {
+        "utm_campaign": "FOOBAR_CAMPAIGN_3",
+        "utm_source": "FOOBAR_SOURCE_3",
+        "utm_medium": "FOOBAR_MEDIUM_3",
+        "utm_content": "FOOBAR_CONTENT_3",
+        "utm_term": "FOOBAR_TERM_3",
+        "salesforce_uuid": "FOOBAR_SALESFORCE_UUID_3"
+      },
+      "updated_at": "2020-08-03T01:30:00.000000Z",
+      "uri": "https://api.calendly.com/scheduled_events/EV201/invitees/INV003"
+    },
+    {
+      "created_at": "2020-08-02T01:00:00.000000Z",
+      "email": "foobar@example.com",
+      "event": "https://api.calendly.com/scheduled_events/EV201",
+      "name": "FooBar",
+      "questions_and_answers": [
+        {
+          "answer": "A2",
+          "position": 1,
+          "question": "Radio Buttons Question"
+        },
+        {
+          "answer": "A2",
+          "position": 2,
+          "question": "Checkboxes Question"
+        }
+      ],
+      "status": "active",
+      "text_reminder_number": null,
+      "timezone": "Asia/Tokyo",
+      "tracking": {
+        "utm_campaign": "FOOBAR_CAMPAIGN_2",
+        "utm_source": "FOOBAR_SOURCE_2",
+        "utm_medium": "FOOBAR_MEDIUM_2",
+        "utm_content": "FOOBAR_CONTENT_2",
+        "utm_term": "FOOBAR_TERM_2",
+        "salesforce_uuid": "FOOBAR_SALESFORCE_UUID_2"
+      },
+      "updated_at": "2020-08-02T01:30:00.000000Z",
+      "uri": "https://api.calendly.com/scheduled_events/EV201/invitees/INV002"
+    }
+  ],
+  "pagination": {
+    "count": 2,
+    "next_page": "https://api.calendly.com/scheduled_events/EV201/invitees?count=2&email=foobar%40example.com&page_token=NEXT_PAGE_TOKEN&status=active"
+  }
+}

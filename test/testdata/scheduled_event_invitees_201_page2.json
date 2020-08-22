@@ -1,0 +1,36 @@
+{
+  "collection": [
+    {
+      "created_at": "2020-08-01T01:00:00.000000Z",
+      "email": "foobar@example.com",
+      "event": "https://api.calendly.com/scheduled_events/EV201",
+      "name": "FooBar",
+      "questions_and_answers": [
+        {
+          "answer": "A1",
+          "position": 1,
+          "question": "Radio Buttons Question"
+        },
+        {
+          "answer": "A1",
+          "position": 2,
+          "question": "Checkboxes Question"
+        }
+      ],
+      "status": "active",
+      "text_reminder_number": null,
+      "timezone": "Asia/Tokyo",
+      "tracking": {
+        "utm_campaign": "FOOBAR_CAMPAIGN_1",
+        "utm_source": "FOOBAR_SOURCE_1",
+        "utm_medium": "FOOBAR_MEDIUM_1",
+        "utm_content": "FOOBAR_CONTENT_1",
+        "utm_term": "FOOBAR_TERM_1",
+        "salesforce_uuid": "FOOBAR_SALESFORCE_UUID_1"
+      },
+      "updated_at": "2020-08-01T01:30:00.000000Z",
+      "uri": "https://api.calendly.com/scheduled_events/EV201/invitees/INV001"
+    }
+  ],
+  "pagination": { "count": 1, "next_page": null }
+}

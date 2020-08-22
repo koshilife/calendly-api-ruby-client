@@ -1,3 +1,8 @@
+# 0.0.4.alpha
+
+- support `GET https://api.calendly.com/scheduled_events/{event_uuid}/invitees` API
+- support `GET https://api.calendly.com/scheduled_events/{event_uuid}/invitees/{invitee_uuid}` API
+
 # 0.0.3.alpha
 
 - support `GET https://api.calendly.com/scheduled_events` API

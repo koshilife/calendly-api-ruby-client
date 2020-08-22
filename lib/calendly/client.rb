@@ -124,6 +124,48 @@ module Calendly
       [evs, next_page_params(body)]
     end
 
+    #
+    # Get Invitee of an Event
+    # Returns a single Invitee by their URI.
+    #
+    # @param [String] ev_uuid the unique Event's id
+    # @param [String] inv_uuid the unique Invitee's id
+    # @return [Calendly::Invitee]
+    # @since 0.0.4
+    def event_invitee(ev_uuid, inv_uuid)
+      check_not_empty ev_uuid, 'ev_uuid'
+      check_not_empty inv_uuid, 'inv_uuid'
+      body = request :get, "scheduled_events/#{ev_uuid}/invitees/#{inv_uuid}"
+      Invitee.new body[:resource]
+    end
+
+    #
+    # Get List of Event Invitees
+    #
+    # @param [String] uuid the unique Event's id
+    # @param [Hash] opts the optional request parameters.
+    # @option opts [Integer] :count Number of rows to return.
+    # @option opts [String] :email Filter by email.
+    # @option opts [String] :page_token Pass this to get the next portion of collection.
+    # @option opts [String] :sort Order results by the specified field and directin. Accepts comma-separated list of {field}:{direction} values.
+    # @option opts [String] :status Whether the scheduled event is active or canceled.
+    # @return [Array<Array<Calendly::Invitee>, Hash>]
+    #  - [Array<Calendly::Invitee>] invitees
+    #  - [Hash] next_params the parameters to get next data. if thre is no next it returns nil.
+    # @since 0.0.4
+    def event_invitees(uuid, opts = {})
+      @logger.info "#{self.class}.#{__method__} uuid:#{uuid}, opts:#{opts}"
+      check_not_empty uuid, 'uuid'
+
+      opts_keys = %i[count email page_token sort status]
+      params = merge_options opts, opts_keys
+      body = request :get, "scheduled_events/#{uuid}/invitees", params
+
+      items = body[:collection] || []
+      evs = items.map { |item| Invitee.new item }
+      [evs, next_page_params(body)]
+    end
+
     private
 
     def request(method, path, params = {})
