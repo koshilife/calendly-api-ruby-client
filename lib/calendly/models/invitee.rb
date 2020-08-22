@@ -10,7 +10,7 @@ module Calendly
     TIME_FIELDS = %i[created_at updated_at].freeze
 
     # @return [String]
-    # unique id of the EventInvitee object.
+    # unique id of the Invitee object.
     attr_accessor :uuid
     # @return [String]
     # Canonical resource reference.
@@ -28,8 +28,10 @@ module Calendly
     # Timezone offest to use when presenting time information to invitee.
     attr_accessor :timezone
     # @return [String]
-    # Reference to the Event.
+    # Reference to Event uri associated with this invitee.
     attr_accessor :event
+    # @return [String]
+    # Reference to Event uuid associated with this invitee.
     attr_accessor :event_uuid
     # @return [String]
     # Text (SMS) reminder phone number.

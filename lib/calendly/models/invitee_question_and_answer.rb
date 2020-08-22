@@ -7,10 +7,10 @@ module Calendly
     include ModelUtils
 
     # @return [String]
-    # The question from the event booking confirmation form
+    # The question from the event booking confirmation form.
     attr_accessor :question
     # @return [String]
-    # The answer supplied by the invitee to this question
+    # The answer supplied by the invitee to this question.
     attr_accessor :answer
     # @return [Integer]
     # The position of this question in the event booking confirmation form.

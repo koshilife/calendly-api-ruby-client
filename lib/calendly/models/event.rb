@@ -21,16 +21,16 @@ module Calendly
     # Whether the event is active or canceled.
     attr_accessor :status
     # @return [Time]
-    # Moment when event is (or was) scheduled to begin
+    # Moment when event is (or was) scheduled to begin.
     attr_accessor :start_time
     # @return [Time]
     # Moment when event is (or was) scheduled to end.
     attr_accessor :end_time
     # @return [String]
-    # Reference to Event Type uri associated with this event
+    # Reference to Event Type uri associated with this event.
     attr_accessor :event_type
     # @return [String]
-    # Reference to Event Type uuid associated with this event
+    # Reference to Event Type uuid associated with this event.
     attr_accessor :event_type_uuid
     # @return [Time]
     # Moment when user record was first created.
@@ -40,13 +40,17 @@ module Calendly
     attr_accessor :updated_at
 
     # @return [Calendly::Location]
+    # location in this event.
     attr_accessor :location
 
     # @return [Integer]
+    # number of total invitees in this event.
     attr_accessor :invitees_counter_total
     # @return [Integer]
+    # number of active invitees in this event.
     attr_accessor :invitees_counter_active
     # @return [Integer]
+    # max invitees in this event.
     attr_accessor :invitees_counter_limit
 
     private
