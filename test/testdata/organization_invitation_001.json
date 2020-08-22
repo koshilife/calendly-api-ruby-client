@@ -1,0 +1,12 @@
+{
+  "resource": {
+    "created_at": "2020-08-02T00:00:00.000000Z",
+    "email": "foobar102@example.com",
+    "last_sent_at": "2020-08-02T00:30:00.000000Z",
+    "organization": "https://api.calendly.com/organizations/ORG001",
+    "status": "accepted",
+    "updated_at": "2020-08-02T01:00:00.000000Z",
+    "uri": "https://api.calendly.com/organizations/ORG001/invitations/INV001",
+    "user": "https://api.calendly.com/users/U102"
+  }
+}
