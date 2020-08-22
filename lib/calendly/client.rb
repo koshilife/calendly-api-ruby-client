@@ -154,7 +154,6 @@ module Calendly
     #  - [Hash] next_params the parameters to get next data. if thre is no next it returns nil.
     # @since 0.0.4
     def event_invitees(uuid, opts = {})
-      @logger.info "#{self.class}.#{__method__} uuid:#{uuid}, opts:#{opts}"
       check_not_empty uuid, 'uuid'
 
       opts_keys = %i[count email page_token sort status]
