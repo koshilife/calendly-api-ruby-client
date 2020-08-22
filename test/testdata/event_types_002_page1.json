@@ -13,7 +13,7 @@
       "pooling_type": null,
       "profile": {
         "name": "FooBar",
-        "owner": "https://api.calendly.com/users/U12345678",
+        "owner": "https://api.calendly.com/users/U001",
         "type": "User"
       },
       "scheduling_url": "https://calendly.com/foobar/30min",
@@ -35,7 +35,7 @@
       "pooling_type": null,
       "profile": {
         "name": "FooBar",
-        "owner": "https://api.calendly.com/users/U12345678",
+        "owner": "https://api.calendly.com/users/U001",
         "type": "User"
       },
       "scheduling_url": "https://calendly.com/foobar/60min",
@@ -47,6 +47,6 @@
   ],
   "pagination": {
     "count": 2,
-    "next_page": "https://api.calendly.com/event_types?count=2&page_token=NEXT_PAGE_TOKEN&user=https%3A%2F%2Fapi.calendly.com%2Fusers%2FU12345678"
+    "next_page": "https://api.calendly.com/event_types?count=2&page_token=NEXT_PAGE_TOKEN&user=https%3A%2F%2Fapi.calendly.com%2Fusers%2FU001"
   }
 }

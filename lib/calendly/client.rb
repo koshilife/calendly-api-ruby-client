@@ -19,7 +19,7 @@ module Calendly
     end
 
     #
-    # Get access token object
+    # Get access token object.
     #
     # @return [OAuth2::AccessToken]
     # @since 0.0.1
@@ -36,7 +36,7 @@ module Calendly
     end
 
     #
-    # Get basic information about current user
+    # Get basic information about current user.
     #
     # @return [Calendly::User]
     # @since 0.0.1
@@ -61,7 +61,7 @@ module Calendly
     #
     # Returns all Event Types associated with a specified User.
     #
-    # @param [String] user_uri View event types available for the specified user (user URI).
+    # @param [String] user_uri the specified user (user's uri).
     # @param [Hash] opts the optional request parameters.
     # @option opts [Integer] :count Number of rows to return.
     # @option opts [String] :page_token Pass this to get the next portion of collection.
@@ -86,7 +86,7 @@ module Calendly
     #
     # Returns a single Event by its URI.
     #
-    # @param [String] uuid the unique ScheduledEvent's id
+    # @param [String] uuid the specified scheduled event (event's uuid).
     # @return [Calendly::Event]
     # @since 0.0.3
     def event(uuid)
@@ -96,9 +96,9 @@ module Calendly
     end
 
     #
-    # Get List of User Events
+    # Get List of User Events.
     #
-    # @param [String] user_uri Returns all events for a User who is assigned as event publisher.
+    # @param [String] user_uri the specified user (user's uri).
     # @param [Hash] opts the optional request parameters.
     # @option opts [Integer] :count Number of rows to return.
     # @option opts [String] :invitee_email Return events scheduled with the specified invitee email
@@ -128,8 +128,8 @@ module Calendly
     # Get Invitee of an Event
     # Returns a single Invitee by their URI.
     #
-    # @param [String] ev_uuid the unique Event's id
-    # @param [String] inv_uuid the unique Invitee's id
+    # @param [String] ev_uuid the specified scheduled event (event's uuid).
+    # @param [String] inv_uuid the specified invitee (invitee's uuid).
     # @return [Calendly::Invitee]
     # @since 0.0.4
     def event_invitee(ev_uuid, inv_uuid)
@@ -140,9 +140,9 @@ module Calendly
     end
 
     #
-    # Get List of Event Invitees
+    # Get List of Event Invitees.
     #
-    # @param [String] uuid the unique Event's id
+    # @param [String] uuid the specified event (event's uuid).
     # @param [Hash] opts the optional request parameters.
     # @option opts [Integer] :count Number of rows to return.
     # @option opts [String] :email Filter by email.
@@ -163,6 +163,68 @@ module Calendly
       items = body[:collection] || []
       evs = items.map { |item| Invitee.new item }
       [evs, next_page_params(body)]
+    end
+
+    #
+    # Returns information about a user's organization membership
+    #
+    # @param [String] uuid the specified event (organization membership's uuid).
+    # @return [OrganizationMembership]
+    # @since 0.0.5
+    def membership(uuid)
+      check_not_empty uuid, 'uuid'
+      body = request :get, "organization_memberships/#{uuid}"
+      OrganizationMembership.new body[:resource]
+    end
+
+    #
+    # Get List memberships of all users belonging to an organization.
+    #
+    # @param [String] org_uri the specified organization (organization's uri).
+    # @param [Hash] opts the optional request parameters.
+    # @option opts [Integer] :count Number of rows to return.
+    # @option opts [String] :email Filter by email.
+    # @option opts [String] :page_token Pass this to get the next portion of collection.
+    # @return [Array<Array<Calendly::OrganizationMembership>, Hash>]
+    #  - [Array<Calendly::OrganizationMembership>] memberships
+    #  - [Hash] next_params the parameters to get next data. if thre is no next it returns nil.
+    # @since 0.0.5
+    def memberships(org_uri, opts = {})
+      check_not_empty org_uri, 'org_uri'
+
+      opts_keys = %i[count email page_token]
+      params = { organization: org_uri }
+      params = merge_options opts, opts_keys, params
+      body = request :get, 'organization_memberships', params
+
+      items = body[:collection] || []
+      memberships = items.map { |item| OrganizationMembership.new item }
+      [memberships, next_page_params(body)]
+    end
+
+    #
+    # Get List memberships of all users belonging to an organization by user.
+    #
+    # @param [String] user_uri the specified user (user's uri).
+    # @param [Hash] opts the optional request parameters.
+    # @option opts [Integer] :count Number of rows to return.
+    # @option opts [String] :email Filter by email.
+    # @option opts [String] :page_token Pass this to get the next portion of collection.
+    # @return [Array<Array<Calendly::OrganizationMembership>, Hash>]
+    #  - [Array<Calendly::OrganizationMembership>] memberships
+    #  - [Hash] next_params the parameters to get next data. if thre is no next it returns nil.
+    # @since 0.0.5
+    def memberships_by_user(user_uri, opts = {})
+      check_not_empty user_uri, 'user_uri'
+
+      opts_keys = %i[count email page_token]
+      params = { user: user_uri }
+      params = merge_options opts, opts_keys, params
+      body = request :get, 'organization_memberships', params
+
+      items = body[:collection] || []
+      memberships = items.map { |item| OrganizationMembership.new item }
+      [memberships, next_page_params(body)]
     end
 
     private

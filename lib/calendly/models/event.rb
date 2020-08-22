@@ -26,12 +26,6 @@ module Calendly
     # @return [Time]
     # Moment when event is (or was) scheduled to end.
     attr_accessor :end_time
-    # @return [String]
-    # Reference to Event Type uri associated with this event.
-    attr_accessor :event_type
-    # @return [String]
-    # Reference to Event Type uuid associated with this event.
-    attr_accessor :event_type_uuid
     # @return [Time]
     # Moment when user record was first created.
     attr_accessor :created_at
@@ -42,6 +36,13 @@ module Calendly
     # @return [Calendly::Location]
     # location in this event.
     attr_accessor :location
+
+    # @return [String]
+    # Reference to Event Type uri associated with this event.
+    attr_accessor :event_type_uri
+    # @return [String]
+    # Reference to Event Type uuid associated with this event.
+    attr_accessor :event_type_uuid
 
     # @return [Integer]
     # number of total invitees in this event.
@@ -57,7 +58,12 @@ module Calendly
 
     def after_set_attributes(attrs)
       super attrs
-      @event_type_uuid = EventType.extract_uuid event_type if event_type
+      if attrs[:event_type]
+        ev_type_params = { uri: attrs[:event_type] }
+        event_type = EventType.new ev_type_params
+        @event_type_uri = event_type.uri
+        @event_type_uuid = event_type.uuid
+      end
 
       loc_params = attrs[:location]
       @location = Location.new loc_params if loc_params&.is_a? Hash
