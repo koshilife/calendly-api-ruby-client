@@ -35,6 +35,6 @@
   ],
   "pagination": {
     "count": 2,
-    "next_page": "https://api.calendly.com/scheduled_events?count=2&invitee_email=foobar%40example.com&max_start_time=2020-08-01T00%3A00%3A00.000000Z&min_start_time=2020-07-01T00%3A00%3A00.000000Z&page_token=NEXT_PAGE_TOKEN&status=active&user=https%3A%2F%2Fapi.calendly.com%2Fusers%2FU12345678"
+    "next_page": "https://api.calendly.com/scheduled_events?count=2&invitee_email=foobar%40example.com&max_start_time=2020-08-01T00%3A00%3A00.000000Z&min_start_time=2020-07-01T00%3A00%3A00.000000Z&page_token=NEXT_PAGE_TOKEN&status=active&user=https%3A%2F%2Fapi.calendly.com%2Fusers%2FU001"
   }
 }

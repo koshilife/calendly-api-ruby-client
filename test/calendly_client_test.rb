@@ -25,9 +25,9 @@ class CalendlyClientTest < CalendlyBaseTest
 
   def test_that_it_is_returned_a_specific_user
     res_body = load_test_data 'user_001.json'
-    add_stub_request :get, "#{HOST}/users/U12345678", res_body: res_body
+    add_stub_request :get, "#{HOST}/users/U001", res_body: res_body
 
-    user = @client.user 'U12345678'
+    user = @client.user 'U001'
     assert_user001 user
   end
 
@@ -37,7 +37,7 @@ class CalendlyClientTest < CalendlyBaseTest
 
   def test_that_it_is_returned_all_items_of_event_type
     res_body = load_test_data 'event_types_001.json'
-    user_uri = 'https://api.calendly.com/users/U12345678'
+    user_uri = 'https://api.calendly.com/users/U001'
     params = { user: user_uri }
 
     url = "#{HOST}/event_types?#{URI.encode_www_form(params)}"
@@ -52,7 +52,7 @@ class CalendlyClientTest < CalendlyBaseTest
   end
 
   def test_that_it_is_returned_all_items_of_event_type_by_pagination
-    user_uri = 'https://api.calendly.com/users/U12345678'
+    user_uri = 'https://api.calendly.com/users/U001'
 
     res_body1 = load_test_data 'event_types_002_page1.json'
     option_params1 = { count: 2, sort: 'created_at:desc' }
@@ -101,7 +101,7 @@ class CalendlyClientTest < CalendlyBaseTest
 
   def test_that_it_is_returned_all_items_of_event
     res_body = load_test_data 'scheduled_events_001.json'
-    user_uri = 'https://api.calendly.com/users/U12345678'
+    user_uri = 'https://api.calendly.com/users/U001'
     params = { user: user_uri }
 
     url = "#{HOST}/scheduled_events?#{URI.encode_www_form(params)}"
@@ -115,7 +115,7 @@ class CalendlyClientTest < CalendlyBaseTest
   end
 
   def test_that_it_is_returned_all_items_of_event_by_pagination
-    user_uri = 'https://api.calendly.com/users/U12345678'
+    user_uri = 'https://api.calendly.com/users/U001'
     base_params = {
       count: 2,
       invitee_email: 'foobar@example.com',

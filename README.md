@@ -80,7 +80,7 @@ This client basic usage is below.
 ```ruby
 # get a current user's information.
 me = client.me
-# => <Calendly::User uuid:U123456789>
+# => <Calendly::User uuid:U001>
 me.scheduling_url
 # => "https://calendly.com/your_name"
 

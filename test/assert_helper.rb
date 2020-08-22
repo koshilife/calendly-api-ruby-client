@@ -4,8 +4,8 @@ require 'time'
 
 module AssertHelper
   def assert_user001(user)
-    assert_equal 'U12345678', user.uuid
-    assert_equal 'https://api.calendly.com/users/U12345678', user.uri
+    assert_equal 'U001', user.uuid
+    assert_equal 'https://api.calendly.com/users/U001', user.uri
     assert_equal 'FooBar', user.name
     assert_equal 'foobar', user.slug
     assert_equal 'foobar@example.com', user.email
@@ -72,10 +72,10 @@ module AssertHelper
     assert_equal 'https://api.calendly.com/event_types/ET0001', ev_type.uri
     assert_equal Time.parse('2020-07-01T03:00:00.000000Z').to_i, ev_type.created_at.to_i
     assert_equal Time.parse('2020-07-11T03:00:00.000000Z').to_i, ev_type.updated_at.to_i
-    assert_equal 'U12345678', ev_type.owner_uuid
+    assert_equal 'U001', ev_type.owner_uuid
     assert_equal 'User', ev_type.owner_type
     assert_equal 'FooBar', ev_type.owner_name
-    assert_equal 'https://api.calendly.com/users/U12345678', ev_type.owner_uri
+    assert_equal 'https://api.calendly.com/users/U001', ev_type.owner_uri
   end
 
   def assert_event_type002(ev_type)
@@ -95,10 +95,10 @@ module AssertHelper
     assert_equal 'https://api.calendly.com/event_types/ET0002', ev_type.uri
     assert_equal Time.parse('2020-07-02T03:00:00.000000Z').to_i, ev_type.created_at.to_i
     assert_equal Time.parse('2020-07-12T03:00:00.000000Z').to_i, ev_type.updated_at.to_i
-    assert_equal 'U12345678', ev_type.owner_uuid
+    assert_equal 'U001', ev_type.owner_uuid
     assert_equal 'User', ev_type.owner_type
     assert_equal 'FooBar', ev_type.owner_name
-    assert_equal 'https://api.calendly.com/users/U12345678', ev_type.owner_uri
+    assert_equal 'https://api.calendly.com/users/U001', ev_type.owner_uri
   end
 
   def assert_event_type003(ev_type)
@@ -118,10 +118,10 @@ module AssertHelper
     assert_equal 'https://api.calendly.com/event_types/ET0003', ev_type.uri
     assert_equal Time.parse('2020-07-03T03:00:00.000000Z').to_i, ev_type.created_at.to_i
     assert_equal Time.parse('2020-07-13T03:00:00.000000Z').to_i, ev_type.updated_at.to_i
-    assert_equal 'U12345678', ev_type.owner_uuid
+    assert_equal 'U001', ev_type.owner_uuid
     assert_equal 'User', ev_type.owner_type
     assert_equal 'FooBar', ev_type.owner_name
-    assert_equal 'https://api.calendly.com/users/U12345678', ev_type.owner_uri
+    assert_equal 'https://api.calendly.com/users/U001', ev_type.owner_uri
   end
 
   def assert_event001(ev)
