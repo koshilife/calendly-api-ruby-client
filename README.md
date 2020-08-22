@@ -31,8 +31,8 @@ As of now the supported statuses each Calendly API are as below.
   - [ ] Revoke Organization Invitation
 - Organization
   - [x] Get Event
-  - [ ] Get Invitee of an Event
-  - [ ] Get List of Event Invitees
+  - [x] Get Invitee of an Event
+  - [x] Get List of Event Invitees
   - [x] Get List of User Events
 - Webhook V2
   - These endpoints havn't been released yet.

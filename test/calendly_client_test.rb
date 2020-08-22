@@ -151,4 +151,72 @@ class CalendlyClientTest < CalendlyBaseTest
     assert_event002 evs_page1[1]
     assert_event001 evs_page2[0]
   end
+
+  #
+  # test for event_invitee
+  #
+
+  def test_that_it_is_returned_a_one_on_one_event_invitee
+    res_body = load_test_data 'scheduled_event_invitee_101.json'
+    ev_uuid = 'EV101'
+    inv_uuid = 'INV001'
+
+    url = "#{HOST}/scheduled_events/#{ev_uuid}/invitees/#{inv_uuid}"
+    add_stub_request(:get, url, res_body: res_body)
+
+    inv = @client.event_invitee ev_uuid, inv_uuid
+    assert_event101_invitee001 inv
+  end
+
+  #
+  # test for event_invitees
+  #
+
+  def test_that_it_is_returned_one_on_one_event_invitees
+    res_body = load_test_data 'scheduled_event_invitees_101.json'
+    ev_uuid = 'EV001'
+
+    url = "#{HOST}/scheduled_events/#{ev_uuid}/invitees"
+    add_stub_request(:get, url, res_body: res_body)
+
+    invs, next_params = @client.event_invitees ev_uuid
+    assert_equal 1, invs.length
+    assert_nil next_params
+    assert_event101_invitee001 invs[0]
+  end
+
+  def test_that_it_is_returned_group_event_invitees
+    ev_uuid = 'EV201'
+    base_params = {
+      count: 2,
+      email: 'foobar@example.com',
+      status: 'active'
+    }
+
+    res_body1 = load_test_data 'scheduled_event_invitees_201_page1.json'
+    params1 = base_params.merge(
+      sort: 'created_at:desc'
+    )
+    url1 = "#{HOST}/scheduled_events/#{ev_uuid}/invitees?#{URI.encode_www_form(params1)}"
+    add_stub_request(:get, url1, res_body: res_body1)
+
+    res_body2 = load_test_data 'scheduled_event_invitees_201_page2.json'
+    params2 = base_params.merge(
+      page_token: 'NEXT_PAGE_TOKEN'
+    )
+    url2 = "#{HOST}/scheduled_events/#{ev_uuid}/invitees?#{URI.encode_www_form(params2)}"
+    add_stub_request(:get, url2, res_body: res_body2)
+
+    # request page1
+    invs_page1, next_params1 = @client.event_invitees ev_uuid, params1
+    # request page2
+    invs_page2, next_params2 = @client.event_invitees ev_uuid, next_params1
+
+    assert_equal 2, invs_page1.length
+    assert_equal 1, invs_page2.length
+    assert_nil next_params2
+    assert_event201_invitee003 invs_page1[0]
+    assert_event201_invitee002 invs_page1[1]
+    assert_event201_invitee001 invs_page2[0]
+  end
 end

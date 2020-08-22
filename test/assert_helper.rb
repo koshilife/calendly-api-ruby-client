@@ -135,4 +135,151 @@ module AssertHelper
     assert_equal Time.parse('2020-07-13T06:00:00.000000Z').to_i, ev.created_at.to_i
     assert_equal Time.parse('2020-07-13T07:00:00.000000Z').to_i, ev.updated_at.to_i
   end
+
+  def assert_event101_invitee001(inv)
+    assert_equal 'INV001', inv.uuid
+    assert_equal 'https://api.calendly.com/scheduled_events/EV101/invitees/INV001', inv.uri
+    assert_equal 'foobar@example.com', inv.email
+    assert_equal 'FooBar', inv.name
+    assert_equal 'active', inv.status
+    assert_equal 'Asia/Tokyo', inv.timezone
+    assert_equal 'https://api.calendly.com/scheduled_events/EV101', inv.event
+    assert_equal 'EV101', inv.event_uuid
+    assert_nil inv.text_reminder_number
+    assert_equal Time.parse('2020-08-20T01:00:00.000000Z').to_i, inv.created_at.to_i
+    assert_equal Time.parse('2020-08-20T01:30:00.000000Z').to_i, inv.updated_at.to_i
+
+    assert_equal 5, inv.questions_and_answers.length
+    qa = inv.questions_and_answers[0]
+    assert_equal "text1\ntext2\ntext3", qa.answer
+    assert_equal 0, qa.position
+    assert_equal 'Multiple Lines Question', qa.question
+
+    qa = inv.questions_and_answers[1]
+    assert_equal 'text1', qa.answer
+    assert_equal 1, qa.position
+    assert_equal 'One Line Question', qa.question
+
+    qa = inv.questions_and_answers[2]
+    assert_equal 'A1', qa.answer
+    assert_equal 2, qa.position
+    assert_equal 'Radio Buttons Question', qa.question
+
+    qa = inv.questions_and_answers[3]
+    assert_equal "A1\nOther", qa.answer
+    assert_equal 3, qa.position
+    assert_equal 'Checkboxes Question', qa.question
+
+    qa = inv.questions_and_answers[4]
+    assert_equal '+81 70-1234-5678', qa.answer
+    assert_equal 4, qa.position
+    assert_equal 'Phone Number Question', qa.question
+
+    tracking = inv.tracking
+    assert_equal 'FOOBAR_CAMPAIGN', tracking.utm_campaign
+    assert_equal 'FOOBAR_SOURCE', tracking.utm_source
+    assert_equal 'FOOBAR_MEDIUM', tracking.utm_medium
+    assert_equal 'FOOBAR_CONTENT', tracking.utm_content
+    assert_equal 'FOOBAR_TERM', tracking.utm_term
+    assert_equal 'FOOBAR_SALESFORCE_UUID', tracking.salesforce_uuid
+  end
+
+  def assert_event201_invitee001(inv)
+    assert_equal 'INV001', inv.uuid
+    assert_equal 'https://api.calendly.com/scheduled_events/EV201/invitees/INV001', inv.uri
+    assert_equal 'foobar@example.com', inv.email
+    assert_equal 'FooBar', inv.name
+    assert_equal 'active', inv.status
+    assert_equal 'Asia/Tokyo', inv.timezone
+    assert_equal 'https://api.calendly.com/scheduled_events/EV201', inv.event
+    assert_equal 'EV201', inv.event_uuid
+    assert_nil inv.text_reminder_number
+    assert_equal Time.parse('2020-08-01T01:00:00.000000Z').to_i, inv.created_at.to_i
+    assert_equal Time.parse('2020-08-01T01:30:00.000000Z').to_i, inv.updated_at.to_i
+
+    assert_equal 2, inv.questions_and_answers.length
+    qa = inv.questions_and_answers[0]
+    assert_equal 'A1', qa.answer
+    assert_equal 1, qa.position
+    assert_equal 'Radio Buttons Question', qa.question
+
+    qa = inv.questions_and_answers[1]
+    assert_equal 'A1', qa.answer
+    assert_equal 2, qa.position
+    assert_equal 'Checkboxes Question', qa.question
+
+    tracking = inv.tracking
+    assert_equal 'FOOBAR_CAMPAIGN_1', tracking.utm_campaign
+    assert_equal 'FOOBAR_SOURCE_1', tracking.utm_source
+    assert_equal 'FOOBAR_MEDIUM_1', tracking.utm_medium
+    assert_equal 'FOOBAR_CONTENT_1', tracking.utm_content
+    assert_equal 'FOOBAR_TERM_1', tracking.utm_term
+    assert_equal 'FOOBAR_SALESFORCE_UUID_1', tracking.salesforce_uuid
+  end
+
+  def assert_event201_invitee002(inv)
+    assert_equal 'INV002', inv.uuid
+    assert_equal 'https://api.calendly.com/scheduled_events/EV201/invitees/INV002', inv.uri
+    assert_equal 'foobar@example.com', inv.email
+    assert_equal 'FooBar', inv.name
+    assert_equal 'active', inv.status
+    assert_equal 'Asia/Tokyo', inv.timezone
+    assert_equal 'https://api.calendly.com/scheduled_events/EV201', inv.event
+    assert_equal 'EV201', inv.event_uuid
+    assert_nil inv.text_reminder_number
+    assert_equal Time.parse('2020-08-02T01:00:00.000000Z').to_i, inv.created_at.to_i
+    assert_equal Time.parse('2020-08-02T01:30:00.000000Z').to_i, inv.updated_at.to_i
+
+    assert_equal 2, inv.questions_and_answers.length
+    qa = inv.questions_and_answers[0]
+    assert_equal 'A2', qa.answer
+    assert_equal 1, qa.position
+    assert_equal 'Radio Buttons Question', qa.question
+
+    qa = inv.questions_and_answers[1]
+    assert_equal 'A2', qa.answer
+    assert_equal 2, qa.position
+    assert_equal 'Checkboxes Question', qa.question
+
+    tracking = inv.tracking
+    assert_equal 'FOOBAR_CAMPAIGN_2', tracking.utm_campaign
+    assert_equal 'FOOBAR_SOURCE_2', tracking.utm_source
+    assert_equal 'FOOBAR_MEDIUM_2', tracking.utm_medium
+    assert_equal 'FOOBAR_CONTENT_2', tracking.utm_content
+    assert_equal 'FOOBAR_TERM_2', tracking.utm_term
+    assert_equal 'FOOBAR_SALESFORCE_UUID_2', tracking.salesforce_uuid
+  end
+
+  def assert_event201_invitee003(inv)
+    assert_equal 'INV003', inv.uuid
+    assert_equal 'https://api.calendly.com/scheduled_events/EV201/invitees/INV003', inv.uri
+    assert_equal 'foobar@example.com', inv.email
+    assert_equal 'FooBar', inv.name
+    assert_equal 'active', inv.status
+    assert_equal 'Asia/Tokyo', inv.timezone
+    assert_equal 'https://api.calendly.com/scheduled_events/EV201', inv.event
+    assert_equal 'EV201', inv.event_uuid
+    assert_nil inv.text_reminder_number
+    assert_equal Time.parse('2020-08-03T01:00:00.000000Z').to_i, inv.created_at.to_i
+    assert_equal Time.parse('2020-08-03T01:30:00.000000Z').to_i, inv.updated_at.to_i
+
+    assert_equal 2, inv.questions_and_answers.length
+    qa = inv.questions_and_answers[0]
+    assert_equal 'A3', qa.answer
+    assert_equal 1, qa.position
+    assert_equal 'Radio Buttons Question', qa.question
+
+    qa = inv.questions_and_answers[1]
+    assert_equal 'A3', qa.answer
+    assert_equal 2, qa.position
+    assert_equal 'Checkboxes Question', qa.question
+
+    tracking = inv.tracking
+    assert_equal 'FOOBAR_CAMPAIGN_3', tracking.utm_campaign
+    assert_equal 'FOOBAR_SOURCE_3', tracking.utm_source
+    assert_equal 'FOOBAR_MEDIUM_3', tracking.utm_medium
+    assert_equal 'FOOBAR_CONTENT_3', tracking.utm_content
+    assert_equal 'FOOBAR_TERM_3', tracking.utm_term
+    assert_equal 'FOOBAR_SALESFORCE_UUID_3', tracking.salesforce_uuid
+  end
 end

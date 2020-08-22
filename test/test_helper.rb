@@ -20,6 +20,7 @@ class CalendlyBaseTest < Minitest::Test
   HOST = Calendly::Client::API_HOST
 
   def setup
+    # Calendly.configuration.logger.level = :debug
     @client = Calendly::Client.new('token')
   end
 
