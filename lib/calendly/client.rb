@@ -227,57 +227,6 @@ module Calendly
       [memberships, next_page_params(body)]
     end
 
-    #
-    # Returns an Organization Invitation
-    #
-    # @param [String] org_uuid the unique Organization's id
-    # @param [String] inv_uuid the unique Organization Invitation's id
-    # @return [Calendly::Organization]
-    # @since 0.0.5
-    def invitation(org_uuid, inv_uuid)
-      check_not_empty org_uuid, 'org_uuid'
-      check_not_empty inv_uuid, 'inv_uuid'
-
-      body = request :get, "organizations/#{org_uuid}/invitations/#{inv_uuid}"
-      OrganizationInvitation.new body[:resource]
-    end
-
-    #
-    # Get Organization Invitations
-    #
-    # @param [String] uuid the unique Organization's id
-    # @return [<Array<Array<Calendly::Organization>, Hash>]
-    #  - [Array<Calendly::Organization>] organizations
-    #  - [Hash] next_params the parameters to get next data. if thre is no next it returns nil.
-    # @since 0.0.5
-    def invitations(uuid)
-      check_not_empty uuid, 'uuid'
-
-      body = request :get, "organizations/#{uuid}/invitations"
-      items = body[:collection] || []
-      evs = items.map { |item| OrganizationInvitation.new item }
-      [evs, next_page_params(body)]
-    end
-
-    # # Invite a person to an Organization.
-    # # POST https://api.calendly.com/organizations/{uuid}/invitations
-    # def create_invitation(org_uuid:)
-    #   request(:post, "organizations/#{org_uuid}/invitations")
-    # end
-
-    # # Revoke Organization Invitation
-    # # Revoke an organization invitation. The invitation link sent to the person will no longer be valid.
-    # # DELETE https://api.calendly.com/organizations/{org_uuid}/invitations/{uuid}
-    # def delete_invitation(org_uuid:, org_inv_uuid:)
-    #   request(:delete, "organizations/#{org_uuid}/invitations/#{org_inv_uuid}")
-    # end
-
-    # # Remove a User from an Organization
-    # # DELETE https://api.calendly.com/organization_memberships/{uuid}
-    # def delete_membership
-    #   request(:delete, "organization_memberships/#{org_mem_uuid}")
-    # end
-
     private
 
     def request(method, path, params = {})
