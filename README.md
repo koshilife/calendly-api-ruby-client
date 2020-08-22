@@ -29,7 +29,7 @@ As of now the supported statuses each Calendly API are as below.
   - [ ] Invite a person to Organization
   - [ ] Remove a User from an Organization
   - [ ] Revoke Organization Invitation
-- Organization
+- ScheduledEvent
   - [x] Get Event
   - [x] Get Invitee of an Event
   - [x] Get List of Event Invitees
