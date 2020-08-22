@@ -86,7 +86,7 @@ module Calendly
     #
     # Returns a single Event by its URI.
     #
-    # @param [String] uuid the specified scheduled event (event's uuid).
+    # @param [String] uuid the specified event (event's uuid).
     # @return [Calendly::Event]
     # @since 0.0.3
     def event(uuid)
@@ -128,7 +128,7 @@ module Calendly
     # Get Invitee of an Event
     # Returns a single Invitee by their URI.
     #
-    # @param [String] ev_uuid the specified scheduled event (event's uuid).
+    # @param [String] ev_uuid the specified event (event's uuid).
     # @param [String] inv_uuid the specified invitee (invitee's uuid).
     # @return [Calendly::Invitee]
     # @since 0.0.4
@@ -168,7 +168,7 @@ module Calendly
     #
     # Returns information about a user's organization membership
     #
-    # @param [String] uuid the specified event (organization membership's uuid).
+    # @param [String] uuid the specified membership (organization membership's uuid).
     # @return [OrganizationMembership]
     # @since 0.0.5
     def membership(uuid)
@@ -230,8 +230,8 @@ module Calendly
     #
     # Returns an Organization Invitation.
     #
-    # @param [String] org_uuid the specified user (organization's uri).
-    # @param [String] inv_uuid the specified user (organization invitation's uri).
+    # @param [String] org_uuid the specified organization (organization's uri).
+    # @param [String] inv_uuid the specified invitation (organization invitation's uri).
     # @return [Calendly::OrganizationInvitation]
     # @since 0.0.6
     def invitation(org_uuid, inv_uuid)
@@ -245,7 +245,7 @@ module Calendly
     #
     # Get Organization Invitations.
     #
-    # @param [String] uuid the specified user (organization's uri).
+    # @param [String] uuid the specified organization (organization's uri).
     # @param [Hash] opts the optional request parameters.
     # @option opts [Integer] :count Number of rows to return.
     # @option opts [String] :email Filter by email.
