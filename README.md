@@ -22,14 +22,14 @@ As of now the supported statuses each Calendly API are as below.
   - [ ] Get Event Type (This endpoint hasn't been released yet.)
   - [x] User Event Types
 - Organization
-  - [ ] Get Organization Invitation
-  - [ ] Get Organization Invitations
+  - [x] Get Organization Invitation
+  - [x] Get Organization Invitations
   - [x] Get Organization Membership
   - [x] Get a list of Organization Memberships
   - [ ] Invite a person to Organization
   - [ ] Remove a User from an Organization
   - [ ] Revoke Organization Invitation
-- Organization
+- ScheduledEvent
   - [x] Get Event
   - [x] Get Invitee of an Event
   - [x] Get List of Event Invitees

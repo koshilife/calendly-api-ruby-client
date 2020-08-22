@@ -1,0 +1,27 @@
+{
+  "collection": [
+    {
+      "created_at": "2020-08-04T00:00:00.000000Z",
+      "email": "foobar104@example.com",
+      "last_sent_at": "2020-08-04T00:30:00.000000Z",
+      "organization": "https://api.calendly.com/organizations/ORG001",
+      "status": "pending",
+      "updated_at": "2020-08-04T01:00:00.000000Z",
+      "uri": "https://api.calendly.com/organizations/ORG001/invitations/INV003"
+    },
+    {
+      "created_at": "2020-08-03T00:00:00.000000Z",
+      "email": "foobar103@example.com",
+      "last_sent_at": "2020-08-03T00:30:00.000000Z",
+      "organization": "https://api.calendly.com/organizations/ORG001",
+      "status": "accepted",
+      "updated_at": "2020-08-03T01:00:00.000000Z",
+      "uri": "https://api.calendly.com/organizations/ORG001/invitations/INV002",
+      "user": "https://api.calendly.com/users/U103"
+    }
+  ],
+  "pagination": {
+    "count": 2,
+    "next_page": "https://api.calendly.com/organizations/ORG001/invitations?count=2&page_token=NEXT_PAGE_TOKEN"
+  }
+}

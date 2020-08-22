@@ -227,6 +227,47 @@ module Calendly
       [memberships, next_page_params(body)]
     end
 
+    #
+    # Returns an Organization Invitation.
+    #
+    # @param [String] org_uuid the specified user (organization's uri).
+    # @param [String] inv_uuid the specified user (organization invitation's uri).
+    # @return [Calendly::OrganizationInvitation]
+    # @since 0.0.6
+    def invitation(org_uuid, inv_uuid)
+      check_not_empty org_uuid, 'org_uuid'
+      check_not_empty inv_uuid, 'inv_uuid'
+
+      body = request :get, "organizations/#{org_uuid}/invitations/#{inv_uuid}"
+      OrganizationInvitation.new body[:resource]
+    end
+
+    #
+    # Get Organization Invitations.
+    #
+    # @param [String] uuid the specified user (organization's uri).
+    # @param [Hash] opts the optional request parameters.
+    # @option opts [Integer] :count Number of rows to return.
+    # @option opts [String] :email Filter by email.
+    # @option opts [String] :page_token Pass this to get the next portion of collection.
+    # @option opts [String] :sort Order results by the specified field and directin. Accepts comma-separated list of {field}:{direction} values.
+    # @option opts [String] :status Filter by status.
+    # @return [<Array<Array<Calendly::OrganizationInvitation>, Hash>]
+    #  - [Array<Calendly::OrganizationInvitation>] organizations
+    #  - [Hash] next_params the parameters to get next data. if thre is no next it returns nil.
+    # @since 0.0.6
+    def invitations(uuid, opts = {})
+      check_not_empty uuid, 'uuid'
+
+      opts_keys = %i[count email page_token sort status]
+      params = merge_options opts, opts_keys
+
+      body = request :get, "organizations/#{uuid}/invitations", params
+      items = body[:collection] || []
+      evs = items.map { |item| OrganizationInvitation.new item }
+      [evs, next_page_params(body)]
+    end
+
     private
 
     def request(method, path, params = {})

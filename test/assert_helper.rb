@@ -354,4 +354,46 @@ module AssertHelper
     assert_equal Time.parse('2020-07-03T01:00:00.000000Z').to_i, org_mem.updated_at.to_i
     assert_user103 org_mem.user
   end
+
+  def assert_org_inv001(inv)
+    assert_equal 'INV001', inv.uuid
+    assert_equal 'https://api.calendly.com/organizations/ORG001/invitations/INV001', inv.uri
+    assert_equal 'foobar102@example.com', inv.email
+    assert_equal 'accepted', inv.status
+    assert_equal Time.parse('2020-08-02T00:00:00.000000Z').to_i, inv.created_at.to_i
+    assert_equal Time.parse('2020-08-02T01:00:00.000000Z').to_i, inv.updated_at.to_i
+    assert_equal Time.parse('2020-08-02T00:30:00.000000Z').to_i, inv.last_sent_at.to_i
+    assert_equal 'https://api.calendly.com/organizations/ORG001', inv.organization_uri
+    assert_equal 'ORG001', inv.organization_uuid
+    assert_equal 'https://api.calendly.com/users/U102', inv.user_uri
+    assert_equal 'U102', inv.user_uuid
+  end
+
+  def assert_org_inv002(inv)
+    assert_equal 'INV002', inv.uuid
+    assert_equal 'https://api.calendly.com/organizations/ORG001/invitations/INV002', inv.uri
+    assert_equal 'foobar103@example.com', inv.email
+    assert_equal 'accepted', inv.status
+    assert_equal Time.parse('2020-08-03T00:00:00.000000Z').to_i, inv.created_at.to_i
+    assert_equal Time.parse('2020-08-03T01:00:00.000000Z').to_i, inv.updated_at.to_i
+    assert_equal Time.parse('2020-08-03T00:30:00.000000Z').to_i, inv.last_sent_at.to_i
+    assert_equal 'https://api.calendly.com/organizations/ORG001', inv.organization_uri
+    assert_equal 'ORG001', inv.organization_uuid
+    assert_equal 'https://api.calendly.com/users/U103', inv.user_uri
+    assert_equal 'U103', inv.user_uuid
+  end
+
+  def assert_org_inv003(inv)
+    assert_equal 'INV003', inv.uuid
+    assert_equal 'https://api.calendly.com/organizations/ORG001/invitations/INV003', inv.uri
+    assert_equal 'foobar104@example.com', inv.email
+    assert_equal 'pending', inv.status
+    assert_equal Time.parse('2020-08-04T00:00:00.000000Z').to_i, inv.created_at.to_i
+    assert_equal Time.parse('2020-08-04T01:00:00.000000Z').to_i, inv.updated_at.to_i
+    assert_equal Time.parse('2020-08-04T00:30:00.000000Z').to_i, inv.last_sent_at.to_i
+    assert_equal 'https://api.calendly.com/organizations/ORG001', inv.organization_uri
+    assert_equal 'ORG001', inv.organization_uuid
+    assert_nil inv.user_uri
+    assert_nil inv.user_uuid
+  end
 end

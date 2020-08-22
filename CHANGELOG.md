@@ -1,3 +1,9 @@
+# 0.0.6.alpha
+
+- support APIs
+  - `GET /organizations/{org_uuid}/invitations`
+  - `GET /organizations/{org_uuid}/invitations/{inv_uuid}`
+
 # 0.0.5.alpha
 
 - support APIs
