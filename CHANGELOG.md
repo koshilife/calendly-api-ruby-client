@@ -2,7 +2,7 @@
 
 - support APIs
   - `GET /organizations/{org_uuid}/invitations`
-  - `GET organizations/{org_uuid}/invitations/{inv_uuid}`
+  - `GET /organizations/{org_uuid}/invitations/{inv_uuid}`
 
 # 0.0.5.alpha
 
