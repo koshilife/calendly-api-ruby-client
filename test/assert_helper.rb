@@ -90,7 +90,7 @@ module AssertHelper
     assert_equal 'https://api.calendly.com/scheduled_events/EV001', ev.uri
     assert_equal '30 Minute Meeting', ev.name
     assert_equal 'canceled', ev.status
-    assert_equal 'https://api.calendly.com/event_types/ET001', ev.event_type
+    assert_equal 'https://api.calendly.com/event_types/ET001', ev.event_type_uri
     assert_equal 'ET001', ev.event_type_uuid
     assert_nil ev.location
     assert_equal 1, ev.invitees_counter_total
@@ -107,7 +107,7 @@ module AssertHelper
     assert_equal 'https://api.calendly.com/scheduled_events/EV002', ev.uri
     assert_equal '15 Minute Meeting', ev.name
     assert_equal 'active', ev.status
-    assert_equal 'https://api.calendly.com/event_types/ET002', ev.event_type
+    assert_equal 'https://api.calendly.com/event_types/ET002', ev.event_type_uri
     assert_equal 'ET002', ev.event_type_uuid
     assert_equal 'Tokyo', ev.location
     assert_equal 1, ev.invitees_counter_total
@@ -124,7 +124,7 @@ module AssertHelper
     assert_equal 'https://api.calendly.com/scheduled_events/EV003', ev.uri
     assert_equal '60 Minute Meeting', ev.name
     assert_equal 'active', ev.status
-    assert_equal 'https://api.calendly.com/event_types/ET003', ev.event_type
+    assert_equal 'https://api.calendly.com/event_types/ET003', ev.event_type_uri
     assert_equal 'ET003', ev.event_type_uuid
     assert_nil ev.location
     assert_equal 1, ev.invitees_counter_total
@@ -143,7 +143,7 @@ module AssertHelper
     assert_equal 'FooBar', inv.name
     assert_equal 'active', inv.status
     assert_equal 'Asia/Tokyo', inv.timezone
-    assert_equal 'https://api.calendly.com/scheduled_events/EV101', inv.event
+    assert_equal 'https://api.calendly.com/scheduled_events/EV101', inv.event_uri
     assert_equal 'EV101', inv.event_uuid
     assert_nil inv.text_reminder_number
     assert_equal Time.parse('2020-08-20T01:00:00.000000Z').to_i, inv.created_at.to_i
@@ -191,7 +191,7 @@ module AssertHelper
     assert_equal 'FooBar', inv.name
     assert_equal 'active', inv.status
     assert_equal 'Asia/Tokyo', inv.timezone
-    assert_equal 'https://api.calendly.com/scheduled_events/EV201', inv.event
+    assert_equal 'https://api.calendly.com/scheduled_events/EV201', inv.event_uri
     assert_equal 'EV201', inv.event_uuid
     assert_nil inv.text_reminder_number
     assert_equal Time.parse('2020-08-01T01:00:00.000000Z').to_i, inv.created_at.to_i
@@ -224,7 +224,7 @@ module AssertHelper
     assert_equal 'FooBar', inv.name
     assert_equal 'active', inv.status
     assert_equal 'Asia/Tokyo', inv.timezone
-    assert_equal 'https://api.calendly.com/scheduled_events/EV201', inv.event
+    assert_equal 'https://api.calendly.com/scheduled_events/EV201', inv.event_uri
     assert_equal 'EV201', inv.event_uuid
     assert_nil inv.text_reminder_number
     assert_equal Time.parse('2020-08-02T01:00:00.000000Z').to_i, inv.created_at.to_i
@@ -257,7 +257,7 @@ module AssertHelper
     assert_equal 'FooBar', inv.name
     assert_equal 'active', inv.status
     assert_equal 'Asia/Tokyo', inv.timezone
-    assert_equal 'https://api.calendly.com/scheduled_events/EV201', inv.event
+    assert_equal 'https://api.calendly.com/scheduled_events/EV201', inv.event_uri
     assert_equal 'EV201', inv.event_uuid
     assert_nil inv.text_reminder_number
     assert_equal Time.parse('2020-08-03T01:00:00.000000Z').to_i, inv.created_at.to_i

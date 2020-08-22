@@ -29,7 +29,7 @@ module Calendly
     attr_accessor :timezone
     # @return [String]
     # Reference to Event uri associated with this invitee.
-    attr_accessor :event
+    attr_accessor :event_uri
     # @return [String]
     # Reference to Event uuid associated with this invitee.
     attr_accessor :event_uuid
@@ -54,10 +54,13 @@ module Calendly
 
     def after_set_attributes(attrs)
       super attrs
-      @event_uuid = Event.extract_uuid event if event
-      questions_and_answers
+      if attrs[:event]
+        event_params = { uri: attrs[:event] }
+        ev = Event.new event_params
+        @event_uri = ev.uri
+        @event_uuid = ev.uuid
+      end
       answers = attrs[:questions_and_answers]
-
       if answers&.is_a? Array
         @questions_and_answers = answers.map { |ans| InviteeQuestionAndAnswer.new ans }
       end
