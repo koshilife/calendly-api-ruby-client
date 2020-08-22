@@ -16,6 +16,45 @@ module AssertHelper
     assert_equal Time.parse('2020-05-02T00:00:00.000000Z').to_i, user.updated_at.to_i
   end
 
+  def assert_user101(user)
+    assert_equal 'U101', user.uuid
+    assert_equal 'https://api.calendly.com/users/U101', user.uri
+    assert_equal 'FooBar101', user.name
+    assert_equal 'foobar101', user.slug
+    assert_equal 'foobar101@example.com', user.email
+    assert_equal 'https://foobar.cloudfront.net/uploads/user/avatar/foobar/foobar101.gif', user.avatar_url
+    assert_equal 'https://calendly.com/foobar101', user.scheduling_url
+    assert_equal 'Asia/Tokyo', user.timezone
+    assert_equal Time.parse('2020-08-01T00:00:00.000000Z').to_i, user.created_at.to_i
+    assert_equal Time.parse('2020-08-01T01:00:00.000000Z').to_i, user.updated_at.to_i
+  end
+
+  def assert_user102(user)
+    assert_equal 'U102', user.uuid
+    assert_equal 'https://api.calendly.com/users/U102', user.uri
+    assert_equal 'FooBar102', user.name
+    assert_equal 'foobar102', user.slug
+    assert_equal 'foobar102@example.com', user.email
+    assert_equal 'https://foobar.cloudfront.net/uploads/user/avatar/foobar/foobar102.gif', user.avatar_url
+    assert_equal 'https://calendly.com/foobar102', user.scheduling_url
+    assert_equal 'Asia/Tokyo', user.timezone
+    assert_equal Time.parse('2020-08-02T00:00:00.000000Z').to_i, user.created_at.to_i
+    assert_equal Time.parse('2020-08-02T01:00:00.000000Z').to_i, user.updated_at.to_i
+  end
+
+  def assert_user103(user)
+    assert_equal 'U103', user.uuid
+    assert_equal 'https://api.calendly.com/users/U103', user.uri
+    assert_equal 'FooBar103', user.name
+    assert_equal 'foobar103', user.slug
+    assert_equal 'foobar103@example.com', user.email
+    assert_equal 'https://foobar.cloudfront.net/uploads/user/avatar/foobar/foobar103.gif', user.avatar_url
+    assert_equal 'https://calendly.com/foobar103', user.scheduling_url
+    assert_equal 'Asia/Tokyo', user.timezone
+    assert_equal Time.parse('2020-08-03T00:00:00.000000Z').to_i, user.created_at.to_i
+    assert_equal Time.parse('2020-08-03T01:00:00.000000Z').to_i, user.updated_at.to_i
+  end
+
   def assert_event_type001(ev_type)
     assert_equal true, ev_type.active
     assert_equal 'ET0001', ev_type.uuid
@@ -281,5 +320,38 @@ module AssertHelper
     assert_equal 'FOOBAR_CONTENT_3', tracking.utm_content
     assert_equal 'FOOBAR_TERM_3', tracking.utm_term
     assert_equal 'FOOBAR_SALESFORCE_UUID_3', tracking.salesforce_uuid
+  end
+
+  def assert_org_mem001(org_mem)
+    assert_equal 'MEM001', org_mem.uuid
+    assert_equal 'https://api.calendly.com/organization_memberships/MEM001', org_mem.uri
+    assert_equal 'https://api.calendly.com/organizations/ORG001', org_mem.organization_uri
+    assert_equal 'ORG001', org_mem.organization_uuid
+    assert_equal 'owner', org_mem.role
+    assert_equal Time.parse('2020-07-01T00:00:00.000000Z').to_i, org_mem.created_at.to_i
+    assert_equal Time.parse('2020-07-01T01:00:00.000000Z').to_i, org_mem.updated_at.to_i
+    assert_user101 org_mem.user
+  end
+
+  def assert_org_mem002(org_mem)
+    assert_equal 'MEM002', org_mem.uuid
+    assert_equal 'https://api.calendly.com/organization_memberships/MEM002', org_mem.uri
+    assert_equal 'https://api.calendly.com/organizations/ORG001', org_mem.organization_uri
+    assert_equal 'ORG001', org_mem.organization_uuid
+    assert_equal 'user', org_mem.role
+    assert_equal Time.parse('2020-07-02T00:00:00.000000Z').to_i, org_mem.created_at.to_i
+    assert_equal Time.parse('2020-07-02T01:00:00.000000Z').to_i, org_mem.updated_at.to_i
+    assert_user102 org_mem.user
+  end
+
+  def assert_org_mem003(org_mem)
+    assert_equal 'MEM003', org_mem.uuid
+    assert_equal 'https://api.calendly.com/organization_memberships/MEM003', org_mem.uri
+    assert_equal 'https://api.calendly.com/organizations/ORG001', org_mem.organization_uri
+    assert_equal 'ORG001', org_mem.organization_uuid
+    assert_equal 'user', org_mem.role
+    assert_equal Time.parse('2020-07-03T00:00:00.000000Z').to_i, org_mem.created_at.to_i
+    assert_equal Time.parse('2020-07-03T01:00:00.000000Z').to_i, org_mem.updated_at.to_i
+    assert_user103 org_mem.user
   end
 end

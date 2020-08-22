@@ -165,6 +165,119 @@ module Calendly
       [evs, next_page_params(body)]
     end
 
+    #
+    # Returns information about a user's organization membership
+    #
+    # @param [String] uuid the specified event (organization membership's uuid).
+    # @return [OrganizationMembership]
+    # @since 0.0.5
+    def membership(uuid)
+      check_not_empty uuid, 'uuid'
+      body = request :get, "organization_memberships/#{uuid}"
+      OrganizationMembership.new body[:resource]
+    end
+
+    #
+    # Get List memberships of all users belonging to an organization.
+    #
+    # @param [String] org_uri the specified organization (organization's uri).
+    # @param [Hash] opts the optional request parameters.
+    # @option opts [Integer] :count Number of rows to return.
+    # @option opts [String] :email Filter by email.
+    # @option opts [String] :page_token Pass this to get the next portion of collection.
+    # @return [Array<Array<Calendly::OrganizationMembership>, Hash>]
+    #  - [Array<Calendly::OrganizationMembership>] memberships
+    #  - [Hash] next_params the parameters to get next data. if thre is no next it returns nil.
+    # @since 0.0.5
+    def memberships(org_uri, opts = {})
+      check_not_empty org_uri, 'org_uri'
+
+      opts_keys = %i[count email page_token]
+      params = { organization: org_uri }
+      params = merge_options opts, opts_keys, params
+      body = request :get, 'organization_memberships', params
+
+      items = body[:collection] || []
+      memberships = items.map { |item| OrganizationMembership.new item }
+      [memberships, next_page_params(body)]
+    end
+
+    #
+    # Get List memberships of all users belonging to an organization by user.
+    #
+    # @param [String] user_uri the specified user (user's uri).
+    # @param [Hash] opts the optional request parameters.
+    # @option opts [Integer] :count Number of rows to return.
+    # @option opts [String] :email Filter by email.
+    # @option opts [String] :page_token Pass this to get the next portion of collection.
+    # @return [Array<Array<Calendly::OrganizationMembership>, Hash>]
+    #  - [Array<Calendly::OrganizationMembership>] memberships
+    #  - [Hash] next_params the parameters to get next data. if thre is no next it returns nil.
+    # @since 0.0.5
+    def memberships_by_user(user_uri, opts = {})
+      check_not_empty user_uri, 'user_uri'
+
+      opts_keys = %i[count email page_token]
+      params = { user: user_uri }
+      params = merge_options opts, opts_keys, params
+      body = request :get, 'organization_memberships', params
+
+      items = body[:collection] || []
+      memberships = items.map { |item| OrganizationMembership.new item }
+      [memberships, next_page_params(body)]
+    end
+
+    #
+    # Returns an Organization Invitation
+    #
+    # @param [String] org_uuid the unique Organization's id
+    # @param [String] inv_uuid the unique Organization Invitation's id
+    # @return [Calendly::Organization]
+    # @since 0.0.5
+    def invitation(org_uuid, inv_uuid)
+      check_not_empty org_uuid, 'org_uuid'
+      check_not_empty inv_uuid, 'inv_uuid'
+
+      body = request :get, "organizations/#{org_uuid}/invitations/#{inv_uuid}"
+      OrganizationInvitation.new body[:resource]
+    end
+
+    #
+    # Get Organization Invitations
+    #
+    # @param [String] uuid the unique Organization's id
+    # @return [<Array<Array<Calendly::Organization>, Hash>]
+    #  - [Array<Calendly::Organization>] organizations
+    #  - [Hash] next_params the parameters to get next data. if thre is no next it returns nil.
+    # @since 0.0.5
+    def invitations(uuid)
+      check_not_empty uuid, 'uuid'
+
+      body = request :get, "organizations/#{uuid}/invitations"
+      items = body[:collection] || []
+      evs = items.map { |item| OrganizationInvitation.new item }
+      [evs, next_page_params(body)]
+    end
+
+    # # Invite a person to an Organization.
+    # # POST https://api.calendly.com/organizations/{uuid}/invitations
+    # def create_invitation(org_uuid:)
+    #   request(:post, "organizations/#{org_uuid}/invitations")
+    # end
+
+    # # Revoke Organization Invitation
+    # # Revoke an organization invitation. The invitation link sent to the person will no longer be valid.
+    # # DELETE https://api.calendly.com/organizations/{org_uuid}/invitations/{uuid}
+    # def delete_invitation(org_uuid:, org_inv_uuid:)
+    #   request(:delete, "organizations/#{org_uuid}/invitations/#{org_inv_uuid}")
+    # end
+
+    # # Remove a User from an Organization
+    # # DELETE https://api.calendly.com/organization_memberships/{uuid}
+    # def delete_membership
+    #   request(:delete, "organization_memberships/#{org_mem_uuid}")
+    # end
+
     private
 
     def request(method, path, params = {})

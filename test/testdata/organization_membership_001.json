@@ -1,0 +1,20 @@
+{
+  "resource": {
+    "created_at": "2020-07-01T00:00:00.000000Z",
+    "organization": "https://api.calendly.com/organizations/ORG001",
+    "role": "owner",
+    "updated_at": "2020-07-01T01:00:00.000000Z",
+    "uri": "https://api.calendly.com/organization_memberships/MEM001",
+    "user": {
+      "avatar_url": "https://foobar.cloudfront.net/uploads/user/avatar/foobar/foobar101.gif",
+      "created_at": "2020-08-01T00:00:00.000000Z",
+      "email": "foobar101@example.com",
+      "name": "FooBar101",
+      "scheduling_url": "https://calendly.com/foobar101",
+      "slug": "foobar101",
+      "timezone": "Asia/Tokyo",
+      "updated_at": "2020-08-01T01:00:00.000000Z",
+      "uri": "https://api.calendly.com/users/U101"
+    }
+  }
+}

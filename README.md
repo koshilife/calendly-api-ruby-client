@@ -24,8 +24,8 @@ As of now the supported statuses each Calendly API are as below.
 - Organization
   - [ ] Get Organization Invitation
   - [ ] Get Organization Invitations
-  - [ ] Get Organization Membership
-  - [ ] Get a list of Organization Memberships
+  - [x] Get Organization Membership
+  - [x] Get a list of Organization Memberships
   - [ ] Invite a person to Organization
   - [ ] Remove a User from an Organization
   - [ ] Revoke Organization Invitation

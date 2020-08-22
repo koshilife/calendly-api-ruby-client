@@ -219,4 +219,73 @@ class CalendlyClientTest < CalendlyBaseTest
     assert_event201_invitee002 invs_page1[1]
     assert_event201_invitee001 invs_page2[0]
   end
+
+  #
+  # test for membership
+  #
+
+  def test_that_it_is_returned_a_specific_membership
+    org_uuid = 'ORG001'
+    res_body = load_test_data 'organization_membership_001.json'
+    url = "#{HOST}/organization_memberships/#{org_uuid}"
+    add_stub_request(:get, url, res_body: res_body)
+
+    mem = @client.membership org_uuid
+    assert_org_mem001 mem
+  end
+
+  #
+  # test for memberships
+  #
+
+  def test_that_it_is_returned_all_memberships_by_pagination
+    org_uri = 'https://api.calendly.com/organizations/ORG001'
+    base_params = {
+      organization: org_uri,
+      count: 2
+    }
+
+    params1 = base_params.dup
+    res_body1 = load_test_data 'organization_memberships_002_page1.json'
+    url1 = "#{HOST}/organization_memberships?#{URI.encode_www_form(params1)}"
+    add_stub_request(:get, url1, res_body: res_body1)
+
+    res_body2 = load_test_data 'organization_memberships_002_page2.json'
+    params2 = base_params.merge(
+      page_token: 'NEXT_PAGE_TOKEN'
+    )
+    url2 = "#{HOST}/organization_memberships?#{URI.encode_www_form(params2)}"
+    add_stub_request(:get, url2, res_body: res_body2)
+
+    # request page1
+    mems_page1, next_params1 = @client.memberships org_uri, params1
+    org_uri = next_params1.delete(:organization)
+    # request page2
+    mems_page2, next_params2 = @client.memberships org_uri, next_params1
+
+    assert_equal 2, mems_page1.length
+    assert_equal 1, mems_page2.length
+    assert_nil next_params2
+    assert_org_mem001 mems_page1[0]
+    assert_org_mem002 mems_page1[1]
+    assert_org_mem003 mems_page2[0]
+  end
+
+  #
+  # test for memberships_by_user
+  #
+
+  def test_that_it_is_returned_memberships_specific_user
+    res_body = load_test_data 'organization_memberships_001.json'
+    user_uri = 'https://api.calendly.com/users/U101'
+
+    params = { user: user_uri }
+    url = "#{HOST}/organization_memberships?#{URI.encode_www_form(params)}"
+    add_stub_request(:get, url, res_body: res_body)
+
+    mems, next_params = @client.memberships_by_user user_uri
+    assert_equal 1, mems.length
+    assert_nil next_params
+    assert_org_mem001 mems[0]
+  end
 end
