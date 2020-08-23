@@ -12,9 +12,10 @@ module Calendly
     # @return [OAuth2::Error, JSON::ParserError]
     attr_reader :cause_exception
 
-    def initialize(response, cause_exception)
+    def initialize(response, cause_exception, message: nil)
       @response = response
       @cause_exception = cause_exception
+      @message = message
       set_attributes_from_response
       @message ||= cause_exception.message if cause_exception
       super @message
@@ -32,8 +33,8 @@ module Calendly
 
       @status = response.status if response.respond_to? :status
       parsed = JSON.parse response.body, symbolize_names: true
-      @title = parsed[:title]
-      @message = parsed[:message]
+      @title = parsed[:title] || parsed[:error]
+      @message ||= parsed[:message] || parsed[:error_description]
     rescue JSON::ParserError
       nil
     end

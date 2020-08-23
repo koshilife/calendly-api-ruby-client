@@ -1,0 +1,9 @@
+{
+  "token_type": "Bearer",
+  "expires_in": 7200,
+  "created_at": 1596207600,
+  "refresh_token": "NEW_REFRESH_TOKEN",
+  "access_token": "NEW_TOKEN",
+  "scope": "default",
+  "owner": "https://api.calendly.com/users/U001"
+}

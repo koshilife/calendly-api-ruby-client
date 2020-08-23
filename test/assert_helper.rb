@@ -396,4 +396,46 @@ module AssertHelper
     assert_nil inv.user_uri
     assert_nil inv.user_uuid
   end
+
+  def assert_error(proc, ex_message)
+    e = assert_raises Calendly::Error do
+      proc.call
+    end
+    assert_equal ex_message, e.message
+  end
+
+  def assert_required_error(proc, arg_name)
+    assert_error(proc, "#{arg_name} is required.")
+  end
+
+  def assert_api_error(proc, ex_status, ex_body, ex_title, ex_message)
+    e = assert_raises Calendly::ApiError do
+      proc.call
+    end
+    assert_equal ex_body, e.response.body
+    assert_equal ex_status, e.status
+    assert_equal ex_title, e.title if ex_title
+    assert_equal ex_message, e.message
+  end
+
+  def assert_400_invalid_grant(proc)
+    ex_body = load_test_data 'error_400_invalid_grant.json'
+    ex_title = 'invalid_grant'
+    ex_message = 'The provided authorization grant is invalid, expired, revoked, does not match the redirection URI used in the authorization request, or was issued to another client.'
+    assert_api_error(proc, 400, ex_body, ex_title, ex_message)
+  end
+
+  def assert_400_already_invited(proc, email)
+    ex_body = load_test_data 'error_400_already_invited.json'
+    ex_title = 'Already Invited'
+    ex_message = "#{email} has already been invited"
+    assert_api_error(proc, 400, ex_body, ex_title, ex_message)
+  end
+
+  def assert_404_error(proc)
+    ex_body = load_test_data 'error_404_not_found.json'
+    ex_title = 'Resource Not Found'
+    ex_message = 'The server could not find the requested resource.'
+    assert_api_error(proc, 404, ex_body, ex_title, ex_message)
+  end
 end

@@ -5,7 +5,10 @@ module Calendly
   class Error < StandardError
     def initialize(message = nil)
       @logger = Calendly.configuration.logger
-      log "#{self.class} occured. message:#{message}"
+      msg = "#{self.class} occured."
+      msg += " status:#{status}" if respond_to?(:status)
+      msg += " message:#{message}"
+      log msg
       super message
     end
 

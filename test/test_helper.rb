@@ -10,9 +10,11 @@ if ENV['CI'] == 'true'
 end
 require 'minitest/autorun'
 require 'webmock/minitest'
-
 require 'calendly'
 require 'assert_helper'
+
+require 'logger'
+class MyLogger < Logger; end
 
 class CalendlyBaseTest < Minitest::Test
   include AssertHelper
@@ -20,14 +22,44 @@ class CalendlyBaseTest < Minitest::Test
   HOST = Calendly::Client::API_HOST
 
   def setup
-    # Calendly.configuration.logger.level = :debug
-    @client = Calendly::Client.new('token')
+    @client_id = 'CLIENT_ID'
+    @client_secret = 'CLIENT_SECRET'
+    @token = 'TOKEN'
+    @refresh_token = 'REFRESH_TOKEN'
+    @expires_at = Time.now + 3600
+    @expired_at = Time.now - 3600
+    @my_logger = MyLogger.new STDOUT
+
+    reset_configuration
+    @client = Calendly::Client.new @token
+  end
+
+  def init_configuration(is_expired = false)
+    Calendly.configure do |c|
+      c.client_id = @client_id
+      c.client_secret = @client_secret
+      c.token = @token
+      c.refresh_token = @refresh_token
+      c.token_expires_at = is_expired ? @expired_at : @expires_at
+      c.logger = @my_logger
+    end
+  end
+
+  def reset_configuration
+    Calendly.configure do |c|
+      c.client_id = nil
+      c.client_secret = nil
+      c.token = nil
+      c.refresh_token = nil
+      c.token_expires_at = nil
+      c.logger = nil
+    end
   end
 
   private
 
-  def default_request_headers(token = 'token')
-    { 'Authorization' => "Bearer #{token}" }
+  def default_request_headers
+    { 'Authorization' => "Bearer #{@token}" }
   end
 
   def default_response_headers
@@ -41,11 +73,30 @@ class CalendlyBaseTest < Minitest::Test
     File.new(filepath).read
   end
 
-  def add_stub_request(method, url, req_body: nil, req_headers: nil, res_status: nil, res_body: nil, res_headers: nil)
+  def add_stub_request(method, url, req_headers: nil, req_body: nil, res_status: nil, res_headers: nil, res_body: nil)
     WebMock.enable!
     req_headers ||= default_request_headers
     res_headers ||= default_response_headers
     res_status ||= 200
     stub_request(method, url).with(body: req_body, headers: req_headers).to_return(status: res_status, body: res_body, headers: res_headers)
+  end
+
+  def add_refresh_token_stub_request(is_valid = true)
+    req_params = {
+      client_id: @client_id,
+      client_secret: @client_secret,
+      grant_type: 'refresh_token',
+      refresh_token: @refresh_token
+    }
+    req_body = URI.encode_www_form(req_params)
+    if is_valid
+      res_status = 200
+      res_body = load_test_data 'refresh_token.json'
+    else
+      res_status = 400
+      res_body = load_test_data 'error_400_invalid_grant.json'
+    end
+    url = "#{Calendly::Client::AUTH_API_HOST}/oauth/token"
+    stub_request(:post, url).with(body: req_body).to_return(status: res_status, body: res_body, headers: default_response_headers)
   end
 end

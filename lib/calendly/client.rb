@@ -76,7 +76,7 @@ module Calendly
       opts_keys = %i[count page_token sort]
       params = { user: user_uri }
       params = merge_options opts, opts_keys, params
-      body = request :get, 'event_types', params
+      body = request :get, 'event_types', params: params
 
       items = body[:collection] || []
       ev_types = items.map { |item| EventType.new item }
@@ -117,7 +117,7 @@ module Calendly
       opts_keys = %i[count invitee_email max_start_time min_start_time page_token sort status]
       params = { user: user_uri }
       params = merge_options opts, opts_keys, params
-      body = request :get, 'scheduled_events', params
+      body = request :get, 'scheduled_events', params: params
 
       items = body[:collection] || []
       evs = items.map { |item| Event.new item }
@@ -158,7 +158,7 @@ module Calendly
 
       opts_keys = %i[count email page_token sort status]
       params = merge_options opts, opts_keys
-      body = request :get, "scheduled_events/#{uuid}/invitees", params
+      body = request :get, "scheduled_events/#{uuid}/invitees", params: params
 
       items = body[:collection] || []
       evs = items.map { |item| Invitee.new item }
@@ -195,7 +195,7 @@ module Calendly
       opts_keys = %i[count email page_token]
       params = { organization: org_uri }
       params = merge_options opts, opts_keys, params
-      body = request :get, 'organization_memberships', params
+      body = request :get, 'organization_memberships', params: params
 
       items = body[:collection] || []
       memberships = items.map { |item| OrganizationMembership.new item }
@@ -220,11 +220,23 @@ module Calendly
       opts_keys = %i[count email page_token]
       params = { user: user_uri }
       params = merge_options opts, opts_keys, params
-      body = request :get, 'organization_memberships', params
+      body = request :get, 'organization_memberships', params: params
 
       items = body[:collection] || []
       memberships = items.map { |item| OrganizationMembership.new item }
       [memberships, next_page_params(body)]
+    end
+
+    #
+    # Remove a User from an Organization.
+    #
+    # @param [String] uuid the specified memberhip (organization memberhips's uuid).
+    # @return [true]
+    # @since 0.0.7
+    def delete_membership(uuid)
+      check_not_empty uuid, 'uuid'
+      request :delete, "organization_memberships/#{uuid}", expected_status: 204
+      true
     end
 
     #
@@ -262,31 +274,94 @@ module Calendly
       opts_keys = %i[count email page_token sort status]
       params = merge_options opts, opts_keys
 
-      body = request :get, "organizations/#{uuid}/invitations", params
+      body = request :get, "organizations/#{uuid}/invitations", params: params
       items = body[:collection] || []
       evs = items.map { |item| OrganizationInvitation.new item }
       [evs, next_page_params(body)]
     end
 
-    private
+    #
+    # Invite a person to an Organization.
+    #
+    # @param [String] uuid the specified organization (organization's uri).
+    # @param [String] email Email of the person being invited.
+    # @return [Calendly::OrganizationInvitation]
+    # @since 0.0.7
+    def create_invitation(uuid, email)
+      check_not_empty uuid, 'uuid'
+      check_not_empty email, 'email'
+      body = request(
+        :post,
+        "organizations/#{uuid}/invitations",
+        body: { email: email },
+        expected_status: 201
+      )
+      OrganizationInvitation.new body[:resource]
+    end
 
-    def request(method, path, params = {})
-      debug_log "Request #{method.to_s.upcase} #{API_HOST}/#{path} params:#{params}"
-      opts = { params: params }
-      res = access_token.request(method, path, opts)
-      debug_log "Response status:#{res.status}, body:#{res.body}"
-      JSON.parse res.body, symbolize_names: true
+    #
+    # Revoke Organization Invitation.
+    #
+    # @param [String] org_uuid the specified organization (organization's uri).
+    # @param [String] inv_uuid the specified invitation (organization invitation's uri).
+    # @return [true]
+    # @since 0.0.7
+    def delete_invitation(org_uuid, inv_uuid)
+      check_not_empty org_uuid, 'org_uuid'
+      check_not_empty inv_uuid, 'inv_uuid'
+      request(
+        :delete,
+        "organizations/#{org_uuid}/invitations/#{inv_uuid}",
+        expected_status: 204
+      )
+      true
+    end
+
+    #
+    # Refresh access token.
+    #
+    # @since 0.0.7
+    def refresh!
+      check_not_empty @config.client_id, 'client_id'
+      check_not_empty @config.client_secret, 'client_secret'
+      @access_token = access_token.refresh!
     rescue OAuth2::Error => e
       res = e.response.response
       raise ApiError.new res, e
-    rescue JSON::ParserError => e
+    end
+
+    private
+
+    def debug_log(msg)
+      return unless @logger
+
+      @logger.debug msg
+    end
+
+    def request(method, path, params: nil, body: nil, expected_status: nil)
+      debug_log "Request #{method.to_s.upcase} #{API_HOST}/#{path} params:#{params}, body:#{body}"
+      res = access_token.request(method, path, params: params, body: body)
+      debug_log "Response status:#{res.status}, body:#{res.body}"
+      validate_status_code res, expected_status
+      parse_as_json res
+    rescue OAuth2::Error => e
+      res = e.response.response
       raise ApiError.new res, e
     end
 
-    def debug_log(msg)
-      return if @logger.nil?
+    def validate_status_code(res, expected_status)
+      return unless expected_status
+      return if expected_status == res.status
 
-      @logger.debug msg
+      raise ApiError.new res, message: 'unexpected http status returned.'
+    end
+
+    def parse_as_json(res)
+      return if blank? res.body
+
+      JSON.parse res.body, symbolize_names: true
+    rescue JSON::ParserError => e
+      raise ApiError.new res, e
     end
 
     def check_not_empty(value, name)
@@ -310,10 +385,6 @@ module Calendly
         authorize_url: "#{AUTH_API_HOST}/oauth/authorize",
         token_url: "#{AUTH_API_HOST}/oauth/token"
       }
-    end
-
-    def refresh!
-      @access_token = access_token.refresh!
     end
 
     def merge_options(opts, filters, params = {})

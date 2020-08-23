@@ -1,8 +1,15 @@
+# 0.0.7.alpha
+
+- support APIs
+  - `POST /organizations/{uuid}/invitations`
+  - `DELETE /organizations/{org_uuid}/invitations/{invitation_uuid}`
+  - `DELETE /organization_memberships/{uuid}`
+
 # 0.0.6.alpha
 
 - support APIs
-  - `GET /organizations/{org_uuid}/invitations`
-  - `GET /organizations/{org_uuid}/invitations/{inv_uuid}`
+  - `GET /organizations/{uuid}/invitations`
+  - `GET /organizations/{organization_uuid}/invitations/{invitation_uuid}`
 
 # 0.0.5.alpha
 
@@ -11,7 +18,7 @@
   - `GET /organization_memberships/{uuid}`
 - rename fields
   - Invitee#event to Invitee#event_uri
-  - Event#event_type to Invitee#event_type_uri
+  - Event#event_type to Event#event_type_uri
 
 # 0.0.4.alpha
 
