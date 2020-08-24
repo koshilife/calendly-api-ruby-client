@@ -73,7 +73,7 @@ module Calendly
     # @raise [Calendly::ApiError] if the api returns error code.
     # @since 0.1.0
     def event_types(opts = {})
-      request_proc = proc { |n_opts| client.event_types uri, n_opts }
+      request_proc = proc { |options| client.event_types uri, options }
       auto_pagination request_proc, opts
     end
 
@@ -89,26 +89,12 @@ module Calendly
     # @option opts [String] :sort Order results by the specified field and directin. Accepts comma-separated list of {field}:{direction} values.
     # @option opts [String] :status Whether the scheduled event is active or canceled
     # @return [Array<Calendly::Event>]
-    # @raise [Calendly::Error] if the user's uri is empty.
+    # @raise [Calendly::Error] if the uri is empty.
     # @raise [Calendly::ApiError] if the api returns error code.
     # @since 0.1.0
     def scheduled_events(opts = {})
-      request_proc = proc { |n_opts| client.scheduled_events uri, n_opts }
+      request_proc = proc { |options| client.scheduled_events uri, options }
       auto_pagination request_proc, opts
-    end
-
-    private
-
-    def auto_pagination(request_proc, opts)
-      items = []
-      loop do
-        event_types, next_opts = request_proc.call opts
-        items = [*items, *event_types]
-        break unless next_opts
-
-        opts = next_opts
-      end
-      items
     end
   end
 end

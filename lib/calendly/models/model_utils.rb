@@ -79,5 +79,24 @@ module Calendly
     def after_set_attributes(attrs)
       @uuid = self.class.extract_uuid(attrs[:uri]) if respond_to? :uuid=
     end
+
+    #
+    # Get all collection from single page or plurality of pages.
+    #
+    # @param [Proc] request_proc the procedure of request portion of collection.
+    # @param [Hash] opts the optional request parameters for the procedure.
+    # @return [Array<Calendly::Model>]
+    # @since 0.1.0
+    def auto_pagination(request_proc, opts)
+      items = []
+      loop do
+        event_types, next_opts = request_proc.call opts
+        items = [*items, *event_types]
+        break unless next_opts
+
+        opts = next_opts
+      end
+      items
+    end
   end
 end
