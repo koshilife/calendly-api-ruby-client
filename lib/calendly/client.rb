@@ -199,7 +199,7 @@ module Calendly
     # Returns information about a user's organization membership
     #
     # @param [String] uuid the specified membership (organization membership's uuid).
-    # @return [OrganizationMembership]
+    # @return [Calendly::OrganizationMembership]
     # @raise [Calendly::Error] if the uuid arg is empty.
     # @raise [Calendly::ApiError] if the api returns error code.
     # @since 0.0.5
