@@ -4,6 +4,8 @@ require 'time'
 
 module AssertHelper
   def assert_user001(user)
+    assert user.client.is_a? Calendly::Client
+    assert_equal 'U001', user.id
     assert_equal 'U001', user.uuid
     assert_equal 'https://api.calendly.com/users/U001', user.uri
     assert_equal 'FooBar', user.name
@@ -17,6 +19,8 @@ module AssertHelper
   end
 
   def assert_user101(user)
+    assert user.client.is_a? Calendly::Client
+    assert_equal 'U101', user.id
     assert_equal 'U101', user.uuid
     assert_equal 'https://api.calendly.com/users/U101', user.uri
     assert_equal 'FooBar101', user.name
@@ -30,6 +34,8 @@ module AssertHelper
   end
 
   def assert_user102(user)
+    assert user.client.is_a? Calendly::Client
+    assert_equal 'U102', user.id
     assert_equal 'U102', user.uuid
     assert_equal 'https://api.calendly.com/users/U102', user.uri
     assert_equal 'FooBar102', user.name
@@ -43,6 +49,8 @@ module AssertHelper
   end
 
   def assert_user103(user)
+    assert user.client.is_a? Calendly::Client
+    assert_equal 'U103', user.id
     assert_equal 'U103', user.uuid
     assert_equal 'https://api.calendly.com/users/U103', user.uri
     assert_equal 'FooBar103', user.name
@@ -56,7 +64,9 @@ module AssertHelper
   end
 
   def assert_event_type001(ev_type)
+    assert ev_type.client.is_a? Calendly::Client
     assert_equal true, ev_type.active
+    assert_equal 'ET0001', ev_type.id
     assert_equal 'ET0001', ev_type.uuid
     assert_equal '#000001', ev_type.color
     assert_nil ev_type.description_html
@@ -79,7 +89,9 @@ module AssertHelper
   end
 
   def assert_event_type002(ev_type)
+    assert ev_type.client.is_a? Calendly::Client
     assert_equal false, ev_type.active
+    assert_equal 'ET0002', ev_type.id
     assert_equal 'ET0002', ev_type.uuid
     assert_equal '#000002', ev_type.color
     assert_nil ev_type.description_html
@@ -102,7 +114,9 @@ module AssertHelper
   end
 
   def assert_event_type003(ev_type)
+    assert ev_type.client.is_a? Calendly::Client
     assert_equal false, ev_type.active
+    assert_equal 'ET0003', ev_type.id
     assert_equal 'ET0003', ev_type.uuid
     assert_equal '#000003', ev_type.color
     assert_equal '<p>description</p>', ev_type.description_html
@@ -125,6 +139,8 @@ module AssertHelper
   end
 
   def assert_event001(ev)
+    assert ev.client.is_a? Calendly::Client
+    assert_equal 'EV001', ev.id
     assert_equal 'EV001', ev.uuid
     assert_equal 'https://api.calendly.com/scheduled_events/EV001', ev.uri
     assert_equal '30 Minute Meeting', ev.name
@@ -142,6 +158,8 @@ module AssertHelper
   end
 
   def assert_event002(ev)
+    assert ev.client.is_a? Calendly::Client
+    assert_equal 'EV002', ev.id
     assert_equal 'EV002', ev.uuid
     assert_equal 'https://api.calendly.com/scheduled_events/EV002', ev.uri
     assert_equal '15 Minute Meeting', ev.name
@@ -159,6 +177,8 @@ module AssertHelper
   end
 
   def assert_event003(ev)
+    assert ev.client.is_a? Calendly::Client
+    assert_equal 'EV003', ev.id
     assert_equal 'EV003', ev.uuid
     assert_equal 'https://api.calendly.com/scheduled_events/EV003', ev.uri
     assert_equal '60 Minute Meeting', ev.name
@@ -176,6 +196,8 @@ module AssertHelper
   end
 
   def assert_event101_invitee001(inv)
+    assert inv.client.is_a? Calendly::Client
+    assert_equal 'INV001', inv.id
     assert_equal 'INV001', inv.uuid
     assert_equal 'https://api.calendly.com/scheduled_events/EV101/invitees/INV001', inv.uri
     assert_equal 'foobar@example.com', inv.email
@@ -224,6 +246,8 @@ module AssertHelper
   end
 
   def assert_event201_invitee001(inv)
+    assert inv.client.is_a? Calendly::Client
+    assert_equal 'INV001', inv.id
     assert_equal 'INV001', inv.uuid
     assert_equal 'https://api.calendly.com/scheduled_events/EV201/invitees/INV001', inv.uri
     assert_equal 'foobar@example.com', inv.email
@@ -257,6 +281,8 @@ module AssertHelper
   end
 
   def assert_event201_invitee002(inv)
+    assert inv.client.is_a? Calendly::Client
+    assert_equal 'INV002', inv.id
     assert_equal 'INV002', inv.uuid
     assert_equal 'https://api.calendly.com/scheduled_events/EV201/invitees/INV002', inv.uri
     assert_equal 'foobar@example.com', inv.email
@@ -290,6 +316,8 @@ module AssertHelper
   end
 
   def assert_event201_invitee003(inv)
+    assert inv.client.is_a? Calendly::Client
+    assert_equal 'INV003', inv.id
     assert_equal 'INV003', inv.uuid
     assert_equal 'https://api.calendly.com/scheduled_events/EV201/invitees/INV003', inv.uri
     assert_equal 'foobar@example.com', inv.email
@@ -323,6 +351,8 @@ module AssertHelper
   end
 
   def assert_org_mem001(org_mem)
+    assert org_mem.client.is_a? Calendly::Client
+    assert_equal 'MEM001', org_mem.id
     assert_equal 'MEM001', org_mem.uuid
     assert_equal 'https://api.calendly.com/organization_memberships/MEM001', org_mem.uri
     assert_equal 'https://api.calendly.com/organizations/ORG001', org_mem.organization_uri
@@ -334,6 +364,8 @@ module AssertHelper
   end
 
   def assert_org_mem002(org_mem)
+    assert org_mem.client.is_a? Calendly::Client
+    assert_equal 'MEM002', org_mem.id
     assert_equal 'MEM002', org_mem.uuid
     assert_equal 'https://api.calendly.com/organization_memberships/MEM002', org_mem.uri
     assert_equal 'https://api.calendly.com/organizations/ORG001', org_mem.organization_uri
@@ -345,6 +377,8 @@ module AssertHelper
   end
 
   def assert_org_mem003(org_mem)
+    assert org_mem.client.is_a? Calendly::Client
+    assert_equal 'MEM003', org_mem.id
     assert_equal 'MEM003', org_mem.uuid
     assert_equal 'https://api.calendly.com/organization_memberships/MEM003', org_mem.uri
     assert_equal 'https://api.calendly.com/organizations/ORG001', org_mem.organization_uri
@@ -356,6 +390,8 @@ module AssertHelper
   end
 
   def assert_org_inv001(inv)
+    assert inv.client.is_a? Calendly::Client
+    assert_equal 'INV001', inv.id
     assert_equal 'INV001', inv.uuid
     assert_equal 'https://api.calendly.com/organizations/ORG001/invitations/INV001', inv.uri
     assert_equal 'foobar102@example.com', inv.email
@@ -370,6 +406,8 @@ module AssertHelper
   end
 
   def assert_org_inv002(inv)
+    assert inv.client.is_a? Calendly::Client
+    assert_equal 'INV002', inv.id
     assert_equal 'INV002', inv.uuid
     assert_equal 'https://api.calendly.com/organizations/ORG001/invitations/INV002', inv.uri
     assert_equal 'foobar103@example.com', inv.email
@@ -384,6 +422,8 @@ module AssertHelper
   end
 
   def assert_org_inv003(inv)
+    assert inv.client.is_a? Calendly::Client
+    assert_equal 'INV003', inv.id
     assert_equal 'INV003', inv.uuid
     assert_equal 'https://api.calendly.com/organizations/ORG001/invitations/INV003', inv.uri
     assert_equal 'foobar104@example.com', inv.email

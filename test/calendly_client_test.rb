@@ -153,7 +153,7 @@ class CalendlyClientTest < CalendlyBaseTest
   end
 
   #
-  # test for event
+  # test for scheduled_event
   #
 
   def test_that_it_returns_a_specific_event
@@ -163,19 +163,19 @@ class CalendlyClientTest < CalendlyBaseTest
     url = "#{HOST}/scheduled_events/#{ev_uuid}"
     add_stub_request :get, url, res_body: res_body
 
-    ev = @client.event ev_uuid
+    ev = @client.scheduled_event ev_uuid
     assert_event001 ev
   end
 
   def test_that_it_returns_an_argument_error_on_event
     proc_arg_is_empty = proc do
-      @client.event ''
+      @client.scheduled_event ''
     end
     assert_required_error proc_arg_is_empty, 'uuid'
   end
 
   #
-  # test for events
+  # test for scheduled_events
   #
 
   def test_that_it_returns_all_items_of_event
@@ -186,7 +186,7 @@ class CalendlyClientTest < CalendlyBaseTest
     url = "#{HOST}/scheduled_events?#{URI.encode_www_form(params)}"
     add_stub_request :get, url, res_body: res_body
 
-    evs, next_params = @client.events user_uri
+    evs, next_params = @client.scheduled_events user_uri
     assert_equal 2, evs.length
     assert_nil next_params
     assert_event001 evs[0]
@@ -218,10 +218,10 @@ class CalendlyClientTest < CalendlyBaseTest
     add_stub_request :get, url2, res_body: res_body2
 
     # request page1
-    evs_page1, next_params1 = @client.events user_uri, params1
+    evs_page1, next_params1 = @client.scheduled_events user_uri, params1
     user_uri = next_params1.delete :user
     # request page2
-    evs_page2, next_params2 = @client.events user_uri, next_params1
+    evs_page2, next_params2 = @client.scheduled_events user_uri, next_params1
 
     assert_equal 2, evs_page1.length
     assert_equal 1, evs_page2.length
@@ -233,7 +233,7 @@ class CalendlyClientTest < CalendlyBaseTest
 
   def test_that_it_returns_an_argument_error_on_events
     proc_arg_is_empty = proc do
-      @client.events ''
+      @client.scheduled_events ''
     end
     assert_required_error proc_arg_is_empty, 'user_uri'
   end

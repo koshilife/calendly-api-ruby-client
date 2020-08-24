@@ -5,8 +5,35 @@ require 'time'
 module Calendly
   # Calendly model utility.
   module ModelUtils
-    def initialize(attrs = nil)
+    # @param [Hash] attrs the attributes of the model.
+    # @param [Calendly::Client] the api client.
+    def initialize(attrs = nil, client = nil)
+      @client = client
       set_attributes attrs
+    end
+
+    #
+    # Returns api client.
+    #
+    # @return [Calendly::Client]
+    # @raise [Calendly::Error] if the client is nil.
+    # @since 0.1.0
+    def client
+      raise Error, '@client is not ready.' unless @client
+
+      @client
+    end
+
+    #
+    # alias of uuid.
+    #
+    # @return [String]
+    # @raise [Calendly::Error] if uuid is not defined.
+    # @since 0.1.0
+    def id
+      raise Error, 'uuid is not defined.' unless defined? uuid
+
+      uuid
     end
 
     def inspect

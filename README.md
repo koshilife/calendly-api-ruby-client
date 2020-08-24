@@ -91,7 +91,7 @@ event_types.first.scheduling_url
 # => "https://calendly.com/your_name/30min"
 
 # get scheduled events
-events, next_params = client.events me.uri
+events, next_params = client.scheduled_events me.uri
 # => => [[#<Calendly::Event uuid:EV001>, #<Calendly::Event uuid:EV002>, #<Calendly::Event uuid:EV003>], nil]
 ev = events.first
 ev.name

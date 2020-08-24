@@ -24,7 +24,7 @@ module Calendly
     # @return [OAuth2::AccessToken]
     # @since 0.0.1
     def access_token
-      return @access_token if defined?(@access_token)
+      return @access_token if defined? @access_token
 
       client = OAuth2::Client.new(@config.client_id,
                                   @config.client_secret, client_options)
@@ -36,9 +36,26 @@ module Calendly
     end
 
     #
+    # Refresh access token.
+    #
+    # @raise [Calendly::Error] if the client_id is empty.
+    # @raise [Calendly::Error] if the client_secret is empty.
+    # @raise [Calendly::ApiError] if the api returns error code.
+    # @since 0.0.7
+    def refresh!
+      check_not_empty @config.client_id, 'client_id'
+      check_not_empty @config.client_secret, 'client_secret'
+      @access_token = access_token.refresh!
+    rescue OAuth2::Error => e
+      res = e.response.response
+      raise ApiError.new res, e
+    end
+
+    #
     # Get basic information about current user.
     #
     # @return [Calendly::User]
+    # @raise [Calendly::ApiError] if the api returns error code.
     # @since 0.0.1
     def current_user
       user
@@ -51,11 +68,13 @@ module Calendly
     #
     # @param [String] uuid User unique identifier, or the constant "me" to reference the caller
     # @return [Calendly::User]
+    # @raise [Calendly::Error] if the uuid arg is empty.
+    # @raise [Calendly::ApiError] if the api returns error code.
     # @since 0.0.1
     def user(uuid = 'me')
       check_not_empty uuid, 'uuid'
       body = request :get, "users/#{uuid}"
-      User.new body[:resource]
+      User.new body[:resource], self
     end
 
     #
@@ -69,6 +88,8 @@ module Calendly
     # @return [Array<Array<Calendly::EventType>, Hash>]
     #  - [Array<Calendly::EventType>] event_types
     #  - [Hash] next_params the parameters to get next data. if thre is no next it returns nil.
+    # @raise [Calendly::Error] if the user_uri arg is empty.
+    # @raise [Calendly::ApiError] if the api returns error code.
     # @since 0.0.2
     def event_types(user_uri, opts = {})
       check_not_empty user_uri, 'user_uri'
@@ -79,7 +100,7 @@ module Calendly
       body = request :get, 'event_types', params: params
 
       items = body[:collection] || []
-      ev_types = items.map { |item| EventType.new item }
+      ev_types = items.map { |item| EventType.new item, self }
       [ev_types, next_page_params(body)]
     end
 
@@ -88,11 +109,13 @@ module Calendly
     #
     # @param [String] uuid the specified event (event's uuid).
     # @return [Calendly::Event]
+    # @raise [Calendly::Error] if the uuid arg is empty.
+    # @raise [Calendly::ApiError] if the api returns error code.
     # @since 0.0.3
-    def event(uuid)
+    def scheduled_event(uuid)
       check_not_empty uuid, 'uuid'
       body = request :get, "scheduled_events/#{uuid}"
-      Event.new body[:resource]
+      Event.new body[:resource], self
     end
 
     #
@@ -110,8 +133,10 @@ module Calendly
     # @return [Array<Array<Calendly::Event>, Hash>]
     #  - [Array<Calendly::Event>] events
     #  - [Hash] next_params the parameters to get next data. if thre is no next it returns nil.
+    # @raise [Calendly::Error] if the user_uri arg is empty.
+    # @raise [Calendly::ApiError] if the api returns error code.
     # @since 0.0.3
-    def events(user_uri, opts = {})
+    def scheduled_events(user_uri, opts = {})
       check_not_empty user_uri, 'user_uri'
 
       opts_keys = %i[count invitee_email max_start_time min_start_time page_token sort status]
@@ -120,7 +145,7 @@ module Calendly
       body = request :get, 'scheduled_events', params: params
 
       items = body[:collection] || []
-      evs = items.map { |item| Event.new item }
+      evs = items.map { |item| Event.new item, self }
       [evs, next_page_params(body)]
     end
 
@@ -131,12 +156,15 @@ module Calendly
     # @param [String] ev_uuid the specified event (event's uuid).
     # @param [String] inv_uuid the specified invitee (invitee's uuid).
     # @return [Calendly::Invitee]
+    # @raise [Calendly::Error] if the ev_uuid arg is empty.
+    # @raise [Calendly::Error] if the inv_uuid arg is empty.
+    # @raise [Calendly::ApiError] if the api returns error code.
     # @since 0.0.4
     def event_invitee(ev_uuid, inv_uuid)
       check_not_empty ev_uuid, 'ev_uuid'
       check_not_empty inv_uuid, 'inv_uuid'
       body = request :get, "scheduled_events/#{ev_uuid}/invitees/#{inv_uuid}"
-      Invitee.new body[:resource]
+      Invitee.new body[:resource], self
     end
 
     #
@@ -152,6 +180,8 @@ module Calendly
     # @return [Array<Array<Calendly::Invitee>, Hash>]
     #  - [Array<Calendly::Invitee>] invitees
     #  - [Hash] next_params the parameters to get next data. if thre is no next it returns nil.
+    # @raise [Calendly::Error] if the uuid arg is empty.
+    # @raise [Calendly::ApiError] if the api returns error code.
     # @since 0.0.4
     def event_invitees(uuid, opts = {})
       check_not_empty uuid, 'uuid'
@@ -161,7 +191,7 @@ module Calendly
       body = request :get, "scheduled_events/#{uuid}/invitees", params: params
 
       items = body[:collection] || []
-      evs = items.map { |item| Invitee.new item }
+      evs = items.map { |item| Invitee.new item, self }
       [evs, next_page_params(body)]
     end
 
@@ -170,11 +200,13 @@ module Calendly
     #
     # @param [String] uuid the specified membership (organization membership's uuid).
     # @return [OrganizationMembership]
+    # @raise [Calendly::Error] if the uuid arg is empty.
+    # @raise [Calendly::ApiError] if the api returns error code.
     # @since 0.0.5
     def membership(uuid)
       check_not_empty uuid, 'uuid'
       body = request :get, "organization_memberships/#{uuid}"
-      OrganizationMembership.new body[:resource]
+      OrganizationMembership.new body[:resource], self
     end
 
     #
@@ -188,6 +220,8 @@ module Calendly
     # @return [Array<Array<Calendly::OrganizationMembership>, Hash>]
     #  - [Array<Calendly::OrganizationMembership>] memberships
     #  - [Hash] next_params the parameters to get next data. if thre is no next it returns nil.
+    # @raise [Calendly::Error] if the org_uri arg is empty.
+    # @raise [Calendly::ApiError] if the api returns error code.
     # @since 0.0.5
     def memberships(org_uri, opts = {})
       check_not_empty org_uri, 'org_uri'
@@ -198,7 +232,7 @@ module Calendly
       body = request :get, 'organization_memberships', params: params
 
       items = body[:collection] || []
-      memberships = items.map { |item| OrganizationMembership.new item }
+      memberships = items.map { |item| OrganizationMembership.new item, self }
       [memberships, next_page_params(body)]
     end
 
@@ -213,6 +247,8 @@ module Calendly
     # @return [Array<Array<Calendly::OrganizationMembership>, Hash>]
     #  - [Array<Calendly::OrganizationMembership>] memberships
     #  - [Hash] next_params the parameters to get next data. if thre is no next it returns nil.
+    # @raise [Calendly::Error] if the user_uri arg is empty.
+    # @raise [Calendly::ApiError] if the api returns error code.
     # @since 0.0.5
     def memberships_by_user(user_uri, opts = {})
       check_not_empty user_uri, 'user_uri'
@@ -223,7 +259,7 @@ module Calendly
       body = request :get, 'organization_memberships', params: params
 
       items = body[:collection] || []
-      memberships = items.map { |item| OrganizationMembership.new item }
+      memberships = items.map { |item| OrganizationMembership.new item, self }
       [memberships, next_page_params(body)]
     end
 
@@ -232,6 +268,8 @@ module Calendly
     #
     # @param [String] uuid the specified memberhip (organization memberhips's uuid).
     # @return [true]
+    # @raise [Calendly::Error] if the uuid arg is empty.
+    # @raise [Calendly::ApiError] if the api returns error code.
     # @since 0.0.7
     def delete_membership(uuid)
       check_not_empty uuid, 'uuid'
@@ -245,13 +283,16 @@ module Calendly
     # @param [String] org_uuid the specified organization (organization's uri).
     # @param [String] inv_uuid the specified invitation (organization invitation's uri).
     # @return [Calendly::OrganizationInvitation]
+    # @raise [Calendly::Error] if the org_uuid arg is empty.
+    # @raise [Calendly::Error] if the inv_uuid arg is empty.
+    # @raise [Calendly::ApiError] if the api returns error code.
     # @since 0.0.6
     def invitation(org_uuid, inv_uuid)
       check_not_empty org_uuid, 'org_uuid'
       check_not_empty inv_uuid, 'inv_uuid'
 
       body = request :get, "organizations/#{org_uuid}/invitations/#{inv_uuid}"
-      OrganizationInvitation.new body[:resource]
+      OrganizationInvitation.new body[:resource], self
     end
 
     #
@@ -267,6 +308,8 @@ module Calendly
     # @return [<Array<Array<Calendly::OrganizationInvitation>, Hash>]
     #  - [Array<Calendly::OrganizationInvitation>] organizations
     #  - [Hash] next_params the parameters to get next data. if thre is no next it returns nil.
+    # @raise [Calendly::Error] if the uuid arg is empty.
+    # @raise [Calendly::ApiError] if the api returns error code.
     # @since 0.0.6
     def invitations(uuid, opts = {})
       check_not_empty uuid, 'uuid'
@@ -276,7 +319,7 @@ module Calendly
 
       body = request :get, "organizations/#{uuid}/invitations", params: params
       items = body[:collection] || []
-      evs = items.map { |item| OrganizationInvitation.new item }
+      evs = items.map { |item| OrganizationInvitation.new item, self }
       [evs, next_page_params(body)]
     end
 
@@ -286,6 +329,9 @@ module Calendly
     # @param [String] uuid the specified organization (organization's uri).
     # @param [String] email Email of the person being invited.
     # @return [Calendly::OrganizationInvitation]
+    # @raise [Calendly::Error] if the uuid arg is empty.
+    # @raise [Calendly::Error] if the email arg is empty.
+    # @raise [Calendly::ApiError] if the api returns error code.
     # @since 0.0.7
     def create_invitation(uuid, email)
       check_not_empty uuid, 'uuid'
@@ -296,7 +342,7 @@ module Calendly
         body: { email: email },
         expected_status: 201
       )
-      OrganizationInvitation.new body[:resource]
+      OrganizationInvitation.new body[:resource], self
     end
 
     #
@@ -305,6 +351,9 @@ module Calendly
     # @param [String] org_uuid the specified organization (organization's uri).
     # @param [String] inv_uuid the specified invitation (organization invitation's uri).
     # @return [true]
+    # @raise [Calendly::Error] if the org_uuid arg is empty.
+    # @raise [Calendly::Error] if the inv_uuid arg is empty.
+    # @raise [Calendly::ApiError] if the api returns error code.
     # @since 0.0.7
     def delete_invitation(org_uuid, inv_uuid)
       check_not_empty org_uuid, 'org_uuid'
@@ -315,19 +364,6 @@ module Calendly
         expected_status: 204
       )
       true
-    end
-
-    #
-    # Refresh access token.
-    #
-    # @since 0.0.7
-    def refresh!
-      check_not_empty @config.client_id, 'client_id'
-      check_not_empty @config.client_secret, 'client_secret'
-      @access_token = access_token.refresh!
-    rescue OAuth2::Error => e
-      res = e.response.response
-      raise ApiError.new res, e
     end
 
     private
