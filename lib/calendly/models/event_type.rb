@@ -83,7 +83,6 @@ module Calendly
         @owner_name = attrs[:profile][:name]
         @owner_type = attrs[:profile][:type]
       end
-      true
     end
   end
 end

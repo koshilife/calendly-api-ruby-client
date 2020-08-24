@@ -38,14 +38,13 @@ module Calendly
 
     def after_set_attributes(attrs)
       super attrs
-      @user = User.new attrs[:user] if attrs[:user]&.is_a?(Hash)
+      @user = User.new attrs[:user], @client if attrs[:user]&.is_a? Hash
       if attrs[:organization]
-        org_params = { uri: attrs[:organization] }
-        org = Organization.new org_params
+        org_attrs = { uri: attrs[:organization] }
+        org = Organization.new org_attrs, @client
         @organization_uri = org.uri
         @organization_uuid = org.uuid
       end
-      true
     end
   end
 end

@@ -59,8 +59,8 @@ module Calendly
     def after_set_attributes(attrs)
       super attrs
       if attrs[:event_type]
-        ev_type_params = { uri: attrs[:event_type] }
-        event_type = EventType.new ev_type_params
+        ev_type_attrs = { uri: attrs[:event_type] }
+        event_type = EventType.new ev_type_attrs, @client
         @event_type_uri = event_type.uri
         @event_type_uuid = event_type.uuid
       end
@@ -68,14 +68,12 @@ module Calendly
       loc_params = attrs[:location]
       @location = Location.new loc_params if loc_params&.is_a? Hash
 
-      inv_cnt_params = attrs[:invitees_counter]
-      if inv_cnt_params&.is_a? Hash
-        @invitees_counter_total = inv_cnt_params[:total]
-        @invitees_counter_active = inv_cnt_params[:active]
-        @invitees_counter_limit = inv_cnt_params[:limit]
+      inv_cnt_attrs = attrs[:invitees_counter]
+      if inv_cnt_attrs&.is_a? Hash
+        @invitees_counter_total = inv_cnt_attrs[:total]
+        @invitees_counter_active = inv_cnt_attrs[:active]
+        @invitees_counter_limit = inv_cnt_attrs[:limit]
       end
-
-      true
     end
   end
 end

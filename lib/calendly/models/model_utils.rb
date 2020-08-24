@@ -78,7 +78,6 @@ module Calendly
 
     def after_set_attributes(attrs)
       @uuid = self.class.extract_uuid(attrs[:uri]) if respond_to? :uuid=
-      true
     end
   end
 end

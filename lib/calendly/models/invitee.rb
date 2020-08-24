@@ -55,8 +55,8 @@ module Calendly
     def after_set_attributes(attrs)
       super attrs
       if attrs[:event]
-        event_params = { uri: attrs[:event] }
-        ev = Event.new event_params
+        event_attrs = { uri: attrs[:event] }
+        ev = Event.new event_attrs, @client
         @event_uri = ev.uri
         @event_uuid = ev.uuid
       end
@@ -67,8 +67,6 @@ module Calendly
 
       trac_attrs = attrs[:tracking]
       @tracking = InviteeTracking.new trac_attrs if trac_attrs&.is_a? Hash
-
-      true
     end
   end
 end

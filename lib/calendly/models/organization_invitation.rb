@@ -48,18 +48,17 @@ module Calendly
     def after_set_attributes(attrs)
       super attrs
       if attrs[:user]
-        user_params = { uri: attrs[:user] }
-        user = User.new user_params
+        user_attrs = { uri: attrs[:user] }
+        user = User.new user_attrs, @client
         @user_uri = user.uri
         @user_uuid = user.uuid
       end
       if attrs[:organization]
-        org_params = { uri: attrs[:organization] }
-        org = Organization.new org_params
+        org_attrs = { uri: attrs[:organization] }
+        org = Organization.new org_attrs, @client
         @organization_uri = org.uri
         @organization_uuid = org.uuid
       end
-      true
     end
   end
 end
