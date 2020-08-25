@@ -6,6 +6,7 @@ module Calendly
     include ModelUtils
     UUID_RE = %r{\A#{Client::API_HOST}/organization_memberships/(\w+)\z}.freeze
     TIME_FIELDS = %i[created_at updated_at].freeze
+    ASSOCIATION = { user: User, organization: Organization }.freeze
 
     # @return [String]
     # unique id of the OrganizationMembership object.
@@ -27,25 +28,29 @@ module Calendly
     # Primary account details of a specific user.
     attr_accessor :user
 
-    # @return [String]
-    # Reference to Organization uri associated with this membership.
-    attr_accessor :organization_uri
-    # @return [String]
-    # Reference to Organization uuid associated with this membership.
-    attr_accessor :organization_uuid
+    # @return [Organization]
+    # Reference to Organization associated with this membership.
+    attr_accessor :organization
 
-    private
+    #
+    # Get Organization Membership associated with self.
+    #
+    # @return [Calendly::OrganizationMembership]
+    # @raise [Calendly::Error] if the uuid is empty.
+    # @raise [Calendly::ApiError] if the api returns error code.
+    # @since 0.1.0
+    def fetch
+      client.membership uuid
+    end
 
-    def after_set_attributes(attrs)
-      super attrs
-      @user = User.new attrs[:user] if attrs[:user]&.is_a?(Hash)
-      if attrs[:organization]
-        org_params = { uri: attrs[:organization] }
-        org = Organization.new org_params
-        @organization_uri = org.uri
-        @organization_uuid = org.uuid
-      end
-      true
+    #
+    # Remove self from associated Organization.
+    #
+    # @raise [Calendly::Error] if the uuid is empty.
+    # @raise [Calendly::ApiError] if the api returns error code.
+    # @since 0.1.0
+    def delete
+      client.delete_membership uuid
     end
   end
 end

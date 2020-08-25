@@ -38,5 +38,63 @@ module Calendly
     # @return [Time]
     # Moment when user record was last updated.
     attr_accessor :updated_at
+
+    #
+    # Get basic information associated with self.
+    #
+    # @return [Calendly::User]
+    # @raise [Calendly::Error] if the uuid is empty.
+    # @raise [Calendly::ApiError] if the api returns error code.
+    # @since 0.1.0
+    def fetch
+      client.user uuid
+    end
+
+    #
+    # Get an organization membership information associated with self.
+    #
+    # @return [Calendly::OrganizationMembership]
+    # @raise [Calendly::Error] if the uri is empty.
+    # @since 0.1.0
+    def organization_membership
+      mems, = client.memberships_by_user uri
+      mems.first
+    end
+
+    #
+    # Returns all Event Types associated with self.
+    #
+    # @param [Hash] opts the optional request parameters.
+    # @option opts [Integer] :count Number of rows to return.
+    # @option opts [String] :page_token Pass this to get the next portion of collection.
+    # @option opts [String] :sort Order results by the specified field and direction. Accepts comma-separated list of {field}:{direction} values.
+    # @return [Array<Calendly::EventType>]
+    # @raise [Calendly::Error] if the uri is empty.
+    # @raise [Calendly::ApiError] if the api returns error code.
+    # @since 0.1.0
+    def event_types(opts = {})
+      request_proc = proc { |options| client.event_types uri, options }
+      auto_pagination request_proc, opts
+    end
+
+    #
+    # Returns all Scheduled Events associated with self.
+    #
+    # @param [Hash] opts the optional request parameters.
+    # @option opts [Integer] :count Number of rows to return.
+    # @option opts [String] :invitee_email Return events scheduled with the specified invitee email
+    # @option opts [String] :max_start_time Upper bound (inclusive) for an event's start time to filter by.
+    # @option opts [String] :min_start_time Lower bound (inclusive) for an event's start time to filter by.
+    # @option opts [String] :page_token Pass this to get the next portion of collection.
+    # @option opts [String] :sort Order results by the specified field and directin. Accepts comma-separated list of {field}:{direction} values.
+    # @option opts [String] :status Whether the scheduled event is active or canceled
+    # @return [Array<Calendly::Event>]
+    # @raise [Calendly::Error] if the uri is empty.
+    # @raise [Calendly::ApiError] if the api returns error code.
+    # @since 0.1.0
+    def scheduled_events(opts = {})
+      request_proc = proc { |options| client.scheduled_events uri, options }
+      auto_pagination request_proc, opts
+    end
   end
 end

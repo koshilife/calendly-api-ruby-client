@@ -7,6 +7,7 @@ module Calendly
     include ModelUtils
     UUID_RE = %r{\A#{Client::API_HOST}/scheduled_events/(\w+)\z}.freeze
     TIME_FIELDS = %i[start_time end_time created_at updated_at].freeze
+    ASSOCIATION = { event_type: EventType }.freeze
 
     # @return [String]
     # unique id of the Event object.
@@ -33,16 +34,13 @@ module Calendly
     # Moment when user record was last updated.
     attr_accessor :updated_at
 
+    # @return [EventType]
+    # Reference to Event Type associated with this event.
+    attr_accessor :event_type
+
     # @return [Calendly::Location]
     # location in this event.
     attr_accessor :location
-
-    # @return [String]
-    # Reference to Event Type uri associated with this event.
-    attr_accessor :event_type_uri
-    # @return [String]
-    # Reference to Event Type uuid associated with this event.
-    attr_accessor :event_type_uuid
 
     # @return [Integer]
     # number of total invitees in this event.
@@ -54,28 +52,48 @@ module Calendly
     # max invitees in this event.
     attr_accessor :invitees_counter_limit
 
+    #
+    # Get Scheduled Event associated with self.
+    #
+    # @return [Calendly::Event]
+    # @raise [Calendly::Error] if the uuid is empty.
+    # @raise [Calendly::ApiError] if the api returns error code.
+    # @since 0.1.0
+    def fetch
+      client.scheduled_event uuid
+    end
+
+    #
+    # Returns all Event Invitees associated with self.
+    #
+    # @param [Hash] opts the optional request parameters.
+    # @option opts [Integer] :count Number of rows to return.
+    # @option opts [String] :email Filter by email.
+    # @option opts [String] :page_token Pass this to get the next portion of collection.
+    # @option opts [String] :sort Order results by the specified field and directin. Accepts comma-separated list of {field}:{direction} values.
+    # @option opts [String] :status Whether the scheduled event is active or canceled.
+    # @return [Array<Calendly::Invitee>]
+    # @raise [Calendly::Error] if the uuid is empty.
+    # @raise [Calendly::ApiError] if the api returns error code.
+    # @since 0.1.0
+    def invitees(opts = {})
+      request_proc = proc { |options| client.event_invitees uuid, options }
+      auto_pagination request_proc, opts
+    end
+
     private
 
     def after_set_attributes(attrs)
       super attrs
-      if attrs[:event_type]
-        ev_type_params = { uri: attrs[:event_type] }
-        event_type = EventType.new ev_type_params
-        @event_type_uri = event_type.uri
-        @event_type_uuid = event_type.uuid
-      end
-
       loc_params = attrs[:location]
       @location = Location.new loc_params if loc_params&.is_a? Hash
 
-      inv_cnt_params = attrs[:invitees_counter]
-      if inv_cnt_params&.is_a? Hash
-        @invitees_counter_total = inv_cnt_params[:total]
-        @invitees_counter_active = inv_cnt_params[:active]
-        @invitees_counter_limit = inv_cnt_params[:limit]
+      inv_cnt_attrs = attrs[:invitees_counter]
+      if inv_cnt_attrs&.is_a? Hash
+        @invitees_counter_total = inv_cnt_attrs[:total]
+        @invitees_counter_active = inv_cnt_attrs[:active]
+        @invitees_counter_limit = inv_cnt_attrs[:limit]
       end
-
-      true
     end
   end
 end

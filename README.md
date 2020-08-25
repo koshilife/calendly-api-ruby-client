@@ -84,15 +84,15 @@ me = client.me
 me.scheduling_url
 # => "https://calendly.com/your_name"
 
-# get event_types
-event_types, next_params = client.event_types me.uri
-# => [[#<Calendly::EventType uuid:ET001>, #<Calendly::EventType uuid:ET002>, #<Calendly::EventType uuid:ET003>], nil]
+# get all Event Types
+event_types = me.event_types
+# => [#<Calendly::EventType uuid:ET001>, #<Calendly::EventType uuid:ET002>, #<Calendly::EventType uuid:ET003>]
 event_types.first.scheduling_url
 # => "https://calendly.com/your_name/30min"
 
 # get scheduled events
-events, next_params = client.events me.uri
-# => => [[#<Calendly::Event uuid:EV001>, #<Calendly::Event uuid:EV002>, #<Calendly::Event uuid:EV003>], nil]
+events = me.scheduled_events
+# => => [#<Calendly::Event uuid:EV001>, #<Calendly::Event uuid:EV002>, #<Calendly::Event uuid:EV003>]
 ev = events.first
 ev.name
 # => "FooBar Meeting"
@@ -100,6 +100,28 @@ ev.start_time
 # => 2020-07-22 01:30:00 UTC
 ev.end_time
 # => 2020-07-22 02:00:00 UTC
+
+# get organization information
+own_member = me.organization_membership
+# => #<Calendly::OrganizationMembership uuid:MEM001>
+my_org = own_member.organization
+all_members = my_org.memberships
+# => [#<Calendly::OrganizationMembership uuid:MEM001>, #<Calendly::OrganizationMembership uuid:MEM002>]
+
+# create new invitation and send invitation email
+invitation = my_org.create_invitation('foobar@example.com')
+# => #<Calendly::OrganizationInvitation uuid:INV001>
+invitation.status
+# => "pending"
+
+# cancel the invitation
+invitation.delete
+
+# if the log level set :debug, you can get the request/response information.
+Calendly.configuration.logger.level = :debug
+invitation = my_org.create_invitation('foobar@example.com')
+# D, [2020-08-10T10:48:15] DEBUG -- : Request POST https://api.calendly.com/organizations/ORG001/invitations params:, body:{:email=>"foobar@example.com"}
+# D, [2020-08-10T10:48:16] DEBUG -- : Response status:201, body:{"resource":{"created_at":"2020-08-10T10:48:16.051159Z","email":"foobar@example.com","last_sent_at":"2020-08-10T10:48:16.096518Z","organization":"https://api.calendly.com/organizations/ORG001","status":"pending","updated_at":"2020-08-10T10:48:16.051159Z","uri":"https://api.calendly.com/organizations/ORG001/invitations/INV001"}}
 ```
 
 ## Contributing
