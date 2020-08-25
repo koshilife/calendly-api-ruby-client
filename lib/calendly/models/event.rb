@@ -54,6 +54,35 @@ module Calendly
     # max invitees in this event.
     attr_accessor :invitees_counter_limit
 
+    #
+    # Get Scheduled Event associated with self.
+    #
+    # @return [Calendly::Event]
+    # @raise [Calendly::Error] if the uuid is empty.
+    # @raise [Calendly::ApiError] if the api returns error code.
+    # @since 0.1.0
+    def fetch
+      client.scheduled_event uuid
+    end
+
+    #
+    # Returns all Event Invitees associated with self.
+    #
+    # @param [Hash] opts the optional request parameters.
+    # @option opts [Integer] :count Number of rows to return.
+    # @option opts [String] :email Filter by email.
+    # @option opts [String] :page_token Pass this to get the next portion of collection.
+    # @option opts [String] :sort Order results by the specified field and directin. Accepts comma-separated list of {field}:{direction} values.
+    # @option opts [String] :status Whether the scheduled event is active or canceled.
+    # @return [Array<Calendly::Invitee>]
+    # @raise [Calendly::Error] if the uuid is empty.
+    # @raise [Calendly::ApiError] if the api returns error code.
+    # @since 0.1.0
+    def invitees(opts = {})
+      request_proc = proc { |options| client.event_invitees uuid, options }
+      auto_pagination request_proc, opts
+    end
+
     private
 
     def after_set_attributes(attrs)

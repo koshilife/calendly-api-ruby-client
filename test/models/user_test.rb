@@ -15,6 +15,13 @@ module Calendly
       @user_no_client = User.new attrs
     end
 
+    def test_that_it_returns_an_error_client_is_not_ready
+      proc_client_is_blank = proc do
+        @user_no_client.fetch
+      end
+      assert_error proc_client_is_blank, '@client is not ready.'
+    end
+
     def test_that_it_returns_an_associated_user
       res_body = load_test_data 'user_001.json'
       add_stub_request :get, @user_uri, res_body: res_body
