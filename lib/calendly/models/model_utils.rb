@@ -90,8 +90,8 @@ module Calendly
     def auto_pagination(request_proc, opts)
       items = []
       loop do
-        event_types, next_opts = request_proc.call opts
-        items = [*items, *event_types]
+        new_items, next_opts = request_proc.call opts
+        items = [*items, *new_items]
         break unless next_opts
 
         opts = next_opts
