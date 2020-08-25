@@ -7,6 +7,7 @@ module Calendly
     include ModelUtils
     UUID_RE = %r{\A#{Client::API_HOST}/scheduled_events/\w+/invitees/(\w+)\z}.freeze
     TIME_FIELDS = %i[created_at updated_at].freeze
+    ASSOCIATION = { event: Event }.freeze
 
     # @return [String]
     # unique id of the Invitee object.
@@ -27,12 +28,6 @@ module Calendly
     # Timezone offest to use when presenting time information to invitee.
     attr_accessor :timezone
     # @return [String]
-    # Reference to Event uri associated with this invitee.
-    attr_accessor :event_uri
-    # @return [String]
-    # Reference to Event uuid associated with this invitee.
-    attr_accessor :event_uuid
-    # @return [String]
     # Text (SMS) reminder phone number.
     attr_accessor :text_reminder_number
     # @return [Time]
@@ -41,6 +36,10 @@ module Calendly
     # @return [Time]
     # Moment when user record was last updated.
     attr_accessor :updated_at
+
+    # @return [Event]
+    # Reference to Event associated with this invitee.
+    attr_accessor :event
 
     # @return [Array<Calendly::InviteeQuestionAndAnswer>]
     # A collection of form responses from the invitee.
@@ -53,24 +52,19 @@ module Calendly
     # Get Event Invitee associated with self.
     #
     # @return [Calendly::Invitee]
-    # @raise [Calendly::Error] if the event_uuid is empty.
+    # @raise [Calendly::Error] if the event.uuid is empty.
     # @raise [Calendly::Error] if the uuid is empty.
     # @raise [Calendly::ApiError] if the api returns error code.
     # @since 0.1.0
     def fetch
-      client.event_invitee event_uuid, uuid
+      ev_uuid = event.uuid if event
+      client.event_invitee ev_uuid, uuid
     end
 
     private
 
     def after_set_attributes(attrs)
       super attrs
-      if attrs[:event]
-        event_attrs = { uri: attrs[:event] }
-        ev = Event.new event_attrs, @client
-        @event_uri = ev.uri
-        @event_uuid = ev.uuid
-      end
       answers = attrs[:questions_and_answers]
       if answers&.is_a? Array
         @questions_and_answers = answers.map { |ans| InviteeQuestionAndAnswer.new ans }

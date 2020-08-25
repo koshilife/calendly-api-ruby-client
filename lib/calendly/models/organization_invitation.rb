@@ -6,6 +6,7 @@ module Calendly
     include ModelUtils
     UUID_RE = %r{\A#{Client::API_HOST}/organizations/\w+/invitations/(\w+)\z}.freeze
     TIME_FIELDS = %i[created_at updated_at last_sent_at].freeze
+    ASSOCIATION = { user: User, organization: Organization }.freeze
 
     # @return [String]
     # unique id of the OrganizationInvitation object.
@@ -29,59 +30,38 @@ module Calendly
     # Moment when the last invitation was sent.
     attr_accessor :last_sent_at
 
-    # @return [String]
-    # Reference to Organization uri associated with this invitation.
-    attr_accessor :organization_uri
-    # @return [String]
-    # Reference to Organization uuid associated with this invitation.
-    attr_accessor :organization_uuid
+    # @return [Organization]
+    # Reference to Organization associated with this invitation.
+    attr_accessor :organization
 
-    # @return [String]
-    # If a person accepted the invitation, a reference to their User uri.
-    attr_accessor :user_uri
-    # @return [String]
-    # If a person accepted the invitation, a reference to their User uuid.
-    attr_accessor :user_uuid
+    # @return [User]
+    # If a person accepted the invitation, a reference to their User.
+    attr_accessor :user
 
     #
     # Get Organization Invitation associated with self.
     #
     # @return [Calendly::OrganizationInvitation]
+    # @raise [Calendly::Error] if the organization.uuid is empty.
     # @raise [Calendly::Error] if the uuid is empty.
     # @raise [Calendly::ApiError] if the api returns error code.
     # @since 0.1.0
     def fetch
-      client.invitation organization_uuid, uuid
+      org_uuid = organization.uuid if organization
+      client.invitation org_uuid, uuid
     end
 
     #
     # Revoke self Invitation.
     #
     # @return [true]
-    # @raise [Calendly::Error] if the organization_uuid is empty.
+    # @raise [Calendly::Error] if the organization.uuid is empty.
     # @raise [Calendly::Error] if the uuid is empty.
     # @raise [Calendly::ApiError] if the api returns error code.
     # @since 0.1.0
     def delete
-      client.delete_invitation organization_uuid, uuid
-    end
-
-    private
-
-    def after_set_attributes(attrs)
-      super attrs
-      if attrs[:user]
-        user_attrs = { uri: attrs[:user] }
-        user = User.new user_attrs, @client
-        @user_uri = user.uri
-        @user_uuid = user.uuid
-      end
-      if attrs[:organization]
-        org_attrs = { uri: attrs[:organization] }
-        org = Organization.new org_attrs, @client
-        @organization_uri = org.uri
-        @organization_uuid = org.uuid
-      end
+      org_uuid = organization.uuid if organization
+      client.delete_invitation org_uuid, uuid
     end
   end
 end
