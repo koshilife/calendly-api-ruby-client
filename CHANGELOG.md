@@ -1,3 +1,9 @@
+# 0.1.0
+
+- define methods to access associated resources with each model.
+- rename methods:
+  - `Calendly::Client#events` to `Calendly::Client#scheduled_events`
+
 # 0.0.7.alpha
 
 - support APIs
