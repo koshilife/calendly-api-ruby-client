@@ -43,6 +43,29 @@ module Calendly
     # If a person accepted the invitation, a reference to their User uuid.
     attr_accessor :user_uuid
 
+    #
+    # Get Organization Invitation associated with self.
+    #
+    # @return [Calendly::OrganizationInvitation]
+    # @raise [Calendly::Error] if the uuid is empty.
+    # @raise [Calendly::ApiError] if the api returns error code.
+    # @since 0.1.0
+    def fetch
+      client.invitation organization_uuid, uuid
+    end
+
+    #
+    # Revoke self Invitation.
+    #
+    # @return [true]
+    # @raise [Calendly::Error] if the organization_uuid is empty.
+    # @raise [Calendly::Error] if the uuid is empty.
+    # @raise [Calendly::ApiError] if the api returns error code.
+    # @since 0.1.0
+    def delete
+      client.delete_invitation organization_uuid, uuid
+    end
+
     private
 
     def after_set_attributes(attrs)
