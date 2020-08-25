@@ -327,12 +327,12 @@ module Calendly
     #
 
     def test_that_it_returns_a_specific_membership
-      org_uuid = 'ORG001'
+      mem_uuid = 'MEM001'
       res_body = load_test_data 'organization_membership_001.json'
-      url = "#{HOST}/organization_memberships/#{org_uuid}"
+      url = "#{HOST}/organization_memberships/#{mem_uuid}"
       add_stub_request :get, url, res_body: res_body
 
-      mem = @client.membership org_uuid
+      mem = @client.membership mem_uuid
       assert_org_mem001 mem
     end
 

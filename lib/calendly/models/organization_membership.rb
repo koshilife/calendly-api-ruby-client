@@ -34,6 +34,27 @@ module Calendly
     # Reference to Organization uuid associated with this membership.
     attr_accessor :organization_uuid
 
+    #
+    # Get Organization Membership associated with self.
+    #
+    # @return [Calendly::OrganizationMembership]
+    # @raise [Calendly::Error] if the uuid is empty.
+    # @raise [Calendly::ApiError] if the api returns error code.
+    # @since 0.1.0
+    def fetch
+      client.membership uuid
+    end
+
+    #
+    # Remove self from associated Organization.
+    #
+    # @raise [Calendly::Error] if the uuid is empty.
+    # @raise [Calendly::ApiError] if the api returns error code.
+    # @since 0.1.0
+    def delete
+      client.delete_membership uuid
+    end
+
     private
 
     def after_set_attributes(attrs)
