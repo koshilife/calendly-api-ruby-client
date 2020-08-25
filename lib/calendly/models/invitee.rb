@@ -6,7 +6,6 @@ module Calendly
   class Invitee
     include ModelUtils
     UUID_RE = %r{\A#{Client::API_HOST}/scheduled_events/\w+/invitees/(\w+)\z}.freeze
-
     TIME_FIELDS = %i[created_at updated_at].freeze
 
     # @return [String]
@@ -49,6 +48,18 @@ module Calendly
 
     # @return [Calendly::InviteeTracking]
     attr_accessor :tracking
+
+    #
+    # Get Event Invitee associated with self.
+    #
+    # @return [Calendly::Invitee]
+    # @raise [Calendly::Error] if the event_uuid is empty.
+    # @raise [Calendly::Error] if the uuid is empty.
+    # @raise [Calendly::ApiError] if the api returns error code.
+    # @since 0.1.0
+    def fetch
+      client.event_invitee event_uuid, uuid
+    end
 
     private
 
