@@ -56,7 +56,7 @@ module Calendly
     # @return [Calendly::OrganizationMembership]
     # @raise [Calendly::Error] if the uri is empty.
     # @since 0.1.0
-    def organization
+    def organization_membership
       mems, = client.memberships_by_user uri
       mems.first
     end

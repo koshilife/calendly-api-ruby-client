@@ -32,7 +32,7 @@ module Calendly
       res_body = load_test_data 'organization_memberships_001.json'
       url = "#{HOST}/organization_memberships?#{URI.encode_www_form(@uri_params)}"
       add_stub_request :get, url, res_body: res_body
-      assert_org_mem001 @user.organization
+      assert_org_mem001 @user.organization_membership
     end
 
     def test_that_it_returns_event_types_in_single_page
