@@ -29,7 +29,7 @@ module Calendly
 
     def test_that_it_returns_event_invitees_in_single_page
       res_body = load_test_data 'scheduled_event_invitees_101.json'
-      url = "#{HOST}/scheduled_events/#{@ev_uuid}/invitees"
+      url = "#{@ev_uri}/invitees"
       add_stub_request :get, url, res_body: res_body
 
       invs = @event.invitees
