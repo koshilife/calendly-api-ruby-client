@@ -38,8 +38,8 @@ module Calendly
     #
     # Refresh access token.
     #
-    # @raise [Calendly::Error] if the client_id is empty.
-    # @raise [Calendly::Error] if the client_secret is empty.
+    # @raise [Calendly::Error] if Calendly.configuration.client_id is empty.
+    # @raise [Calendly::Error] if Calendly.configuration.client_secret is empty.
     # @raise [Calendly::ApiError] if the api returns error code.
     # @since 0.0.7
     def refresh!
@@ -280,8 +280,8 @@ module Calendly
     #
     # Returns an Organization Invitation.
     #
-    # @param [String] org_uuid the specified organization (organization's uri).
-    # @param [String] inv_uuid the specified invitation (organization invitation's uri).
+    # @param [String] org_uuid the specified organization (organization's uuid).
+    # @param [String] inv_uuid the specified invitation (organization invitation's uuid).
     # @return [Calendly::OrganizationInvitation]
     # @raise [Calendly::Error] if the org_uuid arg is empty.
     # @raise [Calendly::Error] if the inv_uuid arg is empty.
@@ -298,7 +298,7 @@ module Calendly
     #
     # Get Organization Invitations.
     #
-    # @param [String] uuid the specified organization (organization's uri).
+    # @param [String] uuid the specified organization (organization's uuid).
     # @param [Hash] opts the optional request parameters.
     # @option opts [Integer] :count Number of rows to return.
     # @option opts [String] :email Filter by email.
@@ -326,7 +326,7 @@ module Calendly
     #
     # Invite a person to an Organization.
     #
-    # @param [String] uuid the specified organization (organization's uri).
+    # @param [String] uuid the specified organization (organization's uuid).
     # @param [String] email Email of the person being invited.
     # @return [Calendly::OrganizationInvitation]
     # @raise [Calendly::Error] if the uuid arg is empty.
@@ -348,8 +348,8 @@ module Calendly
     #
     # Revoke Organization Invitation.
     #
-    # @param [String] org_uuid the specified organization (organization's uri).
-    # @param [String] inv_uuid the specified invitation (organization invitation's uri).
+    # @param [String] org_uuid the specified organization (organization's uuid).
+    # @param [String] inv_uuid the specified invitation (organization invitation's uuid).
     # @return [true]
     # @raise [Calendly::Error] if the org_uuid arg is empty.
     # @raise [Calendly::Error] if the inv_uuid arg is empty.
