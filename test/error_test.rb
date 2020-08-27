@@ -15,10 +15,6 @@ module Calendly
 
   # test for Calendly::Error and Calendly::ApiError
   class ErrorTest < BaseTest
-    def setup
-      super
-    end
-
     def test_it_returns_inspect_string
       e = Error.new
       assert e.inspect.start_with? '#<Calendly::Error:'
