@@ -32,13 +32,6 @@ module Calendly
     # refresh!
     #
 
-    def test_that_it_returns_an_argument_error_on_refresh!
-      proc_client_id_is_empty = proc do
-        @client.refresh!
-      end
-      assert_required_error proc_client_id_is_empty, 'client_id'
-    end
-
     def test_that_it_exchanges_new_access_token
       init_configuration
       add_refresh_token_stub_request
@@ -46,6 +39,15 @@ module Calendly
       new_token = client.refresh!
       assert_equal 'NEW_TOKEN', new_token.token
       assert_equal 'NEW_REFRESH_TOKEN', new_token.refresh_token
+    end
+
+    def test_that_it_raises_an_argument_error_on_refresh!
+      proc_refresh = proc do
+        @client.refresh!
+      end
+      assert_required_error proc_refresh, 'client_id'
+      Calendly.configuration.client_id = @client_id
+      assert_required_error proc_refresh, 'client_secret'
     end
 
     def test_that_it_returns_an_invalid_token_error_on_initialize
@@ -83,7 +85,7 @@ module Calendly
       assert_user001 user
     end
 
-    def test_that_it_returns_an_argument_error_on_user
+    def test_that_it_raises_an_argument_error_on_user
       proc_arg_is_nil = proc do
         @client.user nil
       end
@@ -143,7 +145,7 @@ module Calendly
       assert_event_type001 event_types_page2[0]
     end
 
-    def test_that_it_returns_an_argument_error_on_event_types
+    def test_that_it_raises_an_argument_error_on_event_types
       proc_arg_is_empty = proc do
         @client.event_types ''
       end
@@ -165,7 +167,7 @@ module Calendly
       assert_event001 ev
     end
 
-    def test_that_it_returns_an_argument_error_on_event
+    def test_that_it_raises_an_argument_error_on_event
       proc_arg_is_empty = proc do
         @client.scheduled_event ''
       end
@@ -229,7 +231,7 @@ module Calendly
       assert_event001 evs_page2[0]
     end
 
-    def test_that_it_returns_an_argument_error_on_events
+    def test_that_it_raises_an_argument_error_on_events
       proc_arg_is_empty = proc do
         @client.scheduled_events ''
       end
@@ -252,7 +254,7 @@ module Calendly
       assert_event101_invitee001 inv
     end
 
-    def test_that_it_returns_an_argument_error_on_event_invitee
+    def test_that_it_raises_an_argument_error_on_event_invitee
       proc_ev_uuid_arg_is_empty = proc do
         @client.event_invitee '', 'INV001'
       end
@@ -315,7 +317,7 @@ module Calendly
       assert_event201_invitee001 invs_page2[0]
     end
 
-    def test_that_it_returns_an_argument_error_on_event_invitees
+    def test_that_it_raises_an_argument_error_on_event_invitees
       proc_arg_is_empty = proc do
         @client.event_invitees ''
       end
@@ -336,7 +338,7 @@ module Calendly
       assert_org_mem001 mem
     end
 
-    def test_that_it_returns_an_argument_error_on_membership
+    def test_that_it_raises_an_argument_error_on_membership
       proc_arg_is_empty = proc do
         @client.membership ''
       end
@@ -380,7 +382,7 @@ module Calendly
       assert_org_mem003 mems_page2[0]
     end
 
-    def test_that_it_returns_an_argument_error_on_memberships
+    def test_that_it_raises_an_argument_error_on_memberships
       proc_arg_is_empty = proc do
         @client.memberships ''
       end
@@ -405,7 +407,7 @@ module Calendly
       assert_org_mem001 mems[0]
     end
 
-    def test_that_it_returns_an_argument_error_on_memberships_by_user
+    def test_that_it_raises_an_argument_error_on_memberships_by_user
       proc_arg_is_empty = proc do
         @client.memberships_by_user ''
       end
@@ -425,23 +427,11 @@ module Calendly
       assert_equal true, result
     end
 
-    def test_that_it_returns_an_argument_error_on_delete_membership
+    def test_that_it_raises_an_argument_error_on_delete_membership
       proc_arg_is_empty = proc do
         @client.delete_membership ''
       end
       assert_required_error proc_arg_is_empty, 'uuid'
-    end
-
-    def test_that_it_returns_an_error_not_found_on_delete_membership
-      uuid = 'MEM001'
-      res_body = load_test_data 'error_404_not_found.json'
-      url = "#{HOST}/organization_memberships/#{uuid}"
-      add_stub_request :delete, url, res_body: res_body, res_status: 404
-
-      proc_404 = proc do
-        @client.delete_membership uuid
-      end
-      assert_404_error proc_404
     end
 
     #
@@ -459,7 +449,7 @@ module Calendly
       assert_org_inv001 inv
     end
 
-    def test_that_it_returns_an_argument_error_on_invitation
+    def test_that_it_raises_an_argument_error_on_invitation
       proc_org_uuid_arg_is_empty = proc do
         @client.invitation '', 'INV001'
       end
@@ -517,7 +507,7 @@ module Calendly
       assert_org_inv001 invs_page2[0]
     end
 
-    def test_that_it_returns_an_argument_error_on_invitations
+    def test_that_it_raises_an_argument_error_on_invitations
       proc_arg_is_empty = proc do
         @client.invitations ''
       end
@@ -540,7 +530,7 @@ module Calendly
       assert_org_inv003 inv
     end
 
-    def test_that_it_returns_an_argument_error_on_create_invitation
+    def test_that_it_raises_an_argument_error_on_create_invitation
       proc_uuid_arg_is_empty = proc do
         @client.create_invitation '', 'foobar@example.com'
       end
@@ -549,20 +539,6 @@ module Calendly
       end
       assert_required_error proc_uuid_arg_is_empty, 'uuid'
       assert_required_error proc_email_arg_is_empty, 'email'
-    end
-
-    def test_that_it_returns_an_error_already_invited
-      org_uuid = 'ORG001'
-      email = 'foobar@example.com'
-      req_body = { email: email }
-      res_body = load_test_data 'error_400_already_invited.json'
-      url = "#{HOST}/organizations/#{org_uuid}/invitations"
-      add_stub_request :post, url, req_body: req_body, res_body: res_body, res_status: 400
-
-      proc_400_error = proc do
-        @client.create_invitation org_uuid, email
-      end
-      assert_400_already_invited proc_400_error, email
     end
 
     #
@@ -579,7 +555,7 @@ module Calendly
       assert_equal true, result
     end
 
-    def test_that_it_returns_an_argument_error_on_delete_invitation
+    def test_that_it_raises_an_argument_error_on_delete_invitation
       proc_org_uuid_arg_is_empty = proc do
         @client.delete_invitation '', 'INV001'
       end
@@ -588,6 +564,46 @@ module Calendly
       end
       assert_required_error proc_org_uuid_arg_is_empty, 'org_uuid'
       assert_required_error proc_inv_uuid_arg_is_empty, 'inv_uuid'
+    end
+
+    #
+    # Following tests are handling to an api error.
+    #
+
+    def test_that_it_raises_an_api_error_if_ng_status_is_returned
+      not_exist_user_id = 'NOT_EXSIT_USER'
+      res_body = load_test_data 'error_404_not_found.json'
+      url = "#{HOST}/users/#{not_exist_user_id}"
+      add_stub_request :get, url, res_body: res_body, res_status: 404
+
+      proc_404_error = proc do
+        @client.user not_exist_user_id
+      end
+      assert_404_error proc_404_error
+    end
+
+    def test_that_it_raises_an_api_error_if_ok_status_not_json_is_returned
+      user_id = 'U001'
+      res_body = load_test_data 'not_json.html'
+      url = "#{HOST}/users/#{user_id}"
+      add_stub_request :get, url, res_body: res_body, res_status: 200
+
+      proc_error = proc do
+        @client.user user_id
+      end
+      assert_api_error proc_error, 200, res_body
+    end
+
+    def test_that_it_raises_an_api_error_if_ng_status_not_json_is_returned
+      user_id = 'U001'
+      res_body = load_test_data 'not_json.html'
+      url = "#{HOST}/users/#{user_id}"
+      add_stub_request :get, url, res_body: res_body, res_status: 400
+
+      proc_error = proc do
+        @client.user user_id
+      end
+      assert_api_error proc_error, 400, res_body
     end
 
     private

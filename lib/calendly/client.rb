@@ -38,8 +38,8 @@ module Calendly
     #
     # Refresh access token.
     #
-    # @raise [Calendly::Error] if the client_id is empty.
-    # @raise [Calendly::Error] if the client_secret is empty.
+    # @raise [Calendly::Error] if Calendly.configuration.client_id is empty.
+    # @raise [Calendly::Error] if Calendly.configuration.client_secret is empty.
     # @raise [Calendly::ApiError] if the api returns error code.
     # @since 0.0.7
     def refresh!
@@ -273,15 +273,15 @@ module Calendly
     # @since 0.0.7
     def delete_membership(uuid)
       check_not_empty uuid, 'uuid'
-      request :delete, "organization_memberships/#{uuid}", expected_status: 204
+      request :delete, "organization_memberships/#{uuid}"
       true
     end
 
     #
     # Returns an Organization Invitation.
     #
-    # @param [String] org_uuid the specified organization (organization's uri).
-    # @param [String] inv_uuid the specified invitation (organization invitation's uri).
+    # @param [String] org_uuid the specified organization (organization's uuid).
+    # @param [String] inv_uuid the specified invitation (organization invitation's uuid).
     # @return [Calendly::OrganizationInvitation]
     # @raise [Calendly::Error] if the org_uuid arg is empty.
     # @raise [Calendly::Error] if the inv_uuid arg is empty.
@@ -298,7 +298,7 @@ module Calendly
     #
     # Get Organization Invitations.
     #
-    # @param [String] uuid the specified organization (organization's uri).
+    # @param [String] uuid the specified organization (organization's uuid).
     # @param [Hash] opts the optional request parameters.
     # @option opts [Integer] :count Number of rows to return.
     # @option opts [String] :email Filter by email.
@@ -326,7 +326,7 @@ module Calendly
     #
     # Invite a person to an Organization.
     #
-    # @param [String] uuid the specified organization (organization's uri).
+    # @param [String] uuid the specified organization (organization's uuid).
     # @param [String] email Email of the person being invited.
     # @return [Calendly::OrganizationInvitation]
     # @raise [Calendly::Error] if the uuid arg is empty.
@@ -339,8 +339,7 @@ module Calendly
       body = request(
         :post,
         "organizations/#{uuid}/invitations",
-        body: { email: email },
-        expected_status: 201
+        body: { email: email }
       )
       OrganizationInvitation.new body[:resource], self
     end
@@ -348,8 +347,8 @@ module Calendly
     #
     # Revoke Organization Invitation.
     #
-    # @param [String] org_uuid the specified organization (organization's uri).
-    # @param [String] inv_uuid the specified invitation (organization invitation's uri).
+    # @param [String] org_uuid the specified organization (organization's uuid).
+    # @param [String] inv_uuid the specified invitation (organization invitation's uuid).
     # @return [true]
     # @raise [Calendly::Error] if the org_uuid arg is empty.
     # @raise [Calendly::Error] if the inv_uuid arg is empty.
@@ -358,11 +357,7 @@ module Calendly
     def delete_invitation(org_uuid, inv_uuid)
       check_not_empty org_uuid, 'org_uuid'
       check_not_empty inv_uuid, 'inv_uuid'
-      request(
-        :delete,
-        "organizations/#{org_uuid}/invitations/#{inv_uuid}",
-        expected_status: 204
-      )
+      request :delete, "organizations/#{org_uuid}/invitations/#{inv_uuid}"
       true
     end
 
@@ -374,22 +369,14 @@ module Calendly
       @logger.debug msg
     end
 
-    def request(method, path, params: nil, body: nil, expected_status: nil)
+    def request(method, path, params: nil, body: nil)
       debug_log "Request #{method.to_s.upcase} #{API_HOST}/#{path} params:#{params}, body:#{body}"
       res = access_token.request(method, path, params: params, body: body)
       debug_log "Response status:#{res.status}, body:#{res.body}"
-      validate_status_code res, expected_status
       parse_as_json res
     rescue OAuth2::Error => e
       res = e.response.response
       raise ApiError.new res, e
-    end
-
-    def validate_status_code(res, expected_status)
-      return unless expected_status
-      return if expected_status == res.status
-
-      raise ApiError.new res, message: 'unexpected http status returned.'
     end
 
     def parse_as_json(res)

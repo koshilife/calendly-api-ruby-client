@@ -1,3 +1,7 @@
+# 0.1.1
+
+- add tests to make coverage 100%.
+
 # 0.1.0
 
 - define methods to access associated resources with each model.
