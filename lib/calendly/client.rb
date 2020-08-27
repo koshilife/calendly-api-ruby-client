@@ -273,7 +273,7 @@ module Calendly
     # @since 0.0.7
     def delete_membership(uuid)
       check_not_empty uuid, 'uuid'
-      request :delete, "organization_memberships/#{uuid}", expected_status: 204
+      request :delete, "organization_memberships/#{uuid}"
       true
     end
 
@@ -339,8 +339,7 @@ module Calendly
       body = request(
         :post,
         "organizations/#{uuid}/invitations",
-        body: { email: email },
-        expected_status: 201
+        body: { email: email }
       )
       OrganizationInvitation.new body[:resource], self
     end
@@ -358,11 +357,7 @@ module Calendly
     def delete_invitation(org_uuid, inv_uuid)
       check_not_empty org_uuid, 'org_uuid'
       check_not_empty inv_uuid, 'inv_uuid'
-      request(
-        :delete,
-        "organizations/#{org_uuid}/invitations/#{inv_uuid}",
-        expected_status: 204
-      )
+      request :delete, "organizations/#{org_uuid}/invitations/#{inv_uuid}"
       true
     end
 
@@ -374,22 +369,14 @@ module Calendly
       @logger.debug msg
     end
 
-    def request(method, path, params: nil, body: nil, expected_status: nil)
+    def request(method, path, params: nil, body: nil)
       debug_log "Request #{method.to_s.upcase} #{API_HOST}/#{path} params:#{params}, body:#{body}"
       res = access_token.request(method, path, params: params, body: body)
       debug_log "Response status:#{res.status}, body:#{res.body}"
-      validate_status_code res, expected_status
       parse_as_json res
     rescue OAuth2::Error => e
       res = e.response.response
       raise ApiError.new res, e
-    end
-
-    def validate_status_code(res, expected_status)
-      return unless expected_status
-      return if expected_status == res.status
-
-      raise ApiError.new res, message: 'unexpected http status returned.'
     end
 
     def parse_as_json(res)
