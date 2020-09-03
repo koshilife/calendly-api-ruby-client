@@ -7,7 +7,7 @@ module Calendly
     include ModelUtils
     UUID_RE = %r{\A#{Client::API_HOST}/scheduled_events/\w+/invitees/(\w+)\z}.freeze
     TIME_FIELDS = %i[created_at updated_at].freeze
-    ASSOCIATION = { event: Event }.freeze
+    ASSOCIATION = {event: Event}.freeze
 
     # @return [String]
     # unique id of the Invitee object.
@@ -61,14 +61,12 @@ module Calendly
       client.event_invitee ev_uuid, uuid
     end
 
-    private
+  private
 
     def after_set_attributes(attrs)
       super attrs
       answers = attrs[:questions_and_answers]
-      if answers&.is_a? Array
-        @questions_and_answers = answers.map { |ans| InviteeQuestionAndAnswer.new ans }
-      end
+      @questions_and_answers = answers.map { |ans| InviteeQuestionAndAnswer.new ans } if answers&.is_a? Array
 
       trac_attrs = attrs[:tracking]
       @tracking = InviteeTracking.new trac_attrs if trac_attrs&.is_a? Hash

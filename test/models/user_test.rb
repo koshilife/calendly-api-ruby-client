@@ -9,8 +9,8 @@ module Calendly
       super
       @user_uuid = 'U001'
       @user_uri = "#{HOST}/users/#{@user_uuid}"
-      @uri_params = { user: @user_uri }
-      attrs = { uri: @user_uri }
+      @uri_params = {user: @user_uri}
+      attrs = {uri: @user_uri}
       @user = User.new attrs, @client
       @user_no_client = User.new attrs
     end

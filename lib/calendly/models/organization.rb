@@ -36,7 +36,8 @@ module Calendly
     # @option opts [Integer] :count Number of rows to return.
     # @option opts [String] :email Filter by email.
     # @option opts [String] :page_token Pass this to get the next portion of collection.
-    # @option opts [String] :sort Order results by the specified field and directin. Accepts comma-separated list of {field}:{direction} values.
+    # @option opts [String] :sort Order results by the specified field and directin.
+    # Accepts comma-separated list of {field}:{direction} values.
     # @option opts [String] :status Filter by status.
     # @return [Array<Calendly::OrganizationInvitation>]
     # @raise [Calendly::Error] if the uuid is empty.

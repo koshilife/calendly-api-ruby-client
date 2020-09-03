@@ -67,7 +67,8 @@ module Calendly
     # @param [Hash] opts the optional request parameters.
     # @option opts [Integer] :count Number of rows to return.
     # @option opts [String] :page_token Pass this to get the next portion of collection.
-    # @option opts [String] :sort Order results by the specified field and direction. Accepts comma-separated list of {field}:{direction} values.
+    # @option opts [String] :sort Order results by the specified field and direction.
+    # Accepts comma-separated list of {field}:{direction} values.
     # @return [Array<Calendly::EventType>]
     # @raise [Calendly::Error] if the uri is empty.
     # @raise [Calendly::ApiError] if the api returns error code.
@@ -83,10 +84,11 @@ module Calendly
     # @param [Hash] opts the optional request parameters.
     # @option opts [Integer] :count Number of rows to return.
     # @option opts [String] :invitee_email Return events scheduled with the specified invitee email
-    # @option opts [String] :max_start_time Upper bound (inclusive) for an event's start time to filter by.
+    # @option opts [String] :max_start_timeUpper bound (inclusive) for an event's start time to filter by.
     # @option opts [String] :min_start_time Lower bound (inclusive) for an event's start time to filter by.
     # @option opts [String] :page_token Pass this to get the next portion of collection.
-    # @option opts [String] :sort Order results by the specified field and directin. Accepts comma-separated list of {field}:{direction} values.
+    # @option opts [String] :sort Order results by the specified field and directin.
+    # Accepts comma-separated list of {field}:{direction} values.
     # @option opts [String] :status Whether the scheduled event is active or canceled
     # @return [Array<Calendly::Event>]
     # @raise [Calendly::Error] if the uri is empty.

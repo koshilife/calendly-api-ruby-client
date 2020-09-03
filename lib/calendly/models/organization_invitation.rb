@@ -6,7 +6,7 @@ module Calendly
     include ModelUtils
     UUID_RE = %r{\A#{Client::API_HOST}/organizations/\w+/invitations/(\w+)\z}.freeze
     TIME_FIELDS = %i[created_at updated_at last_sent_at].freeze
-    ASSOCIATION = { user: User, organization: Organization }.freeze
+    ASSOCIATION = {user: User, organization: Organization}.freeze
 
     # @return [String]
     # unique id of the OrganizationInvitation object.
