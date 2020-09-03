@@ -28,6 +28,13 @@ module Calendly
       Calendly::Client.new
     end
 
+    def test_that_it_log
+      @client.debug_log 'test_debug'
+      @client.info_log 'test_info'
+      @client.warn_log 'test_warn'
+      @client.error_log 'test_error'
+    end
+
     #
     # refresh!
     #

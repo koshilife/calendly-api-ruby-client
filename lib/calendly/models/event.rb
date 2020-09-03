@@ -7,7 +7,7 @@ module Calendly
     include ModelUtils
     UUID_RE = %r{\A#{Client::API_HOST}/scheduled_events/(\w+)\z}.freeze
     TIME_FIELDS = %i[start_time end_time created_at updated_at].freeze
-    ASSOCIATION = { event_type: EventType }.freeze
+    ASSOCIATION = {event_type: EventType}.freeze
 
     # @return [String]
     # unique id of the Event object.
@@ -69,8 +69,10 @@ module Calendly
     # @param [Hash] opts the optional request parameters.
     # @option opts [Integer] :count Number of rows to return.
     # @option opts [String] :email Filter by email.
-    # @option opts [String] :page_token Pass this to get the next portion of collection.
-    # @option opts [String] :sort Order results by the specified field and directin. Accepts comma-separated list of {field}:{direction} values.
+    # @option opts [String] :page_token
+    # Pass this to get the next portion of collection.
+    # @option opts [String] :sort Order results by the specified field and directin.
+    # Accepts comma-separated list of {field}:{direction} values.
     # @option opts [String] :status Whether the scheduled event is active or canceled.
     # @return [Array<Calendly::Invitee>]
     # @raise [Calendly::Error] if the uuid is empty.
@@ -81,7 +83,7 @@ module Calendly
       auto_pagination request_proc, opts
     end
 
-    private
+  private
 
     def after_set_attributes(attrs)
       super attrs
@@ -89,11 +91,12 @@ module Calendly
       @location = Location.new loc_params if loc_params&.is_a? Hash
 
       inv_cnt_attrs = attrs[:invitees_counter]
-      if inv_cnt_attrs&.is_a? Hash
-        @invitees_counter_total = inv_cnt_attrs[:total]
-        @invitees_counter_active = inv_cnt_attrs[:active]
-        @invitees_counter_limit = inv_cnt_attrs[:limit]
-      end
+      return unless inv_cnt_attrs
+      return unless inv_cnt_attrs.is_a? Hash
+
+      @invitees_counter_total = inv_cnt_attrs[:total]
+      @invitees_counter_active = inv_cnt_attrs[:active]
+      @invitees_counter_limit = inv_cnt_attrs[:limit]
     end
   end
 end

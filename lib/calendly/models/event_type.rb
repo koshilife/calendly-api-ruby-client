@@ -72,17 +72,16 @@ module Calendly
     # Whether the profile belongs to a “User” or a “Team”.
     attr_accessor :owner_type
 
-    private
+  private
 
     def after_set_attributes(attrs)
       super attrs
-      if attrs[:profile]
+      return unless attrs[:profile]
 
-        @owner_uri = attrs[:profile][:owner]
-        @owner_uuid = User.extract_uuid owner_uri
-        @owner_name = attrs[:profile][:name]
-        @owner_type = attrs[:profile][:type]
-      end
+      @owner_uri = attrs[:profile][:owner]
+      @owner_uuid = User.extract_uuid owner_uri
+      @owner_name = attrs[:profile][:name]
+      @owner_type = attrs[:profile][:type]
     end
   end
 end

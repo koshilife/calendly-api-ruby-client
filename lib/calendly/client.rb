@@ -4,14 +4,15 @@ require 'oauth2'
 
 module Calendly
   # Calendly apis client.
-  class Client
+  class Client # rubocop:disable Metrics/ClassLength
+    include Loggable
     API_HOST = 'https://api.calendly.com'
     AUTH_API_HOST = 'https://auth.calendly.com'
 
     # @param [String] token a Calendly's access token.
+    # @raise [Calendly::Error] if the token is empty.
     def initialize(token = nil)
       @config = Calendly.configuration
-      @logger = @config.logger
       @token = token || Calendly.configuration.token
 
       check_not_empty @token, 'token'
@@ -95,7 +96,7 @@ module Calendly
       check_not_empty user_uri, 'user_uri'
 
       opts_keys = %i[count page_token sort]
-      params = { user: user_uri }
+      params = {user: user_uri}
       params = merge_options opts, opts_keys, params
       body = request :get, 'event_types', params: params
 
@@ -140,7 +141,7 @@ module Calendly
       check_not_empty user_uri, 'user_uri'
 
       opts_keys = %i[count invitee_email max_start_time min_start_time page_token sort status]
-      params = { user: user_uri }
+      params = {user: user_uri}
       params = merge_options opts, opts_keys, params
       body = request :get, 'scheduled_events', params: params
 
@@ -227,7 +228,7 @@ module Calendly
       check_not_empty org_uri, 'org_uri'
 
       opts_keys = %i[count email page_token]
-      params = { organization: org_uri }
+      params = {organization: org_uri}
       params = merge_options opts, opts_keys, params
       body = request :get, 'organization_memberships', params: params
 
@@ -254,7 +255,7 @@ module Calendly
       check_not_empty user_uri, 'user_uri'
 
       opts_keys = %i[count email page_token]
-      params = { user: user_uri }
+      params = {user: user_uri}
       params = merge_options opts, opts_keys, params
       body = request :get, 'organization_memberships', params: params
 
@@ -339,7 +340,7 @@ module Calendly
       body = request(
         :post,
         "organizations/#{uuid}/invitations",
-        body: { email: email }
+        body: {email: email}
       )
       OrganizationInvitation.new body[:resource], self
     end
@@ -361,13 +362,7 @@ module Calendly
       true
     end
 
-    private
-
-    def debug_log(msg)
-      return unless @logger
-
-      @logger.debug msg
-    end
+  private
 
     def request(method, path, params: nil, body: nil)
       debug_log "Request #{method.to_s.upcase} #{API_HOST}/#{path} params:#{params}, body:#{body}"
@@ -388,7 +383,7 @@ module Calendly
     end
 
     def check_not_empty(value, name)
-      raise Calendly::Error, "#{name} is required." if blank? value
+      raise Calendly::Error.new("#{name} is required.") if blank? value
     end
 
     def blank?(value)

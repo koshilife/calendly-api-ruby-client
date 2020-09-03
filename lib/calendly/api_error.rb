@@ -25,9 +25,9 @@ module Calendly
       "\#<#{self.class}:#{object_id} title:#{title}, status:#{status}>"
     end
 
-    private
+  private
 
-    def set_attributes_from_response
+    def set_attributes_from_response # rubocop:disable Metrics/CyclomaticComplexity
       return unless response
       return unless response.respond_to? :body
 

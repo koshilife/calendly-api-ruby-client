@@ -19,7 +19,7 @@ module Calendly
     # @raise [Calendly::Error] if the client is nil.
     # @since 0.1.0
     def client
-      raise Error, '@client is not ready.' if !@client || !@client.is_a?(Client)
+      raise Error.new('@client is not ready.') if !@client || !@client.is_a?(Client)
 
       @client
     end
@@ -31,7 +31,7 @@ module Calendly
     # @raise [Calendly::Error] if uuid is not defined.
     # @since 0.1.0
     def id
-      raise Error, 'uuid is not defined.' unless defined? uuid
+      raise Error.new('uuid is not defined.') unless defined? uuid
 
       uuid
     end
@@ -58,9 +58,9 @@ module Calendly
       base.extend ClassMethods
     end
 
-    private
+  private
 
-    def set_attributes(attrs)
+    def set_attributes(attrs) # rubocop:disable all
       return if attrs.nil?
       return unless attrs.is_a? Hash
       return if attrs.empty?
@@ -69,7 +69,7 @@ module Calendly
         next unless respond_to? "#{key}=".to_sym
 
         if defined?(self.class::ASSOCIATION) && self.class::ASSOCIATION.key?(key)
-          associated_attrs = value.is_a?(Hash) ? value : { uri: value }
+          associated_attrs = value.is_a?(Hash) ? value : {uri: value}
           value = self.class::ASSOCIATION[key].new associated_attrs, @client
         elsif defined?(self.class::TIME_FIELDS) && self.class::TIME_FIELDS.include?(key)
           value = Time.parse value
