@@ -1,4 +1,13 @@
+
 # CHANGELOG
+
+## 0.1.3
+
+- support webhook APIs
+  - `GET /webhook_subscriptions`
+  - `GET /webhook_subscriptions/{webhook_uuid}`
+  - `POST /webhook_subscriptions`
+  - `DELETE /webhook_subscriptions/{webhook_uuid}`
 
 ## 0.1.2
 

@@ -436,6 +436,111 @@ module AssertHelper
     assert_nil inv.user
   end
 
+  def assert_org_webhook_001(webhook)
+    assert webhook.client.is_a? Calendly::Client
+    assert_equal 'https://api.calendly.com/webhook_subscriptions/ORG_WEBHOOK001', webhook.uri
+    assert_equal 'https://example.com/organization/webhook001', webhook.callback_url
+    assert_equal Time.parse('2020-09-17T02:00:00.000000Z'), webhook.created_at
+    assert_equal Time.parse('2020-09-17T03:00:00.000000Z'), webhook.updated_at
+    assert_equal Time.parse('2020-09-17T04:00:00.000000Z'), webhook.retry_started_at
+    assert_equal 'active', webhook.state
+    assert_equal ['invitee.created', 'invitee.canceled'], webhook.events
+    assert_equal 'organization', webhook.scope
+    assert_equal 'ORG001', webhook.organization.uuid
+    assert_equal 'https://api.calendly.com/organizations/ORG001', webhook.organization.uri
+    assert_nil webhook.user
+    assert_equal 'U001', webhook.creator.uuid
+    assert_equal 'https://api.calendly.com/users/U001', webhook.creator.uri
+  end
+
+  def assert_org_webhook_002(webhook)
+    assert webhook.client.is_a? Calendly::Client
+    assert_equal 'https://api.calendly.com/webhook_subscriptions/ORG_WEBHOOK002', webhook.uri
+    assert_equal 'https://example.com/organization/webhook002', webhook.callback_url
+    assert_equal Time.parse('2020-09-18T02:00:00.000000Z'), webhook.created_at
+    assert_equal Time.parse('2020-09-18T03:00:00.000000Z'), webhook.updated_at
+    assert_equal Time.parse('2020-09-18T04:00:00.000000Z'), webhook.retry_started_at
+    assert_equal 'active', webhook.state
+    assert_equal ['invitee.created'], webhook.events
+    assert_equal 'organization', webhook.scope
+    assert_equal 'ORG001', webhook.organization.uuid
+    assert_equal 'https://api.calendly.com/organizations/ORG001', webhook.organization.uri
+    assert_nil webhook.user
+    assert_equal 'U001', webhook.creator.uuid
+    assert_equal 'https://api.calendly.com/users/U001', webhook.creator.uri
+  end
+
+  def assert_org_webhook_003(webhook)
+    assert webhook.client.is_a? Calendly::Client
+    assert_equal 'https://api.calendly.com/webhook_subscriptions/ORG_WEBHOOK003', webhook.uri
+    assert_equal 'https://example.com/organization/webhook003', webhook.callback_url
+    assert_equal Time.parse('2020-09-19T02:00:00.000000Z'), webhook.created_at
+    assert_equal Time.parse('2020-09-19T03:00:00.000000Z'), webhook.updated_at
+    assert_nil webhook.retry_started_at
+    assert_equal 'active', webhook.state
+    assert_equal ['invitee.canceled'], webhook.events
+    assert_equal 'organization', webhook.scope
+    assert_equal 'ORG001', webhook.organization.uuid
+    assert_equal 'https://api.calendly.com/organizations/ORG001', webhook.organization.uri
+    assert_nil webhook.user
+    assert_equal 'U001', webhook.creator.uuid
+    assert_equal 'https://api.calendly.com/users/U001', webhook.creator.uri
+  end
+
+  def assert_user_webhook_001(webhook)
+    assert webhook.client.is_a? Calendly::Client
+    assert_equal 'https://api.calendly.com/webhook_subscriptions/USER_WEBHOOK001', webhook.uri
+    assert_equal 'https://example.com/user/webhook001', webhook.callback_url
+    assert_equal Time.parse('2020-09-17T02:00:00.000000Z'), webhook.created_at
+    assert_equal Time.parse('2020-09-17T03:00:00.000000Z'), webhook.updated_at
+    assert_equal Time.parse('2020-09-17T04:00:00.000000Z'), webhook.retry_started_at
+    assert_equal 'active', webhook.state
+    assert_equal ['invitee.created', 'invitee.canceled'], webhook.events
+    assert_equal 'user', webhook.scope
+    assert_equal 'ORG001', webhook.organization.uuid
+    assert_equal 'https://api.calendly.com/organizations/ORG001', webhook.organization.uri
+    assert_equal 'U001', webhook.user.uuid
+    assert_equal 'https://api.calendly.com/users/U001', webhook.user.uri
+    assert_equal 'U001', webhook.creator.uuid
+    assert_equal 'https://api.calendly.com/users/U001', webhook.creator.uri
+  end
+
+  def assert_user_webhook_002(webhook)
+    assert webhook.client.is_a? Calendly::Client
+    assert_equal 'https://api.calendly.com/webhook_subscriptions/USER_WEBHOOK002', webhook.uri
+    assert_equal 'https://example.com/user/webhook002', webhook.callback_url
+    assert_equal Time.parse('2020-09-18T02:00:00.000000Z'), webhook.created_at
+    assert_equal Time.parse('2020-09-18T03:00:00.000000Z'), webhook.updated_at
+    assert_equal Time.parse('2020-09-18T04:00:00.000000Z'), webhook.retry_started_at
+    assert_equal 'active', webhook.state
+    assert_equal ['invitee.created'], webhook.events
+    assert_equal 'user', webhook.scope
+    assert_equal 'ORG001', webhook.organization.uuid
+    assert_equal 'https://api.calendly.com/organizations/ORG001', webhook.organization.uri
+    assert_equal 'U001', webhook.user.uuid
+    assert_equal 'https://api.calendly.com/users/U001', webhook.user.uri
+    assert_equal 'U001', webhook.creator.uuid
+    assert_equal 'https://api.calendly.com/users/U001', webhook.creator.uri
+  end
+
+  def assert_user_webhook_003(webhook)
+    assert webhook.client.is_a? Calendly::Client
+    assert_equal 'https://api.calendly.com/webhook_subscriptions/USER_WEBHOOK003', webhook.uri
+    assert_equal 'https://example.com/user/webhook003', webhook.callback_url
+    assert_equal Time.parse('2020-09-19T02:00:00.000000Z'), webhook.created_at
+    assert_equal Time.parse('2020-09-19T03:00:00.000000Z'), webhook.updated_at
+    assert_nil webhook.retry_started_at
+    assert_equal 'active', webhook.state
+    assert_equal ['invitee.canceled'], webhook.events
+    assert_equal 'user', webhook.scope
+    assert_equal 'ORG001', webhook.organization.uuid
+    assert_equal 'https://api.calendly.com/organizations/ORG001', webhook.organization.uri
+    assert_equal 'U001', webhook.user.uuid
+    assert_equal 'https://api.calendly.com/users/U001', webhook.user.uri
+    assert_equal 'U001', webhook.creator.uuid
+    assert_equal 'https://api.calendly.com/users/U001', webhook.creator.uri
+  end
+
   def assert_error(proc, ex_message)
     e = assert_raises Calendly::Error do
       proc.call

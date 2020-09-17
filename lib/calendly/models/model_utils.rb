@@ -68,10 +68,10 @@ module Calendly
       attrs.each do |key, value|
         next unless respond_to? "#{key}=".to_sym
 
-        if defined?(self.class::ASSOCIATION) && self.class::ASSOCIATION.key?(key)
+        if value && defined?(self.class::ASSOCIATION) && self.class::ASSOCIATION.key?(key)
           associated_attrs = value.is_a?(Hash) ? value : {uri: value}
           value = self.class::ASSOCIATION[key].new associated_attrs, @client
-        elsif defined?(self.class::TIME_FIELDS) && self.class::TIME_FIELDS.include?(key)
+        elsif value && defined?(self.class::TIME_FIELDS) && self.class::TIME_FIELDS.include?(key)
           value = Time.parse value
         end
         instance_variable_set "@#{key}", value

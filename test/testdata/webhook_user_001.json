@@ -1,0 +1,15 @@
+{
+  "resource": {
+    "callback_url": "https://example.com/user/webhook001",
+    "created_at": "2020-09-17T02:00:00.000000Z",
+    "creator": "https://api.calendly.com/users/U001",
+    "events": ["invitee.created", "invitee.canceled"],
+    "organization": "https://api.calendly.com/organizations/ORG001",
+    "retry_started_at": "2020-09-17T04:00:00.000000Z",
+    "scope": "user",
+    "state": "active",
+    "updated_at": "2020-09-17T03:00:00.000000Z",
+    "uri": "https://api.calendly.com/webhook_subscriptions/USER_WEBHOOK001",
+    "user": "https://api.calendly.com/users/U001"
+  }
+}

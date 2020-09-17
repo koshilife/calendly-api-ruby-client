@@ -35,7 +35,10 @@ As of now the supported statuses each Calendly API are as below.
   - [x] Get List of Event Invitees
   - [x] Get List of User Events
 - Webhook V2
-  - These endpoints havn't been released yet.
+  - [x] Create Webhook Subscription
+  - [x] Delete Webhook Subscription
+  - [x] Get Webhook Subscription
+  - [x] List Webhook Subscriptions
 
 ## Installation
 
@@ -54,6 +57,8 @@ Or install it yourself as:
     $ gem install calendly
 
 ## Usage
+
+### Basic
 
 The APIs client needs access token.
 This client setup step is below.
@@ -116,7 +121,50 @@ invitation.status
 
 # cancel the invitation
 invitation.delete
+```
 
+### Webhook
+
+The webhook usage is below.
+
+```ruby
+events = ['invitee.created', 'invitee.canceled']
+own_member = client.me.organization_membership
+org = own_member.organization
+
+# create user scope webhook
+url = 'https://example.com/received_event'
+user_webhook = own_member.create_user_scope_webhook(url, events)
+# => #<Calendly::WebhookSubscription uuid:USER_WEBHOOK_001>
+
+# list of user scope webhooks
+own_member.user_scope_webhooks
+# => [#<Calendly::WebhookSubscription uuid:USER_WEBHOOK_001>]
+
+# delete the webhook
+user_webhook.delete
+# => true
+
+
+# create organization scope webhook
+url = 'https://example.com/received_event'
+org_webhook = org.create_webhook(url, events)
+# => #<Calendly::WebhookSubscription uuid:ORG_WEBHOOK_001>
+
+# list of organization scope webhooks
+org.webhooks
+# => [#<Calendly::WebhookSubscription uuid:ORG_WEBHOOK_001>]
+
+# delete the webhook
+org_webhook.delete
+# => true
+```
+
+### Logging
+
+This library supports a configurable logger.
+
+```ruby
 # if the log level set :debug, you can get the request/response information.
 Calendly.configuration.logger.level = :debug
 invitation = my_org.create_invitation('foobar@example.com')
