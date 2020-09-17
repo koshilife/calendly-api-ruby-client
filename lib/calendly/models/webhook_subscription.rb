@@ -11,6 +11,9 @@ module Calendly
     ASSOCIATION = {organization: Organization, user: User, creator: User}.freeze
 
     # @return [String]
+    # unique id of the WebhookSubscription object.
+    attr_accessor :uuid
+    # @return [String]
     # Canonical reference (unique identifier) for the webhook.
     attr_accessor :uri
     # @return [String]
@@ -43,5 +46,27 @@ module Calendly
     # @return [Calendly::User]
     # The user who created the webhook subscription.
     attr_accessor :creator
+
+    #
+    # Get a webhook subscription associated with self.
+    #
+    # @return [Calendly::WebhookSubscription]
+    # @raise [Calendly::Error] if the uuid is empty.
+    # @raise [Calendly::ApiError] if the api returns error code.
+    # @since 0.1.3
+    def fetch
+      client.webhook uuid
+    end
+
+    #
+    # Delete a webhook subscription associated with self.
+    #
+    # @return [true]
+    # @raise [Calendly::Error] if the uuid is empty.
+    # @raise [Calendly::ApiError] if the api returns error code.
+    # @since 0.1.0
+    def delete
+      client.delete_webhook uuid
+    end
   end
 end
