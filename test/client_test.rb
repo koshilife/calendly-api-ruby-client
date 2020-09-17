@@ -110,7 +110,7 @@ module Calendly
     def test_that_it_returns_all_items_of_event_type
       user_uri = 'https://api.calendly.com/users/U001'
       res_body = load_test_data 'event_types_001.json'
-      params = { user: user_uri }
+      params = {user: user_uri}
 
       url = "#{HOST}/event_types?#{URI.encode_www_form(params)}"
       add_stub_request :get, url, res_body: res_body
@@ -127,14 +127,14 @@ module Calendly
       user_uri = 'https://api.calendly.com/users/U001'
 
       res_body1 = load_test_data 'event_types_002_page1.json'
-      option_params1 = { count: 2, sort: 'created_at:desc' }
-      params1 = { user: user_uri }.merge option_params1
+      option_params1 = {count: 2, sort: 'created_at:desc'}
+      params1 = {user: user_uri}.merge option_params1
       url1 = "#{HOST}/event_types?#{URI.encode_www_form(params1)}"
       add_stub_request :get, url1, res_body: res_body1
 
       res_body2 = load_test_data 'event_types_002_page2.json'
-      option_params2 = { count: 2, page_token: 'NEXT_PAGE_TOKEN' }
-      params2 = { user: user_uri }.merge option_params2
+      option_params2 = {count: 2, page_token: 'NEXT_PAGE_TOKEN'}
+      params2 = {user: user_uri}.merge option_params2
       url2 = "#{HOST}/event_types?#{URI.encode_www_form(params2)}"
       add_stub_request :get, url2, res_body: res_body2
 
@@ -188,7 +188,7 @@ module Calendly
     def test_that_it_returns_all_items_of_event
       user_uri = 'https://api.calendly.com/users/U001'
       res_body = load_test_data 'scheduled_events_001.json'
-      params = { user: user_uri }
+      params = {user: user_uri}
 
       url = "#{HOST}/scheduled_events?#{URI.encode_www_form(params)}"
       add_stub_request :get, url, res_body: res_body
@@ -404,7 +404,7 @@ module Calendly
       user_uri = 'https://api.calendly.com/users/U101'
       res_body = load_test_data 'organization_memberships_001.json'
 
-      params = { user: user_uri }
+      params = {user: user_uri}
       url = "#{HOST}/organization_memberships?#{URI.encode_www_form(params)}"
       add_stub_request :get, url, res_body: res_body
 
@@ -487,7 +487,7 @@ module Calendly
 
     def test_that_it_returns_all_organization_invitations_by_pagination
       org_uuid = 'ORG001'
-      base_params = { count: 2 }
+      base_params = {count: 2}
 
       params1 = base_params.merge(sort: 'created_at:desc')
       res_body1 = load_test_data 'organization_invitations_002_page1.json'
@@ -528,7 +528,7 @@ module Calendly
     def test_that_it_creates_invitation
       org_uuid = 'ORG001'
       email = 'foobar@example.com'
-      req_body = { email: email }
+      req_body = {email: email}
       res_body = load_test_data 'organization_invitation_003_create.json'
       url = "#{HOST}/organizations/#{org_uuid}/invitations"
       add_stub_request :post, url, req_body: req_body, res_body: res_body, res_status: 201
@@ -574,6 +574,230 @@ module Calendly
     end
 
     #
+    # test for webhook
+    #
+
+    def test_that_it_returns_a_specific_webhook
+      uuid = 'ORG_WEBHOOK001'
+      res_body = load_test_data 'webhook_organization_001.json'
+
+      url = "#{HOST}/webhook_subscriptions/#{uuid}"
+      add_stub_request :get, url, res_body: res_body
+      assert_org_webhook_001 @client.webhook uuid
+    end
+
+    def test_that_it_raises_an_argument_error_on_webhook
+      proc_uuid_arg_is_empty = proc do
+        @client.webhook ''
+      end
+      assert_required_error proc_uuid_arg_is_empty, 'uuid'
+    end
+
+    #
+    # test for webhooks
+    #
+
+    def test_that_it_returns_all_items_of_webhooks
+      org_uri = "#{HOST}/organizations/ORG001"
+      res_body = load_test_data 'webhooks_organization_001.json'
+      params = {organization: org_uri, scope: 'organization'}
+
+      url = "#{HOST}/webhook_subscriptions?#{URI.encode_www_form(params)}"
+      add_stub_request :get, url, res_body: res_body
+
+      webhooks, next_params = @client.webhooks org_uri
+      assert_equal 3, webhooks.length
+      assert_nil next_params
+      assert_org_webhook_001 webhooks[0]
+      assert_org_webhook_002 webhooks[1]
+      assert_org_webhook_003 webhooks[2]
+    end
+
+    def test_that_it_returns_all_items_of_webhooks_by_pagination
+      org_uri = "#{HOST}/organizations/ORG001"
+      base_params = {
+        organization: org_uri,
+        scope: 'organization',
+        count: 2
+      }
+      res_body1 = load_test_data 'webhooks_organization_002_page1.json'
+      params1 = base_params.merge(
+        sort: 'created_at:desc'
+      )
+      url1 = "#{HOST}/webhook_subscriptions?#{URI.encode_www_form(params1)}"
+      add_stub_request :get, url1, res_body: res_body1
+
+      res_body2 = load_test_data 'webhooks_organization_002_page2.json'
+      params2 = base_params.merge(
+        page_token: 'NEXT_PAGE_TOKEN'
+      )
+      url2 = "#{HOST}/webhook_subscriptions?#{URI.encode_www_form(params2)}"
+      add_stub_request :get, url2, res_body: res_body2
+
+      # request page1
+      webhooks1, next_params1 = @client.webhooks org_uri, params1
+      org_uri = next_params1.delete :organization
+      # request page2
+      webhooks2, next_params2 = @client.webhooks org_uri, next_params1
+
+      assert_equal 2, webhooks1.length
+      assert_equal 1, webhooks2.length
+      assert_nil next_params2
+      assert_org_webhook_003 webhooks1[0]
+      assert_org_webhook_002 webhooks1[1]
+      assert_org_webhook_001 webhooks2[0]
+    end
+
+    def test_that_it_raises_an_argument_error_on_webhooks
+      proc_arg_is_empty = proc do
+        @client.webhooks ''
+      end
+      assert_required_error proc_arg_is_empty, 'org_uri'
+    end
+
+    #
+    # test for user_scope_webhooks
+    #
+
+    def test_that_it_returns_all_items_of_user_webhooks
+      org_uri = "#{HOST}/organizations/ORG001"
+      user_uri = "#{HOST}/users/U001"
+      res_body = load_test_data 'webhooks_user_001.json'
+      params = {organization: org_uri, user: user_uri, scope: 'user'}
+
+      url = "#{HOST}/webhook_subscriptions?#{URI.encode_www_form(params)}"
+      add_stub_request :get, url, res_body: res_body
+
+      webhooks, next_params = @client.user_scope_webhooks org_uri, user_uri
+      assert_equal 3, webhooks.length
+      assert_nil next_params
+      assert_user_webhook_001 webhooks[0]
+      assert_user_webhook_002 webhooks[1]
+      assert_user_webhook_003 webhooks[2]
+    end
+
+    def test_that_it_returns_all_items_of_user_scope_webhooks_by_pagination
+      org_uri = "#{HOST}/organizations/ORG001"
+      user_uri = "#{HOST}/users/U001"
+      base_params = {
+        organization: org_uri,
+        user: user_uri,
+        scope: 'user',
+        count: 2
+      }
+      res_body1 = load_test_data 'webhooks_user_002_page1.json'
+      params1 = base_params.merge(
+        sort: 'created_at:desc'
+      )
+      url1 = "#{HOST}/webhook_subscriptions?#{URI.encode_www_form(params1)}"
+      add_stub_request :get, url1, res_body: res_body1
+
+      res_body2 = load_test_data 'webhooks_user_002_page2.json'
+      params2 = base_params.merge(
+        page_token: 'NEXT_PAGE_TOKEN'
+      )
+      url2 = "#{HOST}/webhook_subscriptions?#{URI.encode_www_form(params2)}"
+      add_stub_request :get, url2, res_body: res_body2
+
+      # request page1
+      webhooks1, next_params1 = @client.user_scope_webhooks org_uri, user_uri, params1
+      org_uri = next_params1.delete :organization
+      # request page2
+      webhooks2, next_params2 = @client.user_scope_webhooks org_uri, user_uri, next_params1
+
+      assert_equal 2, webhooks1.length
+      assert_equal 1, webhooks2.length
+      assert_nil next_params2
+      assert_user_webhook_003 webhooks1[0]
+      assert_user_webhook_002 webhooks1[1]
+      assert_user_webhook_001 webhooks2[0]
+    end
+
+    def test_that_it_raises_an_argument_error_on_user_scope_webhooks
+      org_uri = "#{HOST}/organizations/ORG001"
+      user_uri = "#{HOST}/users/U001"
+      proc_org_uri_arg_is_empty = proc do
+        @client.user_scope_webhooks '', user_uri
+      end
+      proc_user_uri_arg_is_empty = proc do
+        @client.user_scope_webhooks org_uri, ''
+      end
+      assert_required_error proc_org_uri_arg_is_empty, 'org_uri'
+      assert_required_error proc_user_uri_arg_is_empty, 'user_uri'
+    end
+
+    #
+    # test for create_webhook
+    #
+
+    def test_that_it_creates_organization_scope_webhook
+      webhook_url = 'https://example.com/organization/webhook001'
+      org_uri = "#{HOST}/organizations/ORG001"
+      events = ['invitee.created', 'invitee.canceled']
+      req_body = {url: webhook_url, events: events, organization: org_uri, scope: 'organization'}
+      res_body = load_test_data 'webhook_organization_001.json'
+
+      url = "#{HOST}/webhook_subscriptions"
+      add_stub_request :post, url, req_body: req_body, res_body: res_body, res_status: 201
+
+      webhook = @client.create_webhook webhook_url, events, org_uri
+      assert_org_webhook_001 webhook
+    end
+
+    def test_that_it_creates_user_scope_webhook
+      webhook_url = 'https://example.com/user/webhook001'
+      org_uri = "#{HOST}/organizations/ORG001"
+      user_uri = "#{HOST}/users/U001"
+      events = ['invitee.created', 'invitee.canceled']
+      req_body = {url: webhook_url, events: events, organization: org_uri, scope: 'user', user: user_uri}
+      res_body = load_test_data 'webhook_user_001.json'
+
+      url = "#{HOST}/webhook_subscriptions"
+      add_stub_request :post, url, req_body: req_body, res_body: res_body, res_status: 201
+
+      webhook = @client.create_webhook webhook_url, events, org_uri, user_uri
+      assert_user_webhook_001 webhook
+    end
+
+    def test_that_it_raises_an_argument_error_on_create_webhook
+      webhook_url = 'https://example.com/user/webhook001'
+      events = ['invitee.created']
+      org_uri = "#{HOST}/organizations/ORG001"
+      proc_url_arg_is_empty = proc do
+        @client.create_webhook '', events, org_uri
+      end
+      proc_events_arg_is_empty = proc do
+        @client.create_webhook webhook_url, [], org_uri
+      end
+      proc_org_uri_arg_is_empty = proc do
+        @client.create_webhook webhook_url, events, ''
+      end
+      assert_required_error proc_url_arg_is_empty, 'url'
+      assert_required_error proc_events_arg_is_empty, 'events'
+      assert_required_error proc_org_uri_arg_is_empty, 'org_uri'
+    end
+
+    #
+    # test for delete_webhook
+    #
+
+    def test_that_it_deletes_webhook
+      uuid = 'ORG_WEBHOOK001'
+      url = "#{HOST}/webhook_subscriptions/#{uuid}"
+      add_stub_request :delete, url, res_status: 204
+
+      result = @client.delete_webhook uuid
+      assert_equal true, result
+    end
+
+    def test_that_it_raises_an_argument_error_on_delete_webhook
+      proc_uuid_arg_is_empty = proc do
+        @client.delete_webhook ''
+      end
+      assert_required_error proc_uuid_arg_is_empty, 'uuid'
+    end
+
+    #
     # Following tests are handling to an api error.
     #
 
@@ -613,7 +837,7 @@ module Calendly
       assert_api_error proc_error, 400, res_body
     end
 
-    private
+  private
 
     def add_refresh_token_stub_request(is_valid = true)
       req_params = {

@@ -125,12 +125,12 @@ module Calendly
     # @param [String] user_uri the specified user (user's uri).
     # @param [Hash] opts the optional request parameters.
     # @option opts [Integer] :count Number of rows to return.
-    # @option opts [String] :invitee_email Return events scheduled with the specified invitee email
+    # @option opts [String] :invitee_email Return events scheduled with the specified invitee email.
     # @option opts [String] :max_start_time Upper bound (inclusive) for an event's start time to filter by.
     # @option opts [String] :min_start_time Lower bound (inclusive) for an event's start time to filter by.
     # @option opts [String] :page_token Pass this to get the next portion of collection.
     # @option opts [String] :sort Order results by the specified field and directin. Accepts comma-separated list of {field}:{direction} values.
-    # @option opts [String] :status Whether the scheduled event is active or canceled
+    # @option opts [String] :status Whether the scheduled event is active or canceled.
     # @return [Array<Array<Calendly::Event>, Hash>]
     #  - [Array<Calendly::Event>] events
     #  - [Hash] next_params the parameters to get next data. if thre is no next it returns nil.
@@ -362,6 +362,118 @@ module Calendly
       true
     end
 
+    #
+    # Get a webhook subscription for an organization or user with a specified UUID.
+    #
+    # @param [String] uuid the specified webhook (webhook's uuid).
+    # @return [Calendly::WebhookSubscription]
+    # @raise [Calendly::Error] if the uuid arg is empty.
+    # @raise [Calendly::ApiError] if the api returns error code.
+    # @since 0.1.3
+    def webhook(uuid)
+      check_not_empty uuid, 'uuid'
+      body = request :get, "webhook_subscriptions/#{uuid}"
+      WebhookSubscription.new body[:resource], self
+    end
+
+    #
+    # Get List of organization scope Webhooks.
+    #
+    # @param [String] org_uri the specified organization (organization's uri).
+    # @param [Hash] opts the optional request parameters.
+    # @option opts [Integer] :count Number of rows to return.
+    # @option opts [String] :page_token Pass this to get the next portion of collection.
+    # @option opts [String] :sort Order results by the specified field and directin. Accepts comma-separated list of {field}:{direction} values.
+    # @return [Array<Array<Calendly::WebhookSubscription>, Hash>]
+    #  - [Array<Calendly::WebhookSubscription>] webhooks
+    #  - [Hash] next_params the parameters to get next data. if thre is no next it returns nil.
+    # @raise [Calendly::Error] if the org_uri arg is empty.
+    # @raise [Calendly::ApiError] if the api returns error code.
+    # @since 0.1.3
+    def webhooks(org_uri, opts = {})
+      check_not_empty org_uri, 'org_uri'
+
+      opts_keys = %i[count page_token sort]
+      params = {organization: org_uri, scope: 'organization'}
+      params = merge_options opts, opts_keys, params
+      body = request :get, 'webhook_subscriptions', params: params
+      items = body[:collection] || []
+      evs = items.map { |item| WebhookSubscription.new item, self }
+      [evs, next_page_params(body)]
+    end
+
+    #
+    # Get List of user scope Webhooks.
+    #
+    # @param [String] org_uri the specified organization (organization's uri).
+    # @param [String] user_uri the specified user (user's uri).
+    # @param [Hash] opts the optional request parameters.
+    # @option opts [Integer] :count Number of rows to return.
+    # @option opts [String] :page_token Pass this to get the next portion of collection.
+    # @option opts [String] :sort Order results by the specified field and directin. Accepts comma-separated list of {field}:{direction} values.
+    # @return [Array<Array<Calendly::WebhookSubscription>, Hash>]
+    #  - [Array<Calendly::WebhookSubscription>] webhooks
+    #  - [Hash] next_params the parameters to get next data. if thre is no next it returns nil.
+    # @raise [Calendly::Error] if the org_uri arg is empty.
+    # @raise [Calendly::Error] if the user_uri arg is empty.
+    # @raise [Calendly::ApiError] if the api returns error code.
+    # @since 0.1.3
+    def user_scope_webhooks(org_uri, user_uri, opts = {})
+      check_not_empty org_uri, 'org_uri'
+      check_not_empty user_uri, 'user_uri'
+
+      opts_keys = %i[count page_token sort]
+      params = {organization: org_uri, user: user_uri, scope: 'user'}
+      params = merge_options opts, opts_keys, params
+      body = request :get, 'webhook_subscriptions', params: params
+      items = body[:collection] || []
+      evs = items.map { |item| WebhookSubscription.new item, self }
+      [evs, next_page_params(body)]
+    end
+
+    #
+    # Create a webhook subscription for an organization or user.
+    #
+    # @param [String] url Canonical reference (unique identifier) for the resource.
+    # @param [Array<String>] events List of user events to subscribe to. options: invitee.created or invitee.canceled
+    # @param [String] org_uri The unique reference to the organization that the webhook will be tied to.
+    # @param [String] user_uri The unique reference to the user that the webhook will be tied to.
+    # @return [Calendly::WebhookSubscription]
+    # @raise [Calendly::Error] if the url arg is empty.
+    # @raise [Calendly::Error] if the events arg is empty.
+    # @raise [Calendly::Error] if the org_uri arg is empty.
+    # @raise [Calendly::ApiError] if the api returns error code.
+    # @since 0.1.3
+    def create_webhook(url, events, org_uri, user_uri = nil)
+      check_not_empty url, 'url'
+      check_not_empty events, 'events'
+      check_not_empty org_uri, 'org_uri'
+
+      params = {url: url, events: events, organization: org_uri}
+      if user_uri
+        params[:scope] = 'user'
+        params[:user] = user_uri
+      else
+        params[:scope] = 'organization'
+      end
+      body = request(:post, 'webhook_subscriptions', body: params)
+      WebhookSubscription.new body[:resource], self
+    end
+
+    #
+    # Delete a webhook subscription for an organization or user with a specified UUID.
+    #
+    # @param [String] uuid the specified webhook (webhook's uuid).
+    # @return [true]
+    # @raise [Calendly::Error] if the uuid arg is empty.
+    # @raise [Calendly::ApiError] if the api returns error code.
+    # @since 0.1.3
+    def delete_webhook(uuid)
+      check_not_empty uuid, 'uuid'
+      request :delete, "webhook_subscriptions/#{uuid}"
+      true
+    end
+
   private
 
     def request(method, path, params: nil, body: nil)
@@ -389,6 +501,7 @@ module Calendly
     def blank?(value)
       return true if value.nil?
       return true if value.to_s.empty?
+      return true if value.is_a?(Array) && value.empty?
 
       false
     end
