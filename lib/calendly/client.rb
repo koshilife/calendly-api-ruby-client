@@ -59,10 +59,20 @@ module Calendly
     # @raise [Calendly::ApiError] if the api returns error code.
     # @since 0.0.1
     def current_user
-      user
+      return @cached_current_user if @cached_current_user
+
+      @cached_current_user = user
     end
 
     alias me current_user
+
+    # @since 0.2.0
+    def current_user!
+      @cached_current_user = nil
+      current_user
+    end
+
+    alias me! current_user!
 
     #
     # Get basic information about a user

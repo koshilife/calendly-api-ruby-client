@@ -74,10 +74,18 @@ module Calendly
 
     def test_that_it_returns_a_current_user
       res_body = load_test_data 'user_001.json'
-      add_stub_request :get, "#{HOST}/users/me", res_body: res_body
+      url = "#{HOST}/users/me"
+      add_stub_request :get, url, res_body: res_body
+      assert_user001 @client.current_user
 
+      # test the fetched data should save in cache.
+      WebMock.reset!
       assert_user001 @client.current_user
       assert_user001 @client.me
+
+      add_stub_request :get, url, res_body: res_body
+      assert_user001 @client.current_user!
+      assert_user001 @client.me!
     end
 
     #
