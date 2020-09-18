@@ -37,6 +37,13 @@ module Calendly
       url = "#{HOST}/organization_memberships?#{URI.encode_www_form(@uri_params)}"
       add_stub_request :get, url, res_body: res_body
       assert_org_mem001 @user.organization_membership
+
+      # test the fetched data should save in cache.
+      WebMock.reset!
+      assert_org_mem001 @user.organization_membership
+
+      add_stub_request :get, url, res_body: res_body
+      assert_org_mem001 @user.organization_membership!
     end
 
     def test_that_it_returns_event_types_in_single_page
@@ -44,11 +51,20 @@ module Calendly
       url = "#{HOST}/event_types?#{URI.encode_www_form(@uri_params)}"
       add_stub_request :get, url, res_body: res_body
 
-      event_types = @user.event_types
-      assert_equal 3, event_types.length
-      assert_event_type001 event_types[0]
-      assert_event_type002 event_types[1]
-      assert_event_type003 event_types[2]
+      assert_event_types = proc do |event_types|
+        assert_equal 3, event_types.length
+        assert_event_type001 event_types[0]
+        assert_event_type002 event_types[1]
+        assert_event_type003 event_types[2]
+      end
+      assert_event_types.call @user.event_types
+
+      # test the fetched data should save in cache.
+      WebMock.reset!
+      assert_event_types.call @user.event_types
+
+      add_stub_request :get, url, res_body: res_body
+      assert_event_types.call @user.event_types!
     end
 
     def test_that_it_returns_event_types_in_plurality_of_pages
@@ -73,10 +89,20 @@ module Calendly
       res_body = load_test_data 'scheduled_events_001.json'
       url = "#{HOST}/scheduled_events?#{URI.encode_www_form(@uri_params)}"
       add_stub_request :get, url, res_body: res_body
-      evs = @user.scheduled_events
-      assert_equal 2, evs.length
-      assert_event001 evs[0]
-      assert_event002 evs[1]
+
+      assert_evs = proc do |evs|
+        assert_equal 2, evs.length
+        assert_event001 evs[0]
+        assert_event002 evs[1]
+      end
+      assert_evs.call @user.scheduled_events
+
+      # test the fetched data should save in cache.
+      WebMock.reset!
+      assert_evs.call @user.scheduled_events
+
+      add_stub_request :get, url, res_body: res_body
+      assert_evs.call @user.scheduled_events!
     end
 
     def test_that_it_returns_scheduled_events_in_plurality_of_pages

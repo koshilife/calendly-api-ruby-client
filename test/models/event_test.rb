@@ -9,7 +9,7 @@ module Calendly
       super
       @ev_uuid = 'EV001'
       @ev_uri = "#{HOST}/scheduled_events/#{@ev_uuid}"
-      attrs = { uri: @ev_uri }
+      attrs = {uri: @ev_uri}
       @event = Event.new attrs, @client
       @event_no_client = Event.new attrs
     end
@@ -37,6 +37,17 @@ module Calendly
       add_stub_request :get, url, res_body: res_body
 
       invs = @event.invitees
+      assert_equal 1, invs.length
+      assert_event101_invitee001 invs[0]
+
+      # test the fetched data should save in cache.
+      WebMock.reset!
+      invs = @event.invitees
+      assert_equal 1, invs.length
+      assert_event101_invitee001 invs[0]
+
+      add_stub_request :get, url, res_body: res_body
+      invs = @event.invitees!
       assert_equal 1, invs.length
       assert_event101_invitee001 invs[0]
     end

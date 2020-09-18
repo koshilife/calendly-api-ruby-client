@@ -48,11 +48,21 @@ module Calendly
       }
       url = "#{HOST}/webhook_subscriptions?#{URI.encode_www_form(params)}"
       add_stub_request :get, url, res_body: res_body
-      webhooks = @mem.user_scope_webhooks
-      assert_equal 3, webhooks.length
-      assert_user_webhook_001 webhooks[0]
-      assert_user_webhook_002 webhooks[1]
-      assert_user_webhook_003 webhooks[2]
+
+      assert_webhooks = proc do |webhooks|
+        assert_equal 3, webhooks.length
+        assert_user_webhook_001 webhooks[0]
+        assert_user_webhook_002 webhooks[1]
+        assert_user_webhook_003 webhooks[2]
+      end
+      assert_webhooks.call @mem.user_scope_webhooks
+
+      # test the fetched data should save in cache.
+      WebMock.reset!
+      assert_webhooks.call @mem.user_scope_webhooks
+
+      add_stub_request :get, url, res_body: res_body
+      assert_webhooks.call @mem.user_scope_webhooks!
     end
 
     def test_that_it_returns_user_scope_webhooks_in_plurality_of_pages

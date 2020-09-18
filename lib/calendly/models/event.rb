@@ -79,8 +79,16 @@ module Calendly
     # @raise [Calendly::ApiError] if the api returns error code.
     # @since 0.1.0
     def invitees(opts = {})
+      return @cached_invitees if @cached_invitees
+
       request_proc = proc { |options| client.event_invitees uuid, options }
-      auto_pagination request_proc, opts
+      @cached_invitees = auto_pagination request_proc, opts
+    end
+
+    # @since 0.2.0
+    def invitees!(opts = {})
+      @cached_invitees = nil
+      invitees opts
     end
 
   private

@@ -31,9 +31,18 @@ module Calendly
       url = "#{HOST}/organization_memberships?#{URI.encode_www_form(@org_params)}"
       add_stub_request :get, url, res_body: res_body
 
-      mems = @org.memberships
-      assert_equal 1, mems.length
-      assert_org_mem001 mems[0]
+      assert_mems = proc do |mems|
+        assert_equal 1, mems.length
+        assert_org_mem001 mems[0]
+      end
+      assert_mems.call @org.memberships
+
+      # test the fetched data should save in cache.
+      WebMock.reset!
+      assert_mems.call @org.memberships
+
+      add_stub_request :get, url, res_body: res_body
+      assert_mems.call @org.memberships!
     end
 
     def test_that_it_returns_memberships_in_plurality_of_pages
@@ -61,11 +70,20 @@ module Calendly
       url = "#{@org_uri}/invitations"
       add_stub_request :get, url, res_body: res_body
 
-      invs = @org.invitations
-      assert_equal 3, invs.length
-      assert_org_inv001 invs[0]
-      assert_org_inv002 invs[1]
-      assert_org_inv003 invs[2]
+      assert_invs = proc do |invs|
+        assert_equal 3, invs.length
+        assert_org_inv001 invs[0]
+        assert_org_inv002 invs[1]
+        assert_org_inv003 invs[2]
+      end
+      assert_invs.call @org.invitations
+
+      # test the fetched data should save in cache.
+      WebMock.reset!
+      assert_invs.call @org.invitations
+
+      add_stub_request :get, url, res_body: res_body
+      assert_invs.call @org.invitations!
     end
 
     def test_that_it_returns_invitations_in_plurality_of_pages
@@ -108,11 +126,21 @@ module Calendly
       }
       url = "#{HOST}/webhook_subscriptions?#{URI.encode_www_form(params)}"
       add_stub_request :get, url, res_body: res_body
-      webhooks = @org.webhooks
-      assert_equal 3, webhooks.length
-      assert_org_webhook_001 webhooks[0]
-      assert_org_webhook_002 webhooks[1]
-      assert_org_webhook_003 webhooks[2]
+
+      assert_webhooks = proc do |webhooks|
+        assert_equal 3, webhooks.length
+        assert_org_webhook_001 webhooks[0]
+        assert_org_webhook_002 webhooks[1]
+        assert_org_webhook_003 webhooks[2]
+      end
+      assert_webhooks.call @org.webhooks
+
+      # test the fetched data should save in cache.
+      WebMock.reset!
+      assert_webhooks.call @org.webhooks
+
+      add_stub_request :get, url, res_body: res_body
+      assert_webhooks.call @org.webhooks!
     end
 
     def test_that_it_returns_webhooks_in_plurality_of_pages

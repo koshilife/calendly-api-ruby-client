@@ -1,9 +1,12 @@
-
 # CHANGELOG
+
+## 0.2.0
+
+- save fetched data in cache. (refs #14)
 
 ## 0.1.3
 
-- support webhook APIs
+- support webhook APIs (refs #9)
   - `GET /webhook_subscriptions`
   - `GET /webhook_subscriptions/{webhook_uuid}`
   - `POST /webhook_subscriptions`
