@@ -1,6 +1,9 @@
-# Get a webhook subscription matching the provided UUID for the webhook subscription
-
 # frozen_string_literal: true
+
+require 'calendly/client'
+require 'calendly/models/model_utils'
+require 'calendly/models/organization'
+require 'calendly/models/user'
 
 module Calendly
   # Calendly's webhook model.

@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+require 'calendly/client'
+require 'calendly/models/model_utils'
+require 'calendly/models/event'
+
 module Calendly
   # Calendly's Invitee model.
   # An individual who has been invited to meet with a Calendly member.

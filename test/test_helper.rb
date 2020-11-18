@@ -58,10 +58,10 @@ module Calendly
       end
     end
 
-    private
+  private
 
     def default_request_headers
-      { 'Authorization' => "Bearer #{@token}" }
+      {'Authorization' => "Bearer #{@token}"}
     end
 
     def default_response_headers

@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 0.3.0
+
+- remove zeitwerk dependency. (refs #16)
+
 ## 0.2.0
 
 - save fetched data in cache. (refs #14)

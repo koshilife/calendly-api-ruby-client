@@ -1,8 +1,10 @@
 # frozen_string_literal: true
 
+require 'calendly/error'
+
 module Calendly
   # Calendly apis client error object.
-  class ApiError < Calendly::Error
+  class ApiError < Error
     # @return [Faraday::Response]
     attr_reader :response
     # @return [Integer]

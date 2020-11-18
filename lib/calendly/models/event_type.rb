@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require 'calendly/client'
+require 'calendly/models/model_utils'
+
 module Calendly
   # Calendly's event type model.
   # A configuration for a schedulable event

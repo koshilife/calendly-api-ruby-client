@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'time'
+require 'calendly/error'
 
 module Calendly
   # Calendly model utility.

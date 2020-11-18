@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+require 'calendly/client'
+require 'calendly/models/model_utils'
+require 'calendly/models/event_type'
+
 module Calendly
   # Calendly's event model.
   # A meeting that has been scheduled

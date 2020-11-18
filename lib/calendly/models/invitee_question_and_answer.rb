@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'calendly/models/model_utils'
+
 module Calendly
   # Calendly's InviteeQuestionAndAnswer model.
   # An individual form question and response.

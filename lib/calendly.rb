@@ -1,9 +1,17 @@
 # frozen_string_literal: true
 
-require 'zeitwerk'
-loader = Zeitwerk::Loader.for_gem
-loader.collapse('**/models')
-loader.setup
+Dir[
+  File.join(
+    File.dirname(__FILE__),
+    'calendly',
+    '**',
+    '*'
+  )
+].sort.each do |f|
+  next if File.directory? f
+
+  require f
+end
 
 # module for Calendly apis client
 module Calendly

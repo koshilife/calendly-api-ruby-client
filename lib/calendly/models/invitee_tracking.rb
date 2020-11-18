@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'calendly/models/model_utils'
+
 module Calendly
   # Calendly's InviteeTracking model.
   # Object that represents UTM and Salesforce tracking parameters associated with the invitee.

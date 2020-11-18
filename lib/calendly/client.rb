@@ -505,7 +505,7 @@ module Calendly
     end
 
     def check_not_empty(value, name)
-      raise Calendly::Error.new("#{name} is required.") if blank? value
+      raise Error.new("#{name} is required.") if blank? value
     end
 
     def blank?(value)
