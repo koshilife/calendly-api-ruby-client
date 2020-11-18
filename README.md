@@ -5,40 +5,7 @@
 [![Gem Version](https://badge.fury.io/rb/calendly.svg)](http://badge.fury.io/rb/calendly)
 [![license](https://img.shields.io/github/license/koshilife/calendly-api-ruby-client)](https://github.com/koshilife/calendly-api-ruby-client/blob/master/LICENSE.txt)
 
-## About
-
-These client libraries are created for [Calendly v2 APIs](https://calendly.stoplight.io/docs/gh/calendly/api-docs).
-
-As of August 2020, Calendly v2 API is currently undergoing an upgrade.
-This library is trying to follow and support for the upgrade.
-
-As of now the supported statuses each Calendly API are as below.
-
-## Supported statuses each Calendly API
-
-- User
-  - [x] Get basic information about a user
-- EventType
-  - [ ] Get Event Type (This endpoint hasn't been released yet.)
-  - [x] User Event Types
-- Organization
-  - [x] Get Organization Invitation
-  - [x] Get Organization Invitations
-  - [x] Get Organization Membership
-  - [x] Get a list of Organization Memberships
-  - [x] Invite a person to Organization
-  - [x] Remove a User from an Organization
-  - [x] Revoke Organization Invitation
-- ScheduledEvent
-  - [x] Get Event
-  - [x] Get Invitee of an Event
-  - [x] Get List of Event Invitees
-  - [x] Get List of User Events
-- Webhook V2
-  - [x] Create Webhook Subscription
-  - [x] Delete Webhook Subscription
-  - [x] Get Webhook Subscription
-  - [x] List Webhook Subscriptions
+These client libraries are created for [Calendly v2 APIs](https://calendly.stoplight.io/).
 
 ## Installation
 
@@ -171,6 +138,8 @@ invitation = my_org.create_invitation('foobar@example.com')
 # D, [2020-08-10T10:48:15] DEBUG -- : Request POST https://api.calendly.com/organizations/ORG001/invitations params:, body:{:email=>"foobar@example.com"}
 # D, [2020-08-10T10:48:16] DEBUG -- : Response status:201, body:{"resource":{"created_at":"2020-08-10T10:48:16.051159Z","email":"foobar@example.com","last_sent_at":"2020-08-10T10:48:16.096518Z","organization":"https://api.calendly.com/organizations/ORG001","status":"pending","updated_at":"2020-08-10T10:48:16.051159Z","uri":"https://api.calendly.com/organizations/ORG001/invitations/INV001"}}
 ```
+
+More in-depth method documentation can be found at [RubyDoc.info](https://www.rubydoc.info/gems/calendly/).
 
 ## Contributing
 
