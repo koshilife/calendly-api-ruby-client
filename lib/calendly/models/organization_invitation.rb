@@ -1,5 +1,10 @@
 # frozen_string_literal: true
 
+require 'calendly/client'
+require 'calendly/models/model_utils'
+require 'calendly/models/organization'
+require 'calendly/models/user'
+
 module Calendly
   # Calendly's organization invitation model.
   class OrganizationInvitation

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'calendly/loggable'
+
 module Calendly
   # calendly module's base error object
   class Error < StandardError

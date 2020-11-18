@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'calendly/models/model_utils'
+
 module Calendly
   # Calendly's location model.
   # Polymorphic base type for the various supported meeting locations.

@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require 'calendly/client'
+require 'calendly/models/model_utils'
+
 module Calendly
   # Calendly's organization model.
   class Organization

@@ -19,7 +19,7 @@ module Calendly
       log msg, :debug
     end
 
-    private
+  private
 
     def log(msg, level = :info)
       logger = Calendly.configuration.logger

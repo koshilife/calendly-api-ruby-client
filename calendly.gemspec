@@ -29,7 +29,6 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
   spec.add_runtime_dependency 'oauth2', '>= 1.4.4'
-  spec.add_runtime_dependency 'zeitwerk', '>= 2.3.0'
 
   spec.add_development_dependency 'bundler'
   spec.add_development_dependency 'codecov'
