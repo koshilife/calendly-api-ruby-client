@@ -241,9 +241,9 @@ module Calendly
       assert_equal 2, evs_page1.length
       assert_equal 1, evs_page2.length
       assert_nil next_params2
-      assert_event003 evs_page1[0]
-      assert_event002 evs_page1[1]
-      assert_event001 evs_page2[0]
+      assert_event013 evs_page1[0]
+      assert_event012 evs_page1[1]
+      assert_event011 evs_page2[0]
     end
 
     def test_that_it_raises_an_argument_error_on_events

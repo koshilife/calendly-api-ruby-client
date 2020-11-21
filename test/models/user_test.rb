@@ -129,9 +129,9 @@ module Calendly
 
       evs = @user.scheduled_events params1
       assert_equal 3, evs.length
-      assert_event003 evs[0]
-      assert_event002 evs[1]
-      assert_event001 evs[2]
+      assert_event013 evs[0]
+      assert_event012 evs[1]
+      assert_event011 evs[2]
     end
   end
 end

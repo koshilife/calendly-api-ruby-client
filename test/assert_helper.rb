@@ -166,7 +166,7 @@ module AssertHelper
     assert_equal 'active', ev.status
     assert_equal 'https://api.calendly.com/event_types/ET002', ev.event_type.uri
     assert_equal 'ET002', ev.event_type.uuid
-    assert_equal 'Tokyo', ev.location
+    assert_location_tokyo ev.location
     assert_equal 1, ev.invitees_counter_total
     assert_equal 1, ev.invitees_counter_active
     assert_equal 1, ev.invitees_counter_limit
@@ -176,16 +176,54 @@ module AssertHelper
     assert_equal Time.parse('2020-07-10T07:00:00.000000Z').to_i, ev.updated_at.to_i
   end
 
-  def assert_event003(ev)
+  def assert_event011(ev)
     assert ev.client.is_a? Calendly::Client
-    assert_equal 'EV003', ev.id
-    assert_equal 'EV003', ev.uuid
-    assert_equal 'https://api.calendly.com/scheduled_events/EV003', ev.uri
+    assert_equal 'EV011', ev.id
+    assert_equal 'EV011', ev.uuid
+    assert_equal 'https://api.calendly.com/scheduled_events/EV011', ev.uri
+    assert_equal '30 Minute Meeting', ev.name
+    assert_equal 'canceled', ev.status
+    assert_equal 'https://api.calendly.com/event_types/ET001', ev.event_type.uri
+    assert_equal 'ET001', ev.event_type.uuid
+    assert_location_microsoft_teams ev.location
+    assert_equal 1, ev.invitees_counter_total
+    assert_equal 0, ev.invitees_counter_active
+    assert_equal 5, ev.invitees_counter_limit
+    assert_equal Time.parse('2020-07-22T01:30:00.000000Z').to_i, ev.start_time.to_i
+    assert_equal Time.parse('2020-07-22T02:00:00.000000Z').to_i, ev.end_time.to_i
+    assert_equal Time.parse('2020-07-10T05:00:00.000000Z').to_i, ev.created_at.to_i
+    assert_equal Time.parse('2020-07-11T06:00:00.000000Z').to_i, ev.updated_at.to_i
+  end
+
+  def assert_event012(ev)
+    assert ev.client.is_a? Calendly::Client
+    assert_equal 'EV012', ev.id
+    assert_equal 'EV012', ev.uuid
+    assert_equal 'https://api.calendly.com/scheduled_events/EV012', ev.uri
+    assert_equal '15 Minute Meeting', ev.name
+    assert_equal 'active', ev.status
+    assert_equal 'https://api.calendly.com/event_types/ET002', ev.event_type.uri
+    assert_equal 'ET002', ev.event_type.uuid
+    assert_location_zoom ev.location
+    assert_equal 1, ev.invitees_counter_total
+    assert_equal 1, ev.invitees_counter_active
+    assert_equal 1, ev.invitees_counter_limit
+    assert_equal Time.parse('2020-07-23T01:15:00.000000Z').to_i, ev.start_time.to_i
+    assert_equal Time.parse('2020-07-23T01:30:00.000000Z').to_i, ev.end_time.to_i
+    assert_equal Time.parse('2020-07-10T06:00:00.000000Z').to_i, ev.created_at.to_i
+    assert_equal Time.parse('2020-07-10T07:00:00.000000Z').to_i, ev.updated_at.to_i
+  end
+
+  def assert_event013(ev)
+    assert ev.client.is_a? Calendly::Client
+    assert_equal 'EV013', ev.id
+    assert_equal 'EV013', ev.uuid
+    assert_equal 'https://api.calendly.com/scheduled_events/EV013', ev.uri
     assert_equal '60 Minute Meeting', ev.name
     assert_equal 'active', ev.status
     assert_equal 'https://api.calendly.com/event_types/ET003', ev.event_type.uri
     assert_equal 'ET003', ev.event_type.uuid
-    assert_nil ev.location
+    assert_location_google_meet ev.location
     assert_equal 1, ev.invitees_counter_total
     assert_equal 1, ev.invitees_counter_active
     assert_equal 1, ev.invitees_counter_limit
@@ -348,6 +386,54 @@ module AssertHelper
     assert_equal 'FOOBAR_CONTENT_3', tracking.utm_content
     assert_equal 'FOOBAR_TERM_3', tracking.utm_term
     assert_equal 'FOOBAR_SALESFORCE_UUID_3', tracking.salesforce_uuid
+  end
+
+  def assert_location_tokyo(loc)
+    assert_equal 'physical', loc.type
+    assert_equal 'Tokyo', loc.location
+    assert_nil loc.status
+    assert_nil loc.join_url
+    assert_nil loc.data
+  end
+
+  def assert_location_google_meet(loc)
+    assert_equal 'google_conference', loc.type
+    assert_nil loc.location
+    assert_equal 'pushed', loc.status
+    assert_equal 'https://calendly.com/events/xxx/google_meet', loc.join_url
+    assert_nil loc.data
+  end
+
+  def assert_location_zoom(loc)
+    assert_equal 'zoom', loc.type
+    assert_nil loc.location
+    assert_equal 'pushed', loc.status
+    assert_equal 'https://us04web.zoom.us/j/12345678901?pwd=NVRRSGRYcW52OHlMMGlXNmpYWHQrQT09', loc.join_url
+    expected_data = {
+      id: 12_345_678_901,
+      settings: {
+        field1: 'value1',
+        field2: 'value2'
+      },
+      password: 'NS0dc7',
+      extra: nil
+    }
+    assert_equal expected_data, loc.data
+  end
+
+  def assert_location_microsoft_teams(loc)
+    assert_equal 'microsoft_teams_conference', loc.type
+    assert_nil loc.location
+    assert_equal 'pushed', loc.status
+    assert_equal 'https://calendly.com/events/xxx/microsoft_teams', loc.join_url
+    expected_data = {
+      audioConferencing: {
+        conferenceId: 'foobar-conferenceId',
+        dialinUrl: 'foobar-dialinUrl',
+        tollNumber: 'foobar-tollNumber'
+      }
+    }
+    assert_equal expected_data, loc.data
   end
 
   def assert_org_mem001(org_mem)

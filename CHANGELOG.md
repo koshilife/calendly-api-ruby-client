@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 0.4.0
+
+- fix changed Location fields such as `kind` to `type`. (refs #18)
+
 ## 0.3.0
 
 - remove zeitwerk dependency. (refs #16)
