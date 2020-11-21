@@ -4,51 +4,67 @@ require 'calendly/models/model_utils'
 
 module Calendly
   # Calendly's location model.
-  # Polymorphic base type for the various supported meeting locations.
+  # The polymorphic base type for an event location that Calendly supports
   class Location
     include ModelUtils
 
+    #
     # data patterns is below:
-    # - 1. A meeting at a pre-specified physical location
-    #  - [String] :kind
-    #  - [String] :location A physical location specified by the meeting publisher.
-    # - 2. Meeting publisher will call the invitee
-    #  - [String] :kind
-    # - 3. Invitee will call meeting publisher at the specified phone number.
-    #  - [String] :kind
-    #  - [String] :phone_number Phone number invitee should use to reach meeting publisher.
-    # - 4. Meeting will take place in a Google Meet / Hangout conference.
-    #  - [String] :kind
-    # - 5. Meeting will take place in a Zoom conference.
-    #  - [String] :kind
-    # - 6. Meeting will take place in a GotoMeeting conference.
-    #  - [String] :kind
-    #  - [String] :external_id Zoom-supplied conference id.
-    #  - [String] :state Current state of the conference in Zoom.
-    #  - [Hash] :data Arbitrary conference metadata supplied by Zoom.
-    # - 7. Arbitrary conference metadata supplied by GotoMeeting.
-    #  - [String] :kind
-    #  - [String] :external_id GotoMeeting-supplied conference id.
-    #  - [String] :state Current state of the conference in GotoMeeting.
-    #  - [String] :data Arbitrary conference metadata supplied by GotoMeeting.
-    # - 8. Meeting location does not fall in a standard category, and is as described by the meeting publisher.
-    #  - [String] :kind
-    #  - [String] :location Location description provided by meeting publisher.
-    # - 9. Meeting location was specified by invitee.
-    #  - [String] :kind
-    #  - [String] :location Meeting location was specified by invitee.
+    #
+    # 1. In-Person Meeting: Information about the physical (in-person) event location.
+    # @param [String] type Indicates that the event host (publisher) will call the invitee.
+    # @param [String] location The physical location specified by the event host (publisher).
+    #
+    # 2. Outbound Call: Meeting publisher will call the Invitee
+    # @param [String] type Indicates that the event host (publisher) will call the invitee.
+    # @param [String] location The phone number the event host (publisher) will use to call the invitee.
+    #
+    # 3. Inbound Call: Invitee will call meeting publisher at the specified phone number.
+    # @param [String] type Indicates that the invitee will call the event host.
+    # @param [String] location The phone number the invitee will use to call the event host (publisher).
+    #
+    # 4. Google Conference: Details about an Event that will take place using a Google Meet / Hangout conference.
+    # @param [String] type The event location is a Google Meet or Hangouts conference.
+    # @param [String] status Indicates the current status of the Google conference.
+    # @param [String] join_url Google conference meeting url.
+    #
+    # 5. Zoom Conference: Meeting will take place in a Zoom conference.
+    # @param [String] type The event location is a Zoom conference
+    # @param [String] status Indicates the current status of the Zoom conference.
+    # @param [String] join_url Zoom meeting url.
+    # @param [Hash] data The conference metadata supplied by Zoom.
+    #
+    # 6. GoToMeeting Conference: Details about an Event that will take place using a GotoMeeting conference
+    # @param [String] type The event location is a GoToMeeting conference.
+    # @param [String] status Indicates the current status of the GoToMeeting conference.
+    # @param [String] join_url GoToMeeting conference meeting url.
+    # @param [Hash] data The conference metadata supplied by GoToMeeting.
+    #
+    # 7. Microsoft Teams Conference:
+    # @param [String] type The event location is a Zoom conference.
+    # @param [String] status Indicates the current status of the Microsoft Teams conference.
+    # @param [String] join_url Microsoft Teams meeting url.
+    # @param [Hash] data The conference metadata supplied by Microsoft Teams.
+    #
+    # 8. Custom Location:
+    # Use this to describe an existing Calendly-supported event location.
+    # @param [String] type The event location doesn't fall into a standard category defined by the event host (publisher).
+    # @param [String] location The event location description provided by the invitee.
+    #
+    # 9. Invitee Specified Location:
+    # Information about an event location that’s specified by the invitee.
+    # @param [String] type The event location selected by the invitee.
+    # @param [String] location The event location description provided by the invitee.
     #
 
     # @return [String]
-    attr_accessor :kind
+    attr_accessor :type
     # @return [String]
     attr_accessor :location
     # @return [String]
-    attr_accessor :phone_number
+    attr_accessor :status
     # @return [String]
-    attr_accessor :external_id
-    # @return [String]
-    attr_accessor :state
+    attr_accessor :join_url
     # @return [Hash]
     attr_accessor :data
   end

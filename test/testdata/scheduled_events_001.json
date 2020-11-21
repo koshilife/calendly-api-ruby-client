@@ -25,7 +25,10 @@
         "limit": 1,
         "total": 1
       },
-      "location": "Tokyo",
+      "location": {
+        "location": "Tokyo",
+        "type": "physical"
+      },
       "name": "15 Minute Meeting",
       "start_time": "2020-07-23T01:15:00.000000Z",
       "status": "active",
