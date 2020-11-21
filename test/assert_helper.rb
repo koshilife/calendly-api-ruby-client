@@ -166,7 +166,7 @@ module AssertHelper
     assert_equal 'active', ev.status
     assert_equal 'https://api.calendly.com/event_types/ET002', ev.event_type.uri
     assert_equal 'ET002', ev.event_type.uuid
-    assert_location_tokyo(ev.location)
+    assert_location_tokyo ev.location
     assert_equal 1, ev.invitees_counter_total
     assert_equal 1, ev.invitees_counter_active
     assert_equal 1, ev.invitees_counter_limit
@@ -185,7 +185,7 @@ module AssertHelper
     assert_equal 'canceled', ev.status
     assert_equal 'https://api.calendly.com/event_types/ET001', ev.event_type.uri
     assert_equal 'ET001', ev.event_type.uuid
-    assert_location_microsoft_teams(ev.location)
+    assert_location_microsoft_teams ev.location
     assert_equal 1, ev.invitees_counter_total
     assert_equal 0, ev.invitees_counter_active
     assert_equal 5, ev.invitees_counter_limit
@@ -204,7 +204,7 @@ module AssertHelper
     assert_equal 'active', ev.status
     assert_equal 'https://api.calendly.com/event_types/ET002', ev.event_type.uri
     assert_equal 'ET002', ev.event_type.uuid
-    assert_location_zoom(ev.location)
+    assert_location_zoom ev.location
     assert_equal 1, ev.invitees_counter_total
     assert_equal 1, ev.invitees_counter_active
     assert_equal 1, ev.invitees_counter_limit
@@ -223,7 +223,7 @@ module AssertHelper
     assert_equal 'active', ev.status
     assert_equal 'https://api.calendly.com/event_types/ET003', ev.event_type.uri
     assert_equal 'ET003', ev.event_type.uuid
-    assert_location_google_meet(ev.location)
+    assert_location_google_meet ev.location
     assert_equal 1, ev.invitees_counter_total
     assert_equal 1, ev.invitees_counter_active
     assert_equal 1, ev.invitees_counter_limit
