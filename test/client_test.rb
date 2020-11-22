@@ -112,6 +112,28 @@ module Calendly
     end
 
     #
+    # test for event_type
+    #
+
+    def test_that_it_returns_a_specific_event_type
+      et_uuid = 'ET0001'
+      res_body = load_test_data 'event_type_001.json'
+
+      url = "#{HOST}/event_types/#{et_uuid}"
+      add_stub_request :get, url, res_body: res_body
+
+      et = @client.event_type et_uuid
+      assert_event_type001 et
+    end
+
+    def test_that_it_raises_an_argument_error_on_event_type
+      proc_arg_is_empty = proc do
+        @client.event_type ''
+      end
+      assert_required_error proc_arg_is_empty, 'uuid'
+    end
+
+    #
     # test for event_types
     #
 

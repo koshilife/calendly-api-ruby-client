@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 0.4.1
+
+- support API
+  - `GET /event_types/{uuid}`
+
 ## 0.4.0
 
 - fix changed Location fields such as `kind` to `type`. (refs #18)
