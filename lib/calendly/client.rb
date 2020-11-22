@@ -89,6 +89,20 @@ module Calendly
     end
 
     #
+    # Returns a single Event Type by its UUID.
+    #
+    # @param [String] uuid the specified event type (event type's uuid).
+    # @return [Calendly::EventType]
+    # @raise [Calendly::Error] if the uuid arg is empty.
+    # @raise [Calendly::ApiError] if the api returns error code.
+    # @since 0.4.1
+    def event_type(uuid)
+      check_not_empty uuid, 'uuid'
+      body = request :get, "event_types/#{uuid}"
+      EventType.new body[:resource], self
+    end
+
+    #
     # Returns all Event Types associated with a specified User.
     #
     # @param [String] user_uri the specified user (user's uri).
