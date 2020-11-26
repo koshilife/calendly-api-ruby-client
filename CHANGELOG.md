@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## 0.4.2
+
+- add new following fields to Invitee model (refs #21)
+  - :rescheduled
+  - :old_invitee
+  - :new_invitee
+  - :cancel_url
+  - :reschedule_url
+
 ## 0.4.1
 
 - support API
