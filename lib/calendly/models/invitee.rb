@@ -34,6 +34,22 @@ module Calendly
     # @return [String]
     # Text (SMS) reminder phone number.
     attr_accessor :text_reminder_number
+    # @return [Boolean]
+    # Indicates if this invitee has rescheduled.
+    # If true, a reference to the new Invitee instance is provided in the new_invitee field.
+    attr_accessor :rescheduled
+    # @return [String, nil]
+    # Reference to old Invitee instance that got rescheduled.
+    attr_accessor :old_invitee
+    # @return [String, nil]
+    # Link to new invitee, after reschedule.
+    attr_accessor :new_invitee
+    # @return [String]
+    # Link to cancelling the event for the invitee.
+    attr_accessor :cancel_url
+    # @return [String]
+    # Link to rescheduling the event for the invitee.
+    attr_accessor :reschedule_url
     # @return [Time]
     # Moment when user record was first created.
     attr_accessor :created_at

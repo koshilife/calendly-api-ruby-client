@@ -245,6 +245,11 @@ module AssertHelper
     assert_equal 'https://api.calendly.com/scheduled_events/EV101', inv.event.uri
     assert_equal 'EV101', inv.event.uuid
     assert_nil inv.text_reminder_number
+    assert_equal false, inv.rescheduled
+    assert_nil inv.old_invitee
+    assert_nil inv.new_invitee
+    assert_equal 'https://calendly.com/cancellations/INV001', inv.cancel_url
+    assert_equal 'https://calendly.com/reschedulings/INV001', inv.reschedule_url
     assert_equal Time.parse('2020-08-20T01:00:00.000000Z').to_i, inv.created_at.to_i
     assert_equal Time.parse('2020-08-20T01:30:00.000000Z').to_i, inv.updated_at.to_i
 
@@ -295,6 +300,11 @@ module AssertHelper
     assert_equal 'https://api.calendly.com/scheduled_events/EV201', inv.event.uri
     assert_equal 'EV201', inv.event.uuid
     assert_nil inv.text_reminder_number
+    assert_equal false, inv.rescheduled
+    assert_nil inv.old_invitee
+    assert_nil inv.new_invitee
+    assert_equal 'https://calendly.com/cancellations/INV001', inv.cancel_url
+    assert_equal 'https://calendly.com/reschedulings/INV001', inv.reschedule_url
     assert_equal Time.parse('2020-08-01T01:00:00.000000Z').to_i, inv.created_at.to_i
     assert_equal Time.parse('2020-08-01T01:30:00.000000Z').to_i, inv.updated_at.to_i
 
@@ -330,6 +340,11 @@ module AssertHelper
     assert_equal 'https://api.calendly.com/scheduled_events/EV201', inv.event.uri
     assert_equal 'EV201', inv.event.uuid
     assert_nil inv.text_reminder_number
+    assert_equal false, inv.rescheduled
+    assert_equal 'https://api.calendly.com/scheduled_events/EV201_OLD1/invitees/INV002', inv.old_invitee
+    assert_nil inv.new_invitee
+    assert_equal 'https://calendly.com/cancellations/INV002', inv.cancel_url
+    assert_equal 'https://calendly.com/reschedulings/INV002', inv.reschedule_url
     assert_equal Time.parse('2020-08-02T01:00:00.000000Z').to_i, inv.created_at.to_i
     assert_equal Time.parse('2020-08-02T01:30:00.000000Z').to_i, inv.updated_at.to_i
 
@@ -365,6 +380,11 @@ module AssertHelper
     assert_equal 'https://api.calendly.com/scheduled_events/EV201', inv.event.uri
     assert_equal 'EV201', inv.event.uuid
     assert_nil inv.text_reminder_number
+    assert_equal false, inv.rescheduled
+    assert_nil inv.old_invitee
+    assert_nil inv.new_invitee
+    assert_equal 'https://calendly.com/cancellations/INV003', inv.cancel_url
+    assert_equal 'https://calendly.com/reschedulings/INV003', inv.reschedule_url
     assert_equal Time.parse('2020-08-03T01:00:00.000000Z').to_i, inv.created_at.to_i
     assert_equal Time.parse('2020-08-03T01:30:00.000000Z').to_i, inv.updated_at.to_i
 
@@ -386,6 +406,61 @@ module AssertHelper
     assert_equal 'FOOBAR_CONTENT_3', tracking.utm_content
     assert_equal 'FOOBAR_TERM_3', tracking.utm_term
     assert_equal 'FOOBAR_SALESFORCE_UUID_3', tracking.salesforce_uuid
+  end
+
+  def assert_event301_invitee001(inv)
+    assert inv.client.is_a? Calendly::Client
+    assert_equal 'INV001', inv.id
+    assert_equal 'INV001', inv.uuid
+    assert_equal 'https://api.calendly.com/scheduled_events/EV301/invitees/INV001', inv.uri
+    assert_equal 'foobar@example.com', inv.email
+    assert_equal 'FooBar', inv.name
+    assert_equal 'canceled', inv.status
+    assert_equal 'Asia/Tokyo', inv.timezone
+    assert_equal 'https://api.calendly.com/scheduled_events/EV301', inv.event.uri
+    assert_equal 'EV301', inv.event.uuid
+    assert_equal '12345678', inv.text_reminder_number
+    assert_equal true, inv.rescheduled
+    assert_equal 'https://api.calendly.com/scheduled_events/EV301_OLD1/invitees/INV001', inv.old_invitee
+    assert_equal 'https://api.calendly.com/scheduled_events/EV301_NEW1/invitees/INV001', inv.new_invitee
+    assert_equal 'https://calendly.com/cancellations/INV001', inv.cancel_url
+    assert_equal 'https://calendly.com/reschedulings/INV001', inv.reschedule_url
+    assert_equal Time.parse('2020-08-20T01:00:00.000000Z').to_i, inv.created_at.to_i
+    assert_equal Time.parse('2020-08-20T01:30:00.000000Z').to_i, inv.updated_at.to_i
+
+    assert_equal 5, inv.questions_and_answers.length
+    qa = inv.questions_and_answers[0]
+    assert_equal "text1\ntext2\ntext3", qa.answer
+    assert_equal 0, qa.position
+    assert_equal 'Multiple Lines Question', qa.question
+
+    qa = inv.questions_and_answers[1]
+    assert_equal 'text1', qa.answer
+    assert_equal 1, qa.position
+    assert_equal 'One Line Question', qa.question
+
+    qa = inv.questions_and_answers[2]
+    assert_equal 'A1', qa.answer
+    assert_equal 2, qa.position
+    assert_equal 'Radio Buttons Question', qa.question
+
+    qa = inv.questions_and_answers[3]
+    assert_equal "A1\nOther", qa.answer
+    assert_equal 3, qa.position
+    assert_equal 'Checkboxes Question', qa.question
+
+    qa = inv.questions_and_answers[4]
+    assert_equal '+81 70-1234-5678', qa.answer
+    assert_equal 4, qa.position
+    assert_equal 'Phone Number Question', qa.question
+
+    tracking = inv.tracking
+    assert_equal 'FOOBAR_CAMPAIGN', tracking.utm_campaign
+    assert_equal 'FOOBAR_SOURCE', tracking.utm_source
+    assert_equal 'FOOBAR_MEDIUM', tracking.utm_medium
+    assert_equal 'FOOBAR_CONTENT', tracking.utm_content
+    assert_equal 'FOOBAR_TERM', tracking.utm_term
+    assert_equal 'FOOBAR_SALESFORCE_UUID', tracking.salesforce_uuid
   end
 
   def assert_location_tokyo(loc)

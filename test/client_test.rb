@@ -282,13 +282,13 @@ module Calendly
     def test_that_it_returns_a_one_on_one_event_invitee
       ev_uuid = 'EV101'
       inv_uuid = 'INV001'
-      res_body = load_test_data 'scheduled_event_invitee_101.json'
+      res_body = load_test_data 'scheduled_event_invitee_301.json'
 
       url = "#{HOST}/scheduled_events/#{ev_uuid}/invitees/#{inv_uuid}"
       add_stub_request :get, url, res_body: res_body
 
       inv = @client.event_invitee ev_uuid, inv_uuid
-      assert_event101_invitee001 inv
+      assert_event301_invitee001 inv
     end
 
     def test_that_it_raises_an_argument_error_on_event_invitee

@@ -1,9 +1,12 @@
 {
   "resource": {
+    "cancel_url": "https://calendly.com/cancellations/INV001",
     "created_at": "2020-08-20T01:00:00.000000Z",
     "email": "foobar@example.com",
-    "event": "https://api.calendly.com/scheduled_events/EV101",
+    "event": "https://api.calendly.com/scheduled_events/EV301",
     "name": "FooBar",
+    "new_invitee": "https://api.calendly.com/scheduled_events/EV301_NEW1/invitees/INV001",
+    "old_invitee": "https://api.calendly.com/scheduled_events/EV301_OLD1/invitees/INV001",
     "questions_and_answers": [
       {
         "answer": "text1\ntext2\ntext3",
@@ -31,8 +34,10 @@
         "question": "Phone Number Question"
       }
     ],
-    "status": "active",
-    "text_reminder_number": null,
+    "reschedule_url": "https://calendly.com/reschedulings/INV001",
+    "rescheduled": true,
+    "status": "canceled",
+    "text_reminder_number": "12345678",
     "timezone": "Asia/Tokyo",
     "tracking": {
       "utm_campaign": "FOOBAR_CAMPAIGN",
@@ -43,6 +48,6 @@
       "salesforce_uuid": "FOOBAR_SALESFORCE_UUID"
     },
     "updated_at": "2020-08-20T01:30:00.000000Z",
-    "uri": "https://api.calendly.com/scheduled_events/EV101/invitees/INV001"
+    "uri": "https://api.calendly.com/scheduled_events/EV301/invitees/INV001"
   }
 }
