@@ -1,10 +1,13 @@
 {
   "collection": [
     {
+      "cancel_url": "https://calendly.com/cancellations/INV003",
       "created_at": "2020-08-03T01:00:00.000000Z",
       "email": "foobar@example.com",
       "event": "https://api.calendly.com/scheduled_events/EV201",
       "name": "FooBar",
+      "new_invitee": null,
+      "old_invitee": null,
       "questions_and_answers": [
         {
           "answer": "A3",
@@ -17,6 +20,8 @@
           "question": "Checkboxes Question"
         }
       ],
+      "reschedule_url": "https://calendly.com/reschedulings/INV003",
+      "rescheduled": false,
       "status": "active",
       "text_reminder_number": null,
       "timezone": "Asia/Tokyo",
@@ -32,10 +37,13 @@
       "uri": "https://api.calendly.com/scheduled_events/EV201/invitees/INV003"
     },
     {
+      "cancel_url": "https://calendly.com/cancellations/INV002",
       "created_at": "2020-08-02T01:00:00.000000Z",
       "email": "foobar@example.com",
       "event": "https://api.calendly.com/scheduled_events/EV201",
       "name": "FooBar",
+      "new_invitee": null,
+      "old_invitee": "https://api.calendly.com/scheduled_events/EV201_OLD1/invitees/INV002",
       "questions_and_answers": [
         {
           "answer": "A2",
@@ -48,6 +56,8 @@
           "question": "Checkboxes Question"
         }
       ],
+      "reschedule_url": "https://calendly.com/reschedulings/INV002",
+      "rescheduled": false,
       "status": "active",
       "text_reminder_number": null,
       "timezone": "Asia/Tokyo",

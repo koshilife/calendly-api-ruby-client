@@ -29,9 +29,9 @@ module Calendly
     end
 
     def test_that_it_returns_an_associated_invitee
-      res_body = load_test_data 'scheduled_event_invitee_101.json'
+      res_body = load_test_data 'scheduled_event_invitee_301.json'
       add_stub_request :get, @inv_uri, res_body: res_body
-      assert_event101_invitee001 @invitee.fetch
+      assert_event301_invitee001 @invitee.fetch
     end
   end
 end

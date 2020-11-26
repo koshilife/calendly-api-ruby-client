@@ -1,10 +1,13 @@
 {
   "collection": [
     {
+      "cancel_url": "https://calendly.com/cancellations/INV001",
       "created_at": "2020-08-20T01:00:00.000000Z",
       "email": "foobar@example.com",
       "event": "https://api.calendly.com/scheduled_events/EV101",
       "name": "FooBar",
+      "new_invitee": null,
+      "old_invitee": null,
       "questions_and_answers": [
         {
           "answer": "text1\ntext2\ntext3",
@@ -32,6 +35,8 @@
           "question": "Phone Number Question"
         }
       ],
+      "reschedule_url": "https://calendly.com/reschedulings/INV001",
+      "rescheduled": false,
       "status": "active",
       "text_reminder_number": null,
       "timezone": "Asia/Tokyo",
