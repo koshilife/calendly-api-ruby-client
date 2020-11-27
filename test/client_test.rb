@@ -215,29 +215,29 @@ module Calendly
     # test for scheduled_events
     #
 
-    def test_that_it_returns_all_items_of_event
-      user_uri = 'https://api.calendly.com/users/U001'
+    def test_that_it_returns_all_items_of_org_event
+      org_uri = 'https://api.calendly.com/organizations/ORG001'
       res_body = load_test_data 'scheduled_events_001.json'
-      params = {user: user_uri}
+      params = {organization: org_uri}
 
       url = "#{HOST}/scheduled_events?#{URI.encode_www_form(params)}"
       add_stub_request :get, url, res_body: res_body
 
-      evs, next_params = @client.scheduled_events user_uri
+      evs, next_params = @client.scheduled_events org_uri
       assert_equal 2, evs.length
       assert_nil next_params
       assert_event001 evs[0]
       assert_event002 evs[1]
     end
 
-    def test_that_it_returns_all_items_of_event_by_pagination
-      user_uri = 'https://api.calendly.com/users/U001'
+    def test_that_it_returns_all_items_of_org_event_by_pagination
+      org_uri = 'https://api.calendly.com/organizations/ORG001'
       base_params = {
         count: 2,
         invitee_email: 'foobar@example.com',
         max_start_time: '2020-08-01T00:00:00.000000Z',
         min_start_time: '2020-07-01T00:00:00.000000Z',
-        user: user_uri,
+        organization: org_uri,
         status: 'active'
       }
       res_body1 = load_test_data 'scheduled_events_002_page1.json'
@@ -255,10 +255,10 @@ module Calendly
       add_stub_request :get, url2, res_body: res_body2
 
       # request page1
-      evs_page1, next_params1 = @client.scheduled_events user_uri, params1
-      user_uri = next_params1.delete :user
+      evs_page1, next_params1 = @client.scheduled_events org_uri, params1
+      # org_uri = next_params1.delete :organization
       # request page2
-      evs_page2, next_params2 = @client.scheduled_events user_uri, next_params1
+      evs_page2, next_params2 = @client.scheduled_events org_uri, next_params1
 
       assert_equal 2, evs_page1.length
       assert_equal 1, evs_page2.length
@@ -268,9 +268,73 @@ module Calendly
       assert_event011 evs_page2[0]
     end
 
-    def test_that_it_raises_an_argument_error_on_events
+    def test_that_it_raises_an_argument_error_on_scheduled_events
       proc_arg_is_empty = proc do
         @client.scheduled_events ''
+      end
+      assert_required_error proc_arg_is_empty, 'org_uri'
+    end
+
+    #
+    # test for scheduled_events_by_user
+    #
+
+    def test_that_it_returns_all_items_of_user_event
+      user_uri = 'https://api.calendly.com/users/U001'
+      res_body = load_test_data 'scheduled_events_u001.json'
+      params = {user: user_uri}
+
+      url = "#{HOST}/scheduled_events?#{URI.encode_www_form(params)}"
+      add_stub_request :get, url, res_body: res_body
+
+      evs, next_params = @client.scheduled_events_by_user user_uri
+      assert_equal 2, evs.length
+      assert_nil next_params
+      assert_event001 evs[0]
+      assert_event002 evs[1]
+    end
+
+    def test_that_it_returns_all_items_of_user_event_by_pagination
+      user_uri = 'https://api.calendly.com/users/U001'
+      base_params = {
+        count: 2,
+        invitee_email: 'foobar@example.com',
+        max_start_time: '2020-08-01T00:00:00.000000Z',
+        min_start_time: '2020-07-01T00:00:00.000000Z',
+        user: user_uri,
+        status: 'active'
+      }
+      res_body1 = load_test_data 'scheduled_events_u002_page1.json'
+      params1 = base_params.merge(
+        sort: 'start_time:desc'
+      )
+      url1 = "#{HOST}/scheduled_events?#{URI.encode_www_form(params1)}"
+      add_stub_request :get, url1, res_body: res_body1
+
+      res_body2 = load_test_data 'scheduled_events_u002_page2.json'
+      params2 = base_params.merge(
+        page_token: 'NEXT_PAGE_TOKEN'
+      )
+      url2 = "#{HOST}/scheduled_events?#{URI.encode_www_form(params2)}"
+      add_stub_request :get, url2, res_body: res_body2
+
+      # request page1
+      evs_page1, next_params1 = @client.scheduled_events_by_user user_uri, params1
+      user_uri = next_params1.delete :user
+      # request page2
+      evs_page2, next_params2 = @client.scheduled_events_by_user user_uri, next_params1
+
+      assert_equal 2, evs_page1.length
+      assert_equal 1, evs_page2.length
+      assert_nil next_params2
+      assert_event013 evs_page1[0]
+      assert_event012 evs_page1[1]
+      assert_event011 evs_page2[0]
+    end
+
+    def test_that_it_raises_an_argument_error_on_scheduled_events_by_user
+      proc_arg_is_empty = proc do
+        @client.scheduled_events_by_user ''
       end
       assert_required_error proc_arg_is_empty, 'user_uri'
     end

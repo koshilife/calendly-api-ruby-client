@@ -116,7 +116,7 @@ module Calendly
     def scheduled_events(opts = {})
       return @cached_scheduled_events if @cached_scheduled_events
 
-      request_proc = proc { |options| client.scheduled_events uri, options }
+      request_proc = proc { |options| client.scheduled_events_by_user uri, options }
       @cached_scheduled_events = auto_pagination request_proc, opts
     end
 

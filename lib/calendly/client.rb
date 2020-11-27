@@ -144,7 +144,38 @@ module Calendly
     end
 
     #
-    # Get List of User Events.
+    # Get List of scheduled events belonging to a specific organization.
+    #
+    # @param [String] org_uri the specified organization (organization's uri).
+    # @param [Hash] opts the optional request parameters.
+    # @option opts [Integer] :count Number of rows to return.
+    # @option opts [String] :invitee_email Return events scheduled with the specified invitee email.
+    # @option opts [String] :max_start_time Upper bound (inclusive) for an event's start time to filter by.
+    # @option opts [String] :min_start_time Lower bound (inclusive) for an event's start time to filter by.
+    # @option opts [String] :page_token Pass this to get the next portion of collection.
+    # @option opts [String] :sort Order results by the specified field and directin. Accepts comma-separated list of {field}:{direction} values.
+    # @option opts [String] :status Whether the scheduled event is active or canceled.
+    # @return [Array<Array<Calendly::Event>, Hash>]
+    #  - [Array<Calendly::Event>] events
+    #  - [Hash] next_params the parameters to get next data. if thre is no next it returns nil.
+    # @raise [Calendly::Error] if the org_uri arg is empty.
+    # @raise [Calendly::ApiError] if the api returns error code.
+    # @since 0.5.0
+    def scheduled_events(org_uri, opts = {})
+      check_not_empty org_uri, 'org_uri'
+
+      opts_keys = %i[count invitee_email max_start_time min_start_time page_token sort status]
+      params = {organization: org_uri}
+      params = merge_options opts, opts_keys, params
+      body = request :get, 'scheduled_events', params: params
+
+      items = body[:collection] || []
+      evs = items.map { |item| Event.new item, self }
+      [evs, next_page_params(body)]
+    end
+
+    #
+    # Get List of scheduled events belonging to a specific user.
     #
     # @param [String] user_uri the specified user (user's uri).
     # @param [Hash] opts the optional request parameters.
@@ -161,7 +192,7 @@ module Calendly
     # @raise [Calendly::Error] if the user_uri arg is empty.
     # @raise [Calendly::ApiError] if the api returns error code.
     # @since 0.0.3
-    def scheduled_events(user_uri, opts = {})
+    def scheduled_events_by_user(user_uri, opts = {})
       check_not_empty user_uri, 'user_uri'
 
       opts_keys = %i[count invitee_email max_start_time min_start_time page_token sort status]
@@ -235,7 +266,7 @@ module Calendly
     end
 
     #
-    # Get List memberships of all users belonging to an organization.
+    # Get List of memberships belonging to specific an organization.
     #
     # @param [String] org_uri the specified organization (organization's uri).
     # @param [Hash] opts the optional request parameters.
@@ -262,7 +293,7 @@ module Calendly
     end
 
     #
-    # Get List memberships of all users belonging to an organization by user.
+    # Get List of memberships belonging to specific a user.
     #
     # @param [String] user_uri the specified user (user's uri).
     # @param [Hash] opts the optional request parameters.
