@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## 0.5.0
+
+- changed Calendly::Client#scheduled_events behavior (refs #21)
+  - previous version:
+    - getting events belonging to a specific USER
+  - current version:
+    - getting all events belonging to a specific ORGANIZATION
+- added Calendly::Client#scheduled_events_by_user method instead_of the before behavior
+
 ## 0.4.2
 
 - added new following fields to Invitee model (refs #21)
