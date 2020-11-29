@@ -179,6 +179,7 @@ module Calendly
     #
     # @param [String] user_uri the specified user (user's uri).
     # @param [Hash] opts the optional request parameters.
+    # @option opts [String] :organization the specified organization (organization's uri).
     # @option opts [Integer] :count Number of rows to return.
     # @option opts [String] :invitee_email Return events scheduled with the specified invitee email.
     # @option opts [String] :max_start_time Upper bound (inclusive) for an event's start time to filter by.
@@ -195,7 +196,7 @@ module Calendly
     def scheduled_events_by_user(user_uri, opts = {})
       check_not_empty user_uri, 'user_uri'
 
-      opts_keys = %i[count invitee_email max_start_time min_start_time page_token sort status]
+      opts_keys = %i[organization count invitee_email max_start_time min_start_time page_token sort status]
       params = {user: user_uri}
       params = merge_options opts, opts_keys, params
       body = request :get, 'scheduled_events', params: params
