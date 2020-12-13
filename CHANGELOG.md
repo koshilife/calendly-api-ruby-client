@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 0.5.2
+
+- started to support a API
+  - `POST /scheduling_links`
+
 ## 0.5.1
 
 - added method EventType#fetch
