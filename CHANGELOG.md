@@ -1,8 +1,17 @@
 # CHANGELOG
 
+## 0.5.0
+
+- changed Calendly::Client#scheduled_events behavior (refs #21)
+  - previous version:
+    - getting events belonging to a specific USER
+  - current version:
+    - getting all events belonging to a specific ORGANIZATION
+- added Calendly::Client#scheduled_events_by_user method instead_of the before behavior
+
 ## 0.4.2
 
-- add new following fields to Invitee model (refs #21)
+- added new following fields to Invitee model (refs #21)
   - :rescheduled
   - :old_invitee
   - :new_invitee
@@ -11,20 +20,20 @@
 
 ## 0.4.1
 
-- support API
+- started to support a API
   - `GET /event_types/{uuid}`
 
 ## 0.4.0
 
-- fix changed Location fields such as `kind` to `type`. (refs #18)
+- fixed a changes for Location fields such as `kind` to `type`. (refs #18)
 
 ## 0.3.0
 
-- remove zeitwerk dependency. (refs #16)
+- removed zeitwerk dependency. (refs #16)
 
 ## 0.2.0
 
-- save fetched data in cache. (refs #14)
+- added caching features in object when fetching data. (refs #14)
 
 ## 0.1.3
 
@@ -36,59 +45,59 @@
 
 ## 0.1.2
 
-- fix rubocop warnings.
+- fixed rubocop warnings.
 
 ## 0.1.1
 
-- add tests to make coverage 100%.
+- added tests to make coverage 100%.
 
 ## 0.1.0
 
-- define methods to access associated resources with each model.
-- rename methods:
+- defined methods to access associated resources with each model.
+- renamed methods:
   - `Calendly::Client#events` to `Calendly::Client#scheduled_events`
 
 ## 0.0.7.alpha
 
-- support APIs
+- started to support APIs
   - `POST /organizations/{uuid}/invitations`
   - `DELETE /organizations/{org_uuid}/invitations/{invitation_uuid}`
   - `DELETE /organization_memberships/{uuid}`
 
 ## 0.0.6.alpha
 
-- support APIs
+- started to support APIs
   - `GET /organizations/{uuid}/invitations`
   - `GET /organizations/{organization_uuid}/invitations/{invitation_uuid}`
 
 ## 0.0.5.alpha
 
-- support APIs
+- started to support APIs
   - `GET /organization_memberships`
   - `GET /organization_memberships/{uuid}`
-- rename fields
+- renamed fields
   - Invitee#event to Invitee#event_uri
   - Event#event_type to Event#event_type_uri
 
 ## 0.0.4.alpha
 
-- support APIs
+- started to support APIs
   - `GET /scheduled_events/{event_uuid}/invitees`
   - `GET /scheduled_events/{event_uuid}/invitees/{invitee_uuid}`
 
 ## 0.0.3.alpha
 
-- support APIs
+- started to support APIs
   - `GET /scheduled_events`
   - `GET /scheduled_events/{uuid}`
 
 ## 0.0.2.alpha
 
-- support APIs
+- started to support APIs
   - `GET /event_types`
 
 ## 0.0.1.alpha
 
 - Initial release
-- support APIs
+- started to support a API
   - `GET /users/{uuid}`

@@ -81,6 +81,35 @@ module Calendly
     end
 
     #
+    # Returns all Scheduled Events associated with self.
+    #
+    # @param [Hash] opts the optional request parameters.
+    # @option opts [Integer] :count Number of rows to return.
+    # @option opts [String] :invitee_email Return events scheduled with the specified invitee email
+    # @option opts [String] :max_start_timeUpper bound (inclusive) for an event's start time to filter by.
+    # @option opts [String] :min_start_time Lower bound (inclusive) for an event's start time to filter by.
+    # @option opts [String] :page_token Pass this to get the next portion of collection.
+    # @option opts [String] :sort Order results by the specified field and directin.
+    # Accepts comma-separated list of {field}:{direction} values.
+    # @option opts [String] :status Whether the scheduled event is active or canceled
+    # @return [Array<Calendly::Event>]
+    # @raise [Calendly::Error] if the uri is empty.
+    # @raise [Calendly::ApiError] if the api returns error code.
+    # @since 0.5.0
+    def scheduled_events(opts = {})
+      return @cached_scheduled_events if @cached_scheduled_events
+
+      request_proc = proc { |options| client.scheduled_events uri, options }
+      @cached_scheduled_events = auto_pagination request_proc, opts
+    end
+
+    # @since 0.5.0
+    def scheduled_events!(opts = {})
+      @cached_scheduled_events = nil
+      scheduled_events opts
+    end
+
+    #
     # Get List of organization scope Webhooks associated with self.
     #
     # @param [Hash] opts the optional request parameters.
