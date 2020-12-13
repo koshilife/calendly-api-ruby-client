@@ -75,6 +75,17 @@ module Calendly
     # Whether the profile belongs to a “User” or a “Team”.
     attr_accessor :owner_type
 
+    #
+    # Get EventType associated with self.
+    #
+    # @return [Calendly::EventType]
+    # @raise [Calendly::Error] if the uuid is empty.
+    # @raise [Calendly::ApiError] if the api returns error code.
+    # @since 0.5.1
+    def fetch
+      client.event_type uuid
+    end
+
   private
 
     def after_set_attributes(attrs)
