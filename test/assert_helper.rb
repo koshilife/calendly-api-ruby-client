@@ -702,6 +702,15 @@ module AssertHelper
     assert_equal 'https://api.calendly.com/users/U001', webhook.creator.uri
   end
 
+  def assert_schedule_link_001(s_link)
+    expected = {
+      booking_url: "https://calendly.com/s/FOO-BAR-SLUG",
+      owner: "https://api.calendly.com/event_types/ET001",
+      owner_type: "EventType"
+    }
+    assert_equal expected, s_link
+  end
+
   def assert_error(proc, ex_message)
     e = assert_raises Calendly::Error do
       proc.call

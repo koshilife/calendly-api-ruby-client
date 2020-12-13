@@ -1,0 +1,7 @@
+{
+  "resource": {
+    "booking_url": "https://calendly.com/s/FOO-BAR-SLUG",
+    "owner": "https://api.calendly.com/event_types/ET001",
+    "owner_type": "EventType"
+  }
+}

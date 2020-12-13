@@ -512,7 +512,7 @@ module Calendly
       else
         params[:scope] = 'organization'
       end
-      body = request(:post, 'webhook_subscriptions', body: params)
+      body = request :post, 'webhook_subscriptions', body: params
       WebhookSubscription.new body[:resource], self
     end
 
@@ -530,11 +530,42 @@ module Calendly
       true
     end
 
+    #
+    # Create a scheduling link.
+    #
+    # @param [String] uri A link to the resource that owns this scheduling Link.
+    # @param [String] max_event_count The max number of events that can be scheduled using this scheduling link.
+    # @param [String] resource_type Resource type.
+    # @return [Hash]
+    # e.g.
+    # {
+    #   booking_url: "https://calendly.com/s/FOO-BAR-SLUG",
+    #   owner: "https://api.calendly.com/event_types/GBGBDCAADAEDCRZ2",
+    #   owner_type: "EventType"
+    # }
+    # @raise [Calendly::Error] if the uri arg is empty.
+    # @raise [Calendly::Error] if the max_event_count arg is empty.
+    # @raise [Calendly::Error] if the resource_type arg is empty.
+    # @raise [Calendly::ApiError] if the api returns error code.
+    # @since 0.5.2
+    def create_schedule_link(uri, max_event_count = 1, resource_type: 'EventType')
+      check_not_empty uri, 'uri'
+      check_not_empty max_event_count, 'max_event_count'
+      check_not_empty resource_type, 'resource_type'
+      params = {
+        max_event_count: max_event_count,
+        owner: uri,
+        owner_type: resource_type
+      }
+      body = request :post, 'scheduling_links', body: params
+      body[:resource]
+    end
+
   private
 
     def request(method, path, params: nil, body: nil)
       debug_log "Request #{method.to_s.upcase} #{API_HOST}/#{path} params:#{params}, body:#{body}"
-      res = access_token.request(method, path, params: params, body: body)
+      res = access_token.request method, path, params: params, body: body
       debug_log "Response status:#{res.status}, body:#{res.body}"
       parse_as_json res
     rescue OAuth2::Error => e

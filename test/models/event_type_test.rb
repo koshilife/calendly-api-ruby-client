@@ -30,5 +30,17 @@ module Calendly
       add_stub_request :get, @et_uri, res_body: res_body
       assert_event_type001 @event_type.fetch
     end
+
+    def test_that_it_creates_schedule_link
+      req_body = {
+        max_event_count: 3,
+        owner: @et_uri,
+        owner_type: 'EventType'
+      }
+      res_body = load_test_data 'schedule_link_001.json'
+      url = "#{HOST}/scheduling_links"
+      add_stub_request :post, url, req_body: req_body, res_body: res_body, res_status: 201
+      assert_schedule_link_001 @event_type.create_schedule_link(3)
+    end
   end
 end
