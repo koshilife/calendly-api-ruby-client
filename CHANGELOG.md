@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 0.5.1
+
+- added method EventType#fetch
+
 ## 0.5.0
 
 - changed Calendly::Client#scheduled_events behavior (refs #21)
