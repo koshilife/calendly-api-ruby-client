@@ -931,6 +931,42 @@ module Calendly
       assert_api_error proc_error, 400, res_body
     end
 
+    #
+    # test for create_schedule_link
+    #
+
+    def test_that_it_creates_schedule_link
+      max_event_count = 1
+      resource_uri = "#{HOST}/resource/0001"
+      resource_type = 'FooBar'
+      req_body = {
+        max_event_count: max_event_count,
+        owner: resource_uri,
+        owner_type: resource_type
+      }
+      res_body = load_test_data 'schedule_link_001.json'
+      url = "#{HOST}/scheduling_links"
+      add_stub_request :post, url, req_body: req_body, res_body: res_body, res_status: 201
+      assert_schedule_link_001 @client.create_schedule_link(resource_uri, resource_type: resource_type)
+    end
+
+    def test_that_it_raises_an_argument_error_on_create_schedule_link
+      proc_uri_arg_is_empty = proc do
+        @client.create_schedule_link ''
+      end
+      assert_required_error proc_uri_arg_is_empty, 'uri'
+
+      proc_max_event_count_arg_is_empty = proc do
+        @client.create_schedule_link 'uri', nil
+      end
+      assert_required_error proc_max_event_count_arg_is_empty, 'max_event_count'
+
+      proc_resource_type_arg_is_empty = proc do
+        @client.create_schedule_link 'uri', resource_type: nil
+      end
+      assert_required_error proc_resource_type_arg_is_empty, 'resource_type'
+    end
+
   private
 
     def add_refresh_token_stub_request(is_valid = true)

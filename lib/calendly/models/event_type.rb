@@ -86,6 +86,25 @@ module Calendly
       client.event_type uuid
     end
 
+    #
+    # Create an associated scheduling link.
+    #
+    # @param [String] max_event_count The max number of events that can be scheduled using this scheduling link.
+    # @return [Hash]
+    # e.g.
+    # {
+    #   booking_url: "https://calendly.com/s/FOO-BAR-SLUG",
+    #   owner: "https://api.calendly.com/event_types/GBGBDCAADAEDCRZ2",
+    #   owner_type: "EventType"
+    # }
+    # @raise [Calendly::Error] if the uri is empty.
+    # @raise [Calendly::Error] if the max_event_count arg is empty.
+    # @raise [Calendly::ApiError] if the api returns error code.
+    # @since 0.5.2
+    def create_schedule_link(max_event_count = 1)
+      client.create_schedule_link uri, max_event_count, resource_type: 'EventType'
+    end
+
   private
 
     def after_set_attributes(attrs)
