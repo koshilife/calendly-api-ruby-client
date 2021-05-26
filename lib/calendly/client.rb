@@ -566,7 +566,7 @@ module Calendly
     def request(method, path, params: nil, body: nil)
       debug_log "Request #{method.to_s.upcase} #{API_HOST}/#{path} params:#{params}, body:#{body}"
       res = access_token.request method, path, params: params, body: body
-      debug_log "Response status:#{res.status}, body:#{res.body}"
+      debug_log "Response status:#{res.status}, body:#{res.body.dup&.force_encoding(Encoding::UTF_8)}"
       parse_as_json res
     rescue OAuth2::Error => e
       res = e.response.response
