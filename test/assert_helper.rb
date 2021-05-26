@@ -16,6 +16,8 @@ module AssertHelper
     assert_equal 'Asia/Tokyo', user.timezone
     assert_equal Time.parse('2020-05-01T00:00:00.000000Z').to_i, user.created_at.to_i
     assert_equal Time.parse('2020-05-02T00:00:00.000000Z').to_i, user.updated_at.to_i
+    assert_equal 'ORG001', user.current_organization.uuid
+    assert_equal 'https://api.calendly.com/organizations/ORG001', user.current_organization.uri
   end
 
   def assert_user101(user)

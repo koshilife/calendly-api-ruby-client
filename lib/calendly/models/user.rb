@@ -10,6 +10,7 @@ module Calendly
     include ModelUtils
     UUID_RE = %r{\A#{Client::API_HOST}/users/(\w+)\z}.freeze
     TIME_FIELDS = %i[created_at updated_at].freeze
+    ASSOCIATION = {current_organization: Organization}.freeze
 
     # @return [String]
     # unique id of the User object.
@@ -50,6 +51,10 @@ module Calendly
     # @return [Time]
     # Moment when user record was last updated.
     attr_accessor :updated_at
+
+    # @return [Organization]
+    # user's current organization
+    attr_accessor :current_organization
 
     #
     # Get basic information associated with self.
