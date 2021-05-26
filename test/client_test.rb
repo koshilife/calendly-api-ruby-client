@@ -4,7 +4,7 @@ require 'test_helper'
 
 module Calendly
   # test for Calendly::Client
-  class ClientTest < BaseTest
+  class ClientTest < BaseTest # rubocop:disable Metrics/ClassLength
     #
     # test for initialize
     #
@@ -60,8 +60,7 @@ module Calendly
     def test_that_it_returns_an_invalid_token_error_on_initialize
       is_expired = true
       init_configuration(is_expired)
-      is_valid = false
-      add_refresh_token_stub_request(is_valid)
+      add_refresh_token_stub_request(is_valid: false)
       proc_invalid_grant = proc do
         Calendly::Client.new
       end
@@ -230,7 +229,7 @@ module Calendly
       assert_event002 evs[1]
     end
 
-    def test_that_it_returns_all_items_of_org_event_by_pagination
+    def test_that_it_returns_all_items_of_org_event_by_pagination # rubocop:disable Metrics/MethodLength
       org_uri = 'https://api.calendly.com/organizations/ORG001'
       base_params = {
         count: 2,
@@ -294,7 +293,7 @@ module Calendly
       assert_event002 evs[1]
     end
 
-    def test_that_it_returns_all_items_of_user_event_by_pagination
+    def test_that_it_returns_all_items_of_user_event_by_pagination # rubocop:disable Metrics/MethodLength
       user_uri = 'https://api.calendly.com/users/U001'
       base_params = {
         count: 2,
@@ -383,7 +382,7 @@ module Calendly
       assert_event101_invitee001 invs[0]
     end
 
-    def test_that_it_returns_group_event_invitees
+    def test_that_it_returns_group_event_invitees # rubocop:disable Metrics/MethodLength
       ev_uuid = 'EV201'
       base_params = {
         count: 2,
@@ -450,7 +449,7 @@ module Calendly
     # test for memberships
     #
 
-    def test_that_it_returns_all_memberships_by_pagination
+    def test_that_it_returns_all_memberships_by_pagination # rubocop:disable Metrics/MethodLength
       org_uri = 'https://api.calendly.com/organizations/ORG001'
       base_params = {
         organization: org_uri,
@@ -707,7 +706,7 @@ module Calendly
       assert_org_webhook_003 webhooks[2]
     end
 
-    def test_that_it_returns_all_items_of_webhooks_by_pagination
+    def test_that_it_returns_all_items_of_webhooks_by_pagination # rubocop:disable Metrics/MethodLength
       org_uri = "#{HOST}/organizations/ORG001"
       base_params = {
         organization: org_uri,
@@ -770,7 +769,7 @@ module Calendly
       assert_user_webhook_003 webhooks[2]
     end
 
-    def test_that_it_returns_all_items_of_user_scope_webhooks_by_pagination
+    def test_that_it_returns_all_items_of_user_scope_webhooks_by_pagination # rubocop:disable Metrics/MethodLength
       org_uri = "#{HOST}/organizations/ORG001"
       user_uri = "#{HOST}/users/U001"
       base_params = {
@@ -969,7 +968,7 @@ module Calendly
 
   private
 
-    def add_refresh_token_stub_request(is_valid = true)
+    def add_refresh_token_stub_request(is_valid: true)
       req_params = {
         client_id: @client_id,
         client_secret: @client_secret,
@@ -985,7 +984,8 @@ module Calendly
         res_body = load_test_data 'error_400_invalid_grant.json'
       end
       url = "#{Calendly::Client::AUTH_API_HOST}/oauth/token"
-      stub_request(:post, url).with(body: req_body).to_return(status: res_status, body: res_body, headers: default_response_headers)
+      stub_request(:post, url).with(body: req_body).
+        to_return(status: res_status, body: res_body, headers: default_response_headers)
     end
   end
 end

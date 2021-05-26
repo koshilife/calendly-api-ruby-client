@@ -25,7 +25,7 @@ module Calendly
     # @return [OAuth2::AccessToken]
     # @since 0.0.1
     def access_token
-      return @access_token if defined? @access_token
+      return @access_token if defined?(@access_token) && @access_token
 
       client = OAuth2::Client.new(@config.client_id,
                                   @config.client_secret, client_options)
@@ -59,7 +59,7 @@ module Calendly
     # @raise [Calendly::ApiError] if the api returns error code.
     # @since 0.0.1
     def current_user
-      return @cached_current_user if @cached_current_user
+      return @cached_current_user if defined?(@cached_current_user) && @cached_current_user
 
       @cached_current_user = user
     end

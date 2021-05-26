@@ -69,7 +69,9 @@ module Calendly
     # @raise [Calendly::Error] if the uri is empty.
     # @since 0.1.0
     def organization_membership
-      return @cached_organization_membership if @cached_organization_membership
+      if defined?(@cached_organization_membership) && @cached_organization_membership
+        return @cached_organization_membership
+      end
 
       mems, = client.memberships_by_user uri
       @cached_organization_membership = mems.first
@@ -94,7 +96,7 @@ module Calendly
     # @raise [Calendly::ApiError] if the api returns error code.
     # @since 0.1.0
     def event_types(opts = {})
-      return @cached_event_types if @cached_event_types
+      return @cached_event_types if defined?(@cached_event_types) && @cached_event_types
 
       request_proc = proc { |options| client.event_types uri, options }
       @cached_event_types = auto_pagination request_proc, opts
@@ -123,7 +125,7 @@ module Calendly
     # @raise [Calendly::ApiError] if the api returns error code.
     # @since 0.1.0
     def scheduled_events(opts = {})
-      return @cached_scheduled_events if @cached_scheduled_events
+      return @cached_scheduled_events if defined?(@cached_scheduled_events) && @cached_scheduled_events
 
       request_proc = proc { |options| client.scheduled_events_by_user uri, options }
       @cached_scheduled_events = auto_pagination request_proc, opts

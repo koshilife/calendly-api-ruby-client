@@ -76,7 +76,7 @@ module Calendly
     # @raise [Calendly::ApiError] if the api returns error code.
     # @since 0.1.3
     def user_scope_webhooks(opts = {})
-      return @cached_user_scope_webhooks if @cached_user_scope_webhooks
+      return @cached_user_scope_webhooks if defined?(@cached_user_scope_webhooks) && @cached_user_scope_webhooks
 
       org_uri = organization.uri if organization
       user_uri = user.uri if user

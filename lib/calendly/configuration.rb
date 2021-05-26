@@ -24,7 +24,7 @@ module Calendly
     attr_accessor :logger
 
     def initialize
-      @logger = Logger.new STDOUT
+      @logger = Logger.new $stdout
       @logger.level = :warn
     end
   end

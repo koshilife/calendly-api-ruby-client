@@ -72,7 +72,7 @@ module Calendly
 
   private
 
-    def set_attributes(attrs) # rubocop:disable all
+    def set_attributes(attrs) # rubocop:disable Naming/AccessorMethodName, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
       return if attrs.nil?
       return unless attrs.is_a? Hash
       return if attrs.empty?

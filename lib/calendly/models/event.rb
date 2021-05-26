@@ -92,7 +92,7 @@ module Calendly
     # @raise [Calendly::ApiError] if the api returns error code.
     # @since 0.1.0
     def invitees(opts = {})
-      return @cached_invitees if @cached_invitees
+      return @cached_invitees if defined?(@cached_invitees) && @cached_invitees
 
       request_proc = proc { |options| client.event_invitees uuid, options }
       @cached_invitees = auto_pagination request_proc, opts

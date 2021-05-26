@@ -29,7 +29,7 @@ module Calendly
     # @raise [Calendly::ApiError] if the api returns error code.
     # @since 0.1.0
     def memberships(opts = {})
-      return @cached_memberships if @cached_memberships
+      return @cached_memberships if defined?(@cached_memberships) && @cached_memberships
 
       request_proc = proc { |options| client.memberships uri, options }
       @cached_memberships = auto_pagination request_proc, opts
@@ -56,7 +56,7 @@ module Calendly
     # @raise [Calendly::ApiError] if the api returns error code.
     # @since 0.1.0
     def invitations(opts = {})
-      return @cached_invitations if @cached_invitations
+      return @cached_invitations if defined?(@cached_invitations) && @cached_invitations
 
       request_proc = proc { |options| client.invitations uuid, options }
       @cached_invitations = auto_pagination request_proc, opts
@@ -98,7 +98,7 @@ module Calendly
     # @raise [Calendly::ApiError] if the api returns error code.
     # @since 0.5.0
     def scheduled_events(opts = {})
-      return @cached_scheduled_events if @cached_scheduled_events
+      return @cached_scheduled_events if defined?(@cached_scheduled_events) && @cached_scheduled_events
 
       request_proc = proc { |options| client.scheduled_events uri, options }
       @cached_scheduled_events = auto_pagination request_proc, opts
@@ -123,7 +123,7 @@ module Calendly
     # @raise [Calendly::ApiError] if the api returns error code.
     # @since 0.1.3
     def webhooks(opts = {})
-      return @cached_webhooks if @cached_webhooks
+      return @cached_webhooks if defined?(@cached_webhooks) && @cached_webhooks
 
       request_proc = proc { |options| client.webhooks uri, options }
       @cached_webhooks = auto_pagination request_proc, opts
