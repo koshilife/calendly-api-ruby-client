@@ -59,13 +59,23 @@ module Calendly
 
     # @return [String]
     attr_accessor :type
+
     # @return [String]
     attr_accessor :location
+
     # @return [String]
     attr_accessor :status
+
     # @return [String]
     attr_accessor :join_url
+
     # @return [Hash]
     attr_accessor :data
+
+  private
+
+    def inspect_attributes
+      super + %i[location]
+    end
   end
 end

@@ -7,10 +7,13 @@ module Calendly
   class ApiError < Error
     # @return [Faraday::Response]
     attr_reader :response
+
     # @return [Integer]
     attr_reader :status
+
     # @return [String]
     attr_reader :title
+
     # @return [OAuth2::Error, JSON::ParserError]
     attr_reader :cause_exception
 

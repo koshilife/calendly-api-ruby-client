@@ -26,7 +26,7 @@ module Calendly
     end
 
     #
-    # alias of uuid.
+    # Alias of uuid.
     #
     # @return [String]
     # @raise [Calendly::Error] if uuid is not defined.
@@ -37,9 +37,20 @@ module Calendly
       uuid
     end
 
+    #
+    # Self object description human readable in CLI.
+    #
+    # @return [String]
+    # @since 0.0.1
     def inspect
-      description = "uuid:#{uuid}" if respond_to? :uuid
-      "\#<#{self.class}:#{object_id} #{description}>"
+      att_info = []
+      inspect_attributes.each do |att|
+        next unless respond_to? att
+
+        att_info << "#{att}=#{send(att).inspect}"
+      end
+      att_info << '..'
+      "\#<#{self.class}:#{object_id} #{att_info.join(', ')}>"
     end
 
     module ClassMethods
@@ -101,6 +112,15 @@ module Calendly
         opts = next_opts
       end
       items
+    end
+
+    #
+    # Basic attributes used by inspect method.
+    #
+    # @return [Array<Symbol>]
+    # @since 0.6.0
+    def inspect_attributes
+      %i[uuid name type slug status email]
     end
   end
 end

@@ -16,15 +16,19 @@ module Calendly
     # @return [String]
     # unique id of the OrganizationMembership object.
     attr_accessor :uuid
+
     # @return [String]
     # Canonical resource reference.
     attr_accessor :uri
+
     # @return [String]
     # User's role within the organization
     attr_accessor :role
+
     # @return [Time]
     # Moment when user record was first created.
     attr_accessor :created_at
+
     # @return [Time]
     # Moment when user record was last updated.
     attr_accessor :updated_at
@@ -101,6 +105,12 @@ module Calendly
       org_uri = organization.uri if organization
       user_uri = user.uri if user
       client.create_webhook url, events, org_uri, user_uri
+    end
+
+  private
+
+    def inspect_attributes
+      super + %i[role]
     end
   end
 end

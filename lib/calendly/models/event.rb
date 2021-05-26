@@ -16,24 +16,31 @@ module Calendly
     # @return [String]
     # unique id of the Event object.
     attr_accessor :uuid
+
     # @return [String]
     # Canonical resource reference.
     attr_accessor :uri
+
     # @return [String]
     # Name of the event.
     attr_accessor :name
+
     # @return [String]
     # Whether the event is active or canceled.
     attr_accessor :status
+
     # @return [Time]
     # Moment when event is (or was) scheduled to begin.
     attr_accessor :start_time
+
     # @return [Time]
     # Moment when event is (or was) scheduled to end.
     attr_accessor :end_time
+
     # @return [Time]
     # Moment when user record was first created.
     attr_accessor :created_at
+
     # @return [Time]
     # Moment when user record was last updated.
     attr_accessor :updated_at
@@ -49,9 +56,11 @@ module Calendly
     # @return [Integer]
     # number of total invitees in this event.
     attr_accessor :invitees_counter_total
+
     # @return [Integer]
     # number of active invitees in this event.
     attr_accessor :invitees_counter_active
+
     # @return [Integer]
     # max invitees in this event.
     attr_accessor :invitees_counter_limit
@@ -100,15 +109,14 @@ module Calendly
     def after_set_attributes(attrs)
       super attrs
       loc_params = attrs[:location]
-      @location = Location.new loc_params if loc_params&.is_a? Hash
+      @location = Location.new loc_params if loc_params.is_a? Hash
 
       inv_cnt_attrs = attrs[:invitees_counter]
-      return unless inv_cnt_attrs
-      return unless inv_cnt_attrs.is_a? Hash
-
-      @invitees_counter_total = inv_cnt_attrs[:total]
-      @invitees_counter_active = inv_cnt_attrs[:active]
-      @invitees_counter_limit = inv_cnt_attrs[:limit]
+      if inv_cnt_attrs.is_a? Hash
+        @invitees_counter_total = inv_cnt_attrs[:total]
+        @invitees_counter_active = inv_cnt_attrs[:active]
+        @invitees_counter_limit = inv_cnt_attrs[:limit]
+      end
     end
   end
 end

@@ -12,6 +12,7 @@ module Calendly
     # @return [String]
     # unique id of the Organization object.
     attr_accessor :uuid
+
     # @return [String]
     # Canonical resource reference.
     attr_accessor :uri

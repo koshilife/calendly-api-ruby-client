@@ -16,21 +16,27 @@ module Calendly
     # @return [String]
     # unique id of the OrganizationInvitation object.
     attr_accessor :uuid
+
     # @return [String]
     # Canonical resource reference.
     attr_accessor :uri
+
     # @return [String]
     # Invited person's email.
     attr_accessor :email
+
     # @return [String]
     # Invitation status.
     attr_accessor :status
+
     # @return [Time]
     # Moment when user record was first created.
     attr_accessor :created_at
+
     # @return [Time]
     # Moment when user record was last updated.
     attr_accessor :updated_at
+
     # @return [Time]
     # Moment when the last invitation was sent.
     attr_accessor :last_sent_at
