@@ -30,6 +30,16 @@ module Calendly
     attr_accessor :name
 
     # @return [String]
+    # The first name of the invitee who booked the event when the event type is configured to use separate fields for
+    # first name and last name. Null when event type is configured to use a single field for name.
+    attr_accessor :first_name
+
+    # @return [String]
+    # The last name of the invitee who booked the event when the event type is configured to use separate fields
+    # for first name and last name. Null when event type is configured to use a single field for name.
+    attr_accessor :last_name
+
+    # @return [String]
     # Whether the invitee has canceled or is still active.
     attr_accessor :status
 
@@ -70,6 +80,38 @@ module Calendly
     # Moment when user record was last updated.
     attr_accessor :updated_at
 
+    # @return [String]
+    # Reason that the cancellation occurred.
+    attr_accessor :cancellation_canceled_by
+
+    # @return [String]
+    # Name of the person whom canceled.
+    attr_accessor :cancellation_reason
+
+    # @return [String]
+    # Unique identifier for the payment.
+    attr_accessor :payment_external_id
+
+    # @return [String]
+    # Payment provider.
+    attr_accessor :payment_provider
+
+    # @return [Float]
+    # The amount of the payment.
+    attr_accessor :payment_amount
+
+    # @return [String]
+    # The currency format that the payment is in.
+    attr_accessor :payment_currency
+
+    # @return [String]
+    # Terms of the payment.
+    attr_accessor :payment_terms
+
+    # @return [Boolean]
+    # Indicates whether the payment was successfully processed.
+    attr_accessor :payment_successful
+
     # @return [Event]
     # Reference to Event associated with this invitee.
     attr_accessor :event
@@ -99,10 +141,24 @@ module Calendly
     def after_set_attributes(attrs)
       super attrs
 
-      answers_info = attrs[:questions_and_answers]
-      if answers_info.is_a? Array
-        @questions_and_answers = answers_info.map { |params| InviteeQuestionAndAnswer.new params }
+      cancel_info = attrs[:cancellation]
+      if cancel_info.is_a? Hash
+        @cancellation_canceled_by = cancel_info[:canceled_by]
+        @cancellation_reason = cancel_info[:reason]
       end
+
+      payment_info = attrs[:payment]
+      if payment_info.is_a? Hash
+        @payment_external_id = payment_info[:external_id]
+        @payment_provider = payment_info[:provider]
+        @payment_amount = payment_info[:amount]
+        @payment_currency = payment_info[:currency]
+        @payment_terms = payment_info[:terms]
+        @payment_successful = payment_info[:successful]
+      end
+
+      answers = attrs[:questions_and_answers]
+      @questions_and_answers = answers.map { |params| InviteeQuestionAndAnswer.new params } if answers.is_a? Array
 
       tracking_info = attrs[:tracking]
       @tracking = InviteeTracking.new tracking_info if tracking_info.is_a? Hash

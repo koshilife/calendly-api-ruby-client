@@ -241,7 +241,9 @@ module AssertHelper
     assert_equal 'INV001', inv.uuid
     assert_equal 'https://api.calendly.com/scheduled_events/EV101/invitees/INV001', inv.uri
     assert_equal 'foobar@example.com', inv.email
-    assert_equal 'FooBar', inv.name
+    assert_equal 'Foo Bar', inv.name
+    assert_equal 'Foo', inv.first_name
+    assert_equal 'Bar', inv.last_name
     assert_equal 'active', inv.status
     assert_equal 'Asia/Tokyo', inv.timezone
     assert_equal 'https://api.calendly.com/scheduled_events/EV101', inv.event.uri
@@ -254,6 +256,16 @@ module AssertHelper
     assert_equal 'https://calendly.com/reschedulings/INV001', inv.reschedule_url
     assert_equal Time.parse('2020-08-20T01:00:00.000000Z').to_i, inv.created_at.to_i
     assert_equal Time.parse('2020-08-20T01:30:00.000000Z').to_i, inv.updated_at.to_i
+
+    assert_nil inv.cancellation_canceled_by
+    assert_nil inv.cancellation_reason
+
+    assert_equal 'ch_AAAAAAAAAAAAAAAAAAAAAAAA', inv.payment_external_id
+    assert_equal 'stripe', inv.payment_provider
+    assert_equal 1234.56, inv.payment_amount
+    assert_equal 'USD', inv.payment_currency
+    assert_equal 'sample terms of payment (up to 1,024 characters)', inv.payment_terms
+    assert_equal true, inv.payment_successful
 
     assert_equal 5, inv.questions_and_answers.length
     qa = inv.questions_and_answers[0]
@@ -297,6 +309,8 @@ module AssertHelper
     assert_equal 'https://api.calendly.com/scheduled_events/EV201/invitees/INV001', inv.uri
     assert_equal 'foobar@example.com', inv.email
     assert_equal 'FooBar', inv.name
+    assert_nil inv.first_name
+    assert_nil inv.last_name
     assert_equal 'active', inv.status
     assert_equal 'Asia/Tokyo', inv.timezone
     assert_equal 'https://api.calendly.com/scheduled_events/EV201', inv.event.uri
@@ -309,6 +323,16 @@ module AssertHelper
     assert_equal 'https://calendly.com/reschedulings/INV001', inv.reschedule_url
     assert_equal Time.parse('2020-08-01T01:00:00.000000Z').to_i, inv.created_at.to_i
     assert_equal Time.parse('2020-08-01T01:30:00.000000Z').to_i, inv.updated_at.to_i
+
+    assert_nil inv.cancellation_canceled_by
+    assert_nil inv.cancellation_reason
+
+    assert_nil inv.payment_external_id
+    assert_nil inv.payment_provider
+    assert_nil inv.payment_amount
+    assert_nil inv.payment_currency
+    assert_nil inv.payment_terms
+    assert_nil inv.payment_successful
 
     assert_equal 2, inv.questions_and_answers.length
     qa = inv.questions_and_answers[0]
@@ -337,6 +361,8 @@ module AssertHelper
     assert_equal 'https://api.calendly.com/scheduled_events/EV201/invitees/INV002', inv.uri
     assert_equal 'foobar@example.com', inv.email
     assert_equal 'FooBar', inv.name
+    assert_nil inv.first_name
+    assert_nil inv.last_name
     assert_equal 'active', inv.status
     assert_equal 'Asia/Tokyo', inv.timezone
     assert_equal 'https://api.calendly.com/scheduled_events/EV201', inv.event.uri
@@ -349,6 +375,16 @@ module AssertHelper
     assert_equal 'https://calendly.com/reschedulings/INV002', inv.reschedule_url
     assert_equal Time.parse('2020-08-02T01:00:00.000000Z').to_i, inv.created_at.to_i
     assert_equal Time.parse('2020-08-02T01:30:00.000000Z').to_i, inv.updated_at.to_i
+
+    assert_nil inv.cancellation_canceled_by
+    assert_nil inv.cancellation_reason
+
+    assert_nil inv.payment_external_id
+    assert_nil inv.payment_provider
+    assert_nil inv.payment_amount
+    assert_nil inv.payment_currency
+    assert_nil inv.payment_terms
+    assert_nil inv.payment_successful
 
     assert_equal 2, inv.questions_and_answers.length
     qa = inv.questions_and_answers[0]
@@ -377,6 +413,8 @@ module AssertHelper
     assert_equal 'https://api.calendly.com/scheduled_events/EV201/invitees/INV003', inv.uri
     assert_equal 'foobar@example.com', inv.email
     assert_equal 'FooBar', inv.name
+    assert_nil inv.first_name
+    assert_nil inv.last_name
     assert_equal 'active', inv.status
     assert_equal 'Asia/Tokyo', inv.timezone
     assert_equal 'https://api.calendly.com/scheduled_events/EV201', inv.event.uri
@@ -389,6 +427,16 @@ module AssertHelper
     assert_equal 'https://calendly.com/reschedulings/INV003', inv.reschedule_url
     assert_equal Time.parse('2020-08-03T01:00:00.000000Z').to_i, inv.created_at.to_i
     assert_equal Time.parse('2020-08-03T01:30:00.000000Z').to_i, inv.updated_at.to_i
+
+    assert_nil inv.cancellation_canceled_by
+    assert_nil inv.cancellation_reason
+
+    assert_nil inv.payment_external_id
+    assert_nil inv.payment_provider
+    assert_nil inv.payment_amount
+    assert_nil inv.payment_currency
+    assert_nil inv.payment_terms
+    assert_nil inv.payment_successful
 
     assert_equal 2, inv.questions_and_answers.length
     qa = inv.questions_and_answers[0]
@@ -417,6 +465,8 @@ module AssertHelper
     assert_equal 'https://api.calendly.com/scheduled_events/EV301/invitees/INV001', inv.uri
     assert_equal 'foobar@example.com', inv.email
     assert_equal 'FooBar', inv.name
+    assert_nil inv.first_name
+    assert_nil inv.last_name
     assert_equal 'canceled', inv.status
     assert_equal 'Asia/Tokyo', inv.timezone
     assert_equal 'https://api.calendly.com/scheduled_events/EV301', inv.event.uri
@@ -429,6 +479,16 @@ module AssertHelper
     assert_equal 'https://calendly.com/reschedulings/INV001', inv.reschedule_url
     assert_equal Time.parse('2020-08-20T01:00:00.000000Z').to_i, inv.created_at.to_i
     assert_equal Time.parse('2020-08-20T01:30:00.000000Z').to_i, inv.updated_at.to_i
+
+    assert_equal 'FooBar', inv.cancellation_canceled_by
+    assert_equal 'I have to be absent next week, sorry.', inv.cancellation_reason
+
+    assert_nil inv.payment_external_id
+    assert_nil inv.payment_provider
+    assert_nil inv.payment_amount
+    assert_nil inv.payment_currency
+    assert_nil inv.payment_terms
+    assert_nil inv.payment_successful
 
     assert_equal 5, inv.questions_and_answers.length
     qa = inv.questions_and_answers[0]
@@ -706,9 +766,9 @@ module AssertHelper
 
   def assert_schedule_link_001(s_link)
     expected = {
-      booking_url: "https://calendly.com/s/FOO-BAR-SLUG",
-      owner: "https://api.calendly.com/event_types/ET001",
-      owner_type: "EventType"
+      booking_url: 'https://calendly.com/s/FOO-BAR-SLUG',
+      owner: 'https://api.calendly.com/event_types/ET001',
+      owner_type: 'EventType'
     }
     assert_equal expected, s_link
   end

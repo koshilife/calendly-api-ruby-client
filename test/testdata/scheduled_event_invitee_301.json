@@ -1,12 +1,19 @@
 {
   "resource": {
     "cancel_url": "https://calendly.com/cancellations/INV001",
+    "cancellation": {
+      "canceled_by": "FooBar",
+      "reason": "I have to be absent next week, sorry."
+    },
     "created_at": "2020-08-20T01:00:00.000000Z",
     "email": "foobar@example.com",
     "event": "https://api.calendly.com/scheduled_events/EV301",
+    "first_name": null,
+    "last_name": null,
     "name": "FooBar",
     "new_invitee": "https://api.calendly.com/scheduled_events/EV301_NEW1/invitees/INV001",
     "old_invitee": "https://api.calendly.com/scheduled_events/EV301_OLD1/invitees/INV001",
+    "payment": null,
     "questions_and_answers": [
       {
         "answer": "text1\ntext2\ntext3",
