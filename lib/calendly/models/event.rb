@@ -65,6 +65,14 @@ module Calendly
     # max invitees in this event.
     attr_accessor :invitees_counter_limit
 
+    # @return [Array<User>]
+    # Event membership list.
+    attr_accessor :event_memberships
+
+    # @return [Array<Guest>]
+    # Additional people added to an event by an invitee.
+    attr_accessor :event_guests
+
     #
     # Get Scheduled Event associated with self.
     #
@@ -117,6 +125,17 @@ module Calendly
         @invitees_counter_active = inv_cnt_attrs[:active]
         @invitees_counter_limit = inv_cnt_attrs[:limit]
       end
+
+      memberships = attrs[:event_memberships]
+      if memberships.is_a? Array
+        @event_memberships = memberships.map do |params|
+          uri = params[:user]
+          User.new({uri: uri}, @client)
+        end
+      end
+
+      guests = attrs[:event_guests]
+      @event_guests = guests.map { |params| Guest.new params } if guests.is_a? Array
     end
   end
 end

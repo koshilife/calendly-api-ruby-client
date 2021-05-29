@@ -280,7 +280,7 @@ module Calendly
 
     def test_that_it_returns_all_items_of_user_event
       user_uri = 'https://api.calendly.com/users/U001'
-      res_body = load_test_data 'scheduled_events_u001.json'
+      res_body = load_test_data 'scheduled_events_001.json'
       params = {user: user_uri}
 
       url = "#{HOST}/scheduled_events?#{URI.encode_www_form(params)}"
@@ -303,14 +303,14 @@ module Calendly
         user: user_uri,
         status: 'active'
       }
-      res_body1 = load_test_data 'scheduled_events_u002_page1.json'
+      res_body1 = load_test_data 'scheduled_events_002_page1_user.json'
       params1 = base_params.merge(
         sort: 'start_time:desc'
       )
       url1 = "#{HOST}/scheduled_events?#{URI.encode_www_form(params1)}"
       add_stub_request :get, url1, res_body: res_body1
 
-      res_body2 = load_test_data 'scheduled_events_u002_page2.json'
+      res_body2 = load_test_data 'scheduled_events_002_page2.json'
       params2 = base_params.merge(
         page_token: 'NEXT_PAGE_TOKEN'
       )

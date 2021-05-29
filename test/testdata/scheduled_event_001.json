@@ -2,6 +2,18 @@
   "resource": {
     "created_at": "2020-07-10T05:00:00.000000Z",
     "end_time": "2020-07-22T02:00:00.000000Z",
+    "event_guests": [
+      {
+        "created_at": "2020-07-10T05:00:00.000000Z",
+        "email": "guest1@example.com",
+        "updated_at": "2020-07-10T05:00:00.000000Z"
+      }
+    ],
+    "event_memberships": [
+      {
+        "user": "https://api.calendly.com/users/U001"
+      }
+    ],
     "event_type": "https://api.calendly.com/event_types/ET001",
     "invitees_counter": {
       "active": 0,

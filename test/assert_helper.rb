@@ -157,6 +157,19 @@ module AssertHelper
     assert_equal Time.parse('2020-07-22T02:00:00.000000Z').to_i, ev.end_time.to_i
     assert_equal Time.parse('2020-07-10T05:00:00.000000Z').to_i, ev.created_at.to_i
     assert_equal Time.parse('2020-07-11T06:00:00.000000Z').to_i, ev.updated_at.to_i
+
+    assert_equal 1, ev.event_memberships.length
+    user = ev.event_memberships[0]
+    assert user.is_a? Calendly::User
+    assert_equal 'U001', user.id
+    assert_equal 'https://api.calendly.com/users/U001', user.uri
+
+    assert_equal 1, ev.event_guests.length
+    guest = ev.event_guests[0]
+    assert guest.is_a? Calendly::Guest
+    assert_equal 'guest1@example.com', guest.email
+    assert_equal Time.parse('2020-07-10T05:00:00.000000Z').to_i, guest.created_at.to_i
+    assert_equal Time.parse('2020-07-10T05:00:00.000000Z').to_i, guest.updated_at.to_i
   end
 
   def assert_event002(ev)
@@ -176,6 +189,24 @@ module AssertHelper
     assert_equal Time.parse('2020-07-23T01:30:00.000000Z').to_i, ev.end_time.to_i
     assert_equal Time.parse('2020-07-10T06:00:00.000000Z').to_i, ev.created_at.to_i
     assert_equal Time.parse('2020-07-10T07:00:00.000000Z').to_i, ev.updated_at.to_i
+
+    assert_equal 1, ev.event_memberships.length
+    user = ev.event_memberships[0]
+    assert user.is_a? Calendly::User
+    assert_equal 'U001', user.id
+    assert_equal 'https://api.calendly.com/users/U001', user.uri
+
+    assert_equal 2, ev.event_guests.length
+    guest = ev.event_guests[0]
+    assert guest.is_a? Calendly::Guest
+    assert_equal 'guest2@example.com', guest.email
+    assert_equal Time.parse('2020-07-10T06:00:00.000000Z').to_i, guest.created_at.to_i
+    assert_equal Time.parse('2020-07-10T06:00:00.000000Z').to_i, guest.updated_at.to_i
+    guest = ev.event_guests[1]
+    assert guest.is_a? Calendly::Guest
+    assert_equal 'guest3@example.com', guest.email
+    assert_equal Time.parse('2020-07-10T06:00:00.000000Z').to_i, guest.created_at.to_i
+    assert_equal Time.parse('2020-07-10T06:00:00.000000Z').to_i, guest.updated_at.to_i
   end
 
   def assert_event011(ev)
@@ -195,6 +226,18 @@ module AssertHelper
     assert_equal Time.parse('2020-07-22T02:00:00.000000Z').to_i, ev.end_time.to_i
     assert_equal Time.parse('2020-07-10T05:00:00.000000Z').to_i, ev.created_at.to_i
     assert_equal Time.parse('2020-07-11T06:00:00.000000Z').to_i, ev.updated_at.to_i
+
+    assert_equal 2, ev.event_memberships.length
+    user = ev.event_memberships[0]
+    assert user.is_a? Calendly::User
+    assert_equal 'U001', user.id
+    assert_equal 'https://api.calendly.com/users/U001', user.uri
+    user = ev.event_memberships[1]
+    assert user.is_a? Calendly::User
+    assert_equal 'U101', user.id
+    assert_equal 'https://api.calendly.com/users/U101', user.uri
+
+    assert_equal [], ev.event_guests
   end
 
   def assert_event012(ev)
@@ -214,6 +257,18 @@ module AssertHelper
     assert_equal Time.parse('2020-07-23T01:30:00.000000Z').to_i, ev.end_time.to_i
     assert_equal Time.parse('2020-07-10T06:00:00.000000Z').to_i, ev.created_at.to_i
     assert_equal Time.parse('2020-07-10T07:00:00.000000Z').to_i, ev.updated_at.to_i
+
+    assert_equal 2, ev.event_memberships.length
+    user = ev.event_memberships[0]
+    assert user.is_a? Calendly::User
+    assert_equal 'U001', user.id
+    assert_equal 'https://api.calendly.com/users/U001', user.uri
+    user = ev.event_memberships[1]
+    assert user.is_a? Calendly::User
+    assert_equal 'U102', user.id
+    assert_equal 'https://api.calendly.com/users/U102', user.uri
+
+    assert_equal [], ev.event_guests
   end
 
   def assert_event013(ev)
@@ -233,6 +288,18 @@ module AssertHelper
     assert_equal Time.parse('2020-07-24T02:15:00.000000Z').to_i, ev.end_time.to_i
     assert_equal Time.parse('2020-07-13T06:00:00.000000Z').to_i, ev.created_at.to_i
     assert_equal Time.parse('2020-07-13T07:00:00.000000Z').to_i, ev.updated_at.to_i
+
+    assert_equal 2, ev.event_memberships.length
+    user = ev.event_memberships[0]
+    assert user.is_a? Calendly::User
+    assert_equal 'U001', user.id
+    assert_equal 'https://api.calendly.com/users/U001', user.uri
+    user = ev.event_memberships[1]
+    assert user.is_a? Calendly::User
+    assert_equal 'U103', user.id
+    assert_equal 'https://api.calendly.com/users/U103', user.uri
+
+    assert_equal [], ev.event_guests
   end
 
   def assert_event101_invitee001(inv)
