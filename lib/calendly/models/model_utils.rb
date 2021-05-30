@@ -26,7 +26,7 @@ module Calendly
     end
 
     #
-    # alias of uuid.
+    # Alias of uuid.
     #
     # @return [String]
     # @raise [Calendly::Error] if uuid is not defined.
@@ -37,9 +37,20 @@ module Calendly
       uuid
     end
 
+    #
+    # Self object description human readable in CLI.
+    #
+    # @return [String]
+    # @since 0.0.1
     def inspect
-      description = "uuid:#{uuid}" if respond_to? :uuid
-      "\#<#{self.class}:#{object_id} #{description}>"
+      att_info = []
+      inspect_attributes.each do |att|
+        next unless respond_to? att
+
+        att_info << "#{att}=#{send(att).inspect}"
+      end
+      att_info << '..'
+      "\#<#{self.class}:#{object_id} #{att_info.join(', ')}>"
     end
 
     module ClassMethods
@@ -61,7 +72,7 @@ module Calendly
 
   private
 
-    def set_attributes(attrs) # rubocop:disable all
+    def set_attributes(attrs) # rubocop:disable Naming/AccessorMethodName, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
       return if attrs.nil?
       return unless attrs.is_a? Hash
       return if attrs.empty?
@@ -70,8 +81,14 @@ module Calendly
         next unless respond_to? "#{key}=".to_sym
 
         if value && defined?(self.class::ASSOCIATION) && self.class::ASSOCIATION.key?(key)
-          associated_attrs = value.is_a?(Hash) ? value : {uri: value}
-          value = self.class::ASSOCIATION[key].new associated_attrs, @client
+          klass = self.class::ASSOCIATION[key]
+          if value.is_a? String # rubocop:disable Style/CaseLikeIf
+            value = klass.new({uri: value}, @client)
+          elsif value.is_a? Hash
+            value = klass.new(value, @client)
+          elsif value.is_a? Array
+            value = value.map { |v| klass.new(v, @client) }
+          end
         elsif value && defined?(self.class::TIME_FIELDS) && self.class::TIME_FIELDS.include?(key)
           value = Time.parse value
         end
@@ -101,6 +118,15 @@ module Calendly
         opts = next_opts
       end
       items
+    end
+
+    #
+    # Basic attributes used by inspect method.
+    #
+    # @return [Array<Symbol>]
+    # @since 0.6.0
+    def inspect_attributes
+      %i[uuid name type slug status email]
     end
   end
 end

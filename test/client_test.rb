@@ -4,7 +4,7 @@ require 'test_helper'
 
 module Calendly
   # test for Calendly::Client
-  class ClientTest < BaseTest
+  class ClientTest < BaseTest # rubocop:disable Metrics/ClassLength
     #
     # test for initialize
     #
@@ -60,8 +60,7 @@ module Calendly
     def test_that_it_returns_an_invalid_token_error_on_initialize
       is_expired = true
       init_configuration(is_expired)
-      is_valid = false
-      add_refresh_token_stub_request(is_valid)
+      add_refresh_token_stub_request(is_valid: false)
       proc_invalid_grant = proc do
         Calendly::Client.new
       end
@@ -116,14 +115,37 @@ module Calendly
     #
 
     def test_that_it_returns_a_specific_event_type
-      et_uuid = 'ET0001'
-      res_body = load_test_data 'event_type_001.json'
-
+      # data: owner type is user
+      et_uuid = 'ET001'
+      res_body = load_test_data 'event_type_001_user.json'
       url = "#{HOST}/event_types/#{et_uuid}"
       add_stub_request :get, url, res_body: res_body
-
       et = @client.event_type et_uuid
       assert_event_type001 et
+
+      # data: owner type is team
+      et_uuid = 'ET101'
+      res_body = load_test_data 'event_type_101_team.json'
+      url = "#{HOST}/event_types/#{et_uuid}"
+      add_stub_request :get, url, res_body: res_body
+      et = @client.event_type et_uuid
+      assert_event_type101 et
+
+      # data: owner type is nothing
+      et_uuid = 'ET201'
+      res_body = load_test_data 'event_type_201_no_profile.json'
+      url = "#{HOST}/event_types/#{et_uuid}"
+      add_stub_request :get, url, res_body: res_body
+      et = @client.event_type et_uuid
+      assert_event_type201 et
+
+      # data: has many questions
+      et_uuid = 'ET011'
+      res_body = load_test_data 'event_type_011_many_questions.json'
+      url = "#{HOST}/event_types/#{et_uuid}"
+      add_stub_request :get, url, res_body: res_body
+      et = @client.event_type et_uuid
+      assert_event_type011 et
     end
 
     def test_that_it_raises_an_argument_error_on_event_type
@@ -138,14 +160,14 @@ module Calendly
     #
 
     def test_that_it_returns_all_items_of_event_type
-      user_uri = 'https://api.calendly.com/users/U001'
+      org_uri = 'https://api.calendly.com/organizations/ORG001'
       res_body = load_test_data 'event_types_001.json'
-      params = {user: user_uri}
+      params = {organization: org_uri}
 
       url = "#{HOST}/event_types?#{URI.encode_www_form(params)}"
       add_stub_request :get, url, res_body: res_body
 
-      event_types, next_params = @client.event_types user_uri
+      event_types, next_params = @client.event_types org_uri
       assert_equal 3, event_types.length
       assert_nil next_params
       assert_event_type001 event_types[0]
@@ -153,26 +175,26 @@ module Calendly
       assert_event_type003 event_types[2]
     end
 
-    def test_that_it_returns_all_items_of_event_type_by_pagination
-      user_uri = 'https://api.calendly.com/users/U001'
+    def test_that_it_returns_all_items_of_event_type_across_pages
+      org_uri = 'https://api.calendly.com/organizations/ORG001'
 
       res_body1 = load_test_data 'event_types_002_page1.json'
       option_params1 = {count: 2, sort: 'created_at:desc'}
-      params1 = {user: user_uri}.merge option_params1
+      params1 = {organization: org_uri}.merge option_params1
       url1 = "#{HOST}/event_types?#{URI.encode_www_form(params1)}"
       add_stub_request :get, url1, res_body: res_body1
 
       res_body2 = load_test_data 'event_types_002_page2.json'
       option_params2 = {count: 2, page_token: 'NEXT_PAGE_TOKEN'}
-      params2 = {user: user_uri}.merge option_params2
+      params2 = {organization: org_uri}.merge option_params2
       url2 = "#{HOST}/event_types?#{URI.encode_www_form(params2)}"
       add_stub_request :get, url2, res_body: res_body2
 
       # request page1
-      event_types_page1, next_params1 = @client.event_types user_uri, option_params1
-      user_uri_page1 = next_params1.delete :user
+      event_types_page1, next_params1 = @client.event_types org_uri, option_params1
+      org_uri_page1 = next_params1.delete :organization
       # request page2
-      event_types_page2, next_params2 = @client.event_types user_uri_page1, next_params1
+      event_types_page2, next_params2 = @client.event_types org_uri_page1, next_params1
 
       assert_equal 2, event_types_page1.length
       assert_equal 1, event_types_page2.length
@@ -185,6 +207,62 @@ module Calendly
     def test_that_it_raises_an_argument_error_on_event_types
       proc_arg_is_empty = proc do
         @client.event_types ''
+      end
+      assert_required_error proc_arg_is_empty, 'org_uri'
+    end
+
+    #
+    # test for event_types_by_user
+    #
+
+    def test_that_it_returns_all_items_of_event_type_by_user
+      user_uri = 'https://api.calendly.com/users/U001'
+      res_body = load_test_data 'event_types_001.json'
+      params = {user: user_uri}
+
+      url = "#{HOST}/event_types?#{URI.encode_www_form(params)}"
+      add_stub_request :get, url, res_body: res_body
+
+      event_types, next_params = @client.event_types_by_user user_uri
+      assert_equal 3, event_types.length
+      assert_nil next_params
+      assert_event_type001 event_types[0]
+      assert_event_type002 event_types[1]
+      assert_event_type003 event_types[2]
+    end
+
+    def test_that_it_returns_all_items_of_event_type_by_user_across_pages
+      user_uri = 'https://api.calendly.com/users/U001'
+
+      res_body1 = load_test_data 'event_types_002_page1_user.json'
+      option_params1 = {count: 2, sort: 'created_at:desc'}
+      params1 = {user: user_uri}.merge option_params1
+      url1 = "#{HOST}/event_types?#{URI.encode_www_form(params1)}"
+      add_stub_request :get, url1, res_body: res_body1
+
+      res_body2 = load_test_data 'event_types_002_page2.json'
+      option_params2 = {count: 2, page_token: 'NEXT_PAGE_TOKEN'}
+      params2 = {user: user_uri}.merge option_params2
+      url2 = "#{HOST}/event_types?#{URI.encode_www_form(params2)}"
+      add_stub_request :get, url2, res_body: res_body2
+
+      # request page1
+      event_types_page1, next_params1 = @client.event_types_by_user user_uri, option_params1
+      user_uri_page1 = next_params1.delete :user
+      # request page2
+      event_types_page2, next_params2 = @client.event_types_by_user user_uri_page1, next_params1
+
+      assert_equal 2, event_types_page1.length
+      assert_equal 1, event_types_page2.length
+      assert_nil next_params2
+      assert_event_type003 event_types_page1[0]
+      assert_event_type002 event_types_page1[1]
+      assert_event_type001 event_types_page2[0]
+    end
+
+    def test_that_it_raises_an_argument_error_on_event_types_by_user
+      proc_arg_is_empty = proc do
+        @client.event_types_by_user ''
       end
       assert_required_error proc_arg_is_empty, 'user_uri'
     end
@@ -230,7 +308,7 @@ module Calendly
       assert_event002 evs[1]
     end
 
-    def test_that_it_returns_all_items_of_org_event_by_pagination
+    def test_that_it_returns_all_items_of_org_event_across_pages # rubocop:disable Metrics/MethodLength
       org_uri = 'https://api.calendly.com/organizations/ORG001'
       base_params = {
         count: 2,
@@ -281,7 +359,7 @@ module Calendly
 
     def test_that_it_returns_all_items_of_user_event
       user_uri = 'https://api.calendly.com/users/U001'
-      res_body = load_test_data 'scheduled_events_u001.json'
+      res_body = load_test_data 'scheduled_events_001.json'
       params = {user: user_uri}
 
       url = "#{HOST}/scheduled_events?#{URI.encode_www_form(params)}"
@@ -294,7 +372,7 @@ module Calendly
       assert_event002 evs[1]
     end
 
-    def test_that_it_returns_all_items_of_user_event_by_pagination
+    def test_that_it_returns_all_items_of_user_event_across_pages # rubocop:disable Metrics/MethodLength
       user_uri = 'https://api.calendly.com/users/U001'
       base_params = {
         count: 2,
@@ -304,14 +382,14 @@ module Calendly
         user: user_uri,
         status: 'active'
       }
-      res_body1 = load_test_data 'scheduled_events_u002_page1.json'
+      res_body1 = load_test_data 'scheduled_events_002_page1_user.json'
       params1 = base_params.merge(
         sort: 'start_time:desc'
       )
       url1 = "#{HOST}/scheduled_events?#{URI.encode_www_form(params1)}"
       add_stub_request :get, url1, res_body: res_body1
 
-      res_body2 = load_test_data 'scheduled_events_u002_page2.json'
+      res_body2 = load_test_data 'scheduled_events_002_page2.json'
       params2 = base_params.merge(
         page_token: 'NEXT_PAGE_TOKEN'
       )
@@ -383,7 +461,7 @@ module Calendly
       assert_event101_invitee001 invs[0]
     end
 
-    def test_that_it_returns_group_event_invitees
+    def test_that_it_returns_group_event_invitees # rubocop:disable Metrics/MethodLength
       ev_uuid = 'EV201'
       base_params = {
         count: 2,
@@ -450,7 +528,7 @@ module Calendly
     # test for memberships
     #
 
-    def test_that_it_returns_all_memberships_by_pagination
+    def test_that_it_returns_all_memberships_across_pages # rubocop:disable Metrics/MethodLength
       org_uri = 'https://api.calendly.com/organizations/ORG001'
       base_params = {
         organization: org_uri,
@@ -579,7 +657,7 @@ module Calendly
       assert_org_inv003 invs[2]
     end
 
-    def test_that_it_returns_all_organization_invitations_by_pagination
+    def test_that_it_returns_all_organization_invitations_across_pages
       org_uuid = 'ORG001'
       base_params = {count: 2}
 
@@ -707,7 +785,7 @@ module Calendly
       assert_org_webhook_003 webhooks[2]
     end
 
-    def test_that_it_returns_all_items_of_webhooks_by_pagination
+    def test_that_it_returns_all_items_of_webhooks_across_pages # rubocop:disable Metrics/MethodLength
       org_uri = "#{HOST}/organizations/ORG001"
       base_params = {
         organization: org_uri,
@@ -770,7 +848,7 @@ module Calendly
       assert_user_webhook_003 webhooks[2]
     end
 
-    def test_that_it_returns_all_items_of_user_scope_webhooks_by_pagination
+    def test_that_it_returns_all_items_of_user_scope_webhooks_across_pages # rubocop:disable Metrics/MethodLength
       org_uri = "#{HOST}/organizations/ORG001"
       user_uri = "#{HOST}/users/U001"
       base_params = {
@@ -969,7 +1047,7 @@ module Calendly
 
   private
 
-    def add_refresh_token_stub_request(is_valid = true)
+    def add_refresh_token_stub_request(is_valid: true)
       req_params = {
         client_id: @client_id,
         client_secret: @client_secret,
@@ -985,7 +1063,8 @@ module Calendly
         res_body = load_test_data 'error_400_invalid_grant.json'
       end
       url = "#{Calendly::Client::AUTH_API_HOST}/oauth/token"
-      stub_request(:post, url).with(body: req_body).to_return(status: res_status, body: res_body, headers: default_response_headers)
+      stub_request(:post, url).with(body: req_body).
+        to_return(status: res_status, body: res_body, headers: default_response_headers)
     end
   end
 end

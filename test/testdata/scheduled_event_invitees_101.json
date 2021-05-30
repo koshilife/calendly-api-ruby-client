@@ -5,9 +5,19 @@
       "created_at": "2020-08-20T01:00:00.000000Z",
       "email": "foobar@example.com",
       "event": "https://api.calendly.com/scheduled_events/EV101",
-      "name": "FooBar",
+      "first_name": "Foo",
+      "last_name": "Bar",
+      "name": "Foo Bar",
       "new_invitee": null,
       "old_invitee": null,
+      "payment": {
+        "external_id": "ch_AAAAAAAAAAAAAAAAAAAAAAAA",
+        "provider": "stripe",
+        "amount": 1234.56,
+        "currency": "USD",
+        "terms": "sample terms of payment (up to 1,024 characters)",
+        "successful": true
+      },
       "questions_and_answers": [
         {
           "answer": "text1\ntext2\ntext3",

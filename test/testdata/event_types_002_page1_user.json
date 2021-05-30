@@ -51,6 +51,6 @@
   ],
   "pagination": {
     "count": 2,
-    "next_page": "https://api.calendly.com/event_types?count=2&page_token=NEXT_PAGE_TOKEN&organization=https%3A%2F%2Fapi.calendly.com%2Forganizations%2FORG001"
+    "next_page": "https://api.calendly.com/event_types?count=2&page_token=NEXT_PAGE_TOKEN&user=https%3A%2F%2Fapi.calendly.com%2Fusers%2FU001"
   }
 }

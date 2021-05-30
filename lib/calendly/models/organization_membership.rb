@@ -16,15 +16,19 @@ module Calendly
     # @return [String]
     # unique id of the OrganizationMembership object.
     attr_accessor :uuid
+
     # @return [String]
     # Canonical resource reference.
     attr_accessor :uri
+
     # @return [String]
     # User's role within the organization
     attr_accessor :role
+
     # @return [Time]
     # Moment when user record was first created.
     attr_accessor :created_at
+
     # @return [Time]
     # Moment when user record was last updated.
     attr_accessor :updated_at
@@ -72,18 +76,12 @@ module Calendly
     # @raise [Calendly::ApiError] if the api returns error code.
     # @since 0.1.3
     def user_scope_webhooks(opts = {})
-      return @cached_user_scope_webhooks if @cached_user_scope_webhooks
-
-      org_uri = organization.uri if organization
-      user_uri = user.uri if user
-      request_proc = proc { |options| client.user_scope_webhooks org_uri, user_uri, options }
-      @cached_user_scope_webhooks = auto_pagination request_proc, opts
+      user.webhooks(opts)
     end
 
     # @since 0.2.0
     def user_scope_webhooks!(opts = {})
-      @cached_user_scope_webhooks = nil
-      user_scope_webhooks opts
+      user.webhooks!(opts)
     end
 
     #
@@ -98,9 +96,20 @@ module Calendly
     # @raise [Calendly::ApiError] if the api returns error code.
     # @since 0.1.3
     def create_user_scope_webhook(url, events)
-      org_uri = organization.uri if organization
-      user_uri = user.uri if user
-      client.create_webhook url, events, org_uri, user_uri
+      user.create_webhook url, events
+    end
+
+  private
+
+    def after_set_attributes(attrs)
+      super attrs
+      if user.is_a?(User) && user.current_organization.nil? && organization.is_a?(Organization) # rubocop:disable Style/GuardClause
+        user.current_organization = organization
+      end
+    end
+
+    def inspect_attributes
+      super + %i[role]
     end
   end
 end

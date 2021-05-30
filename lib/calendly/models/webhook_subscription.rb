@@ -16,36 +16,47 @@ module Calendly
     # @return [String]
     # unique id of the WebhookSubscription object.
     attr_accessor :uuid
+
     # @return [String]
     # Canonical reference (unique identifier) for the webhook.
     attr_accessor :uri
+
     # @return [String]
     # The callback URL to use when the event is triggered.
     attr_accessor :callback_url
+
     # @return [Time]
     # The moment when the webhook subscription was created.
     attr_accessor :created_at
+
     # @return [Time]
     # The moment when the webhook subscription was last updated.
     attr_accessor :updated_at
+
     # @return [Time]
     # The date and time the webhook subscription is retried.
     attr_accessor :retry_started_at
+
     # @return [String]
     # Indicates if the webhook subscription is "active" or "disabled".
     attr_accessor :state
+
     # @return [Array<String>]
     # A list of events to which the webhook is subscribed.
     attr_accessor :events
+
     # @return [String]
     # The scope of the webhook subscription.
     attr_accessor :scope
+
     # @return [Calendly::Organization]
     # The organization that's associated with the webhook subscription.
     attr_accessor :organization
+
     # @return [Calendly::User]
     # The user that's associated with the webhook subscription.
     attr_accessor :user
+
     # @return [Calendly::User]
     # The user who created the webhook subscription.
     attr_accessor :creator
@@ -70,6 +81,12 @@ module Calendly
     # @since 0.1.0
     def delete
       client.delete_webhook uuid
+    end
+
+  private
+
+    def inspect_attributes
+      super + %i[state scope events callback_url]
     end
   end
 end

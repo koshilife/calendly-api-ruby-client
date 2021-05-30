@@ -4,6 +4,7 @@
       "active": true,
       "color": "#000001",
       "created_at": "2020-07-01T03:00:00.000000Z",
+      "custom_questions": [],
       "description_html": null,
       "description_plain": null,
       "duration": 15,
@@ -17,15 +18,17 @@
         "type": "User"
       },
       "scheduling_url": "https://calendly.com/foobar/15min",
+      "secret": false,
       "slug": "15min",
       "type": "StandardEventType",
       "updated_at": "2020-07-11T03:00:00.000000Z",
-      "uri": "https://api.calendly.com/event_types/ET0001"
+      "uri": "https://api.calendly.com/event_types/ET001"
     },
     {
       "active": false,
       "color": "#000002",
       "created_at": "2020-07-02T03:00:00.000000Z",
+      "custom_questions": [],
       "description_html": null,
       "description_plain": null,
       "duration": 60,
@@ -40,14 +43,16 @@
       },
       "scheduling_url": "https://calendly.com/foobar/60min",
       "slug": "60min",
+      "secret": false,
       "type": "StandardEventType",
       "updated_at": "2020-07-12T03:00:00.000000Z",
-      "uri": "https://api.calendly.com/event_types/ET0002"
+      "uri": "https://api.calendly.com/event_types/ET002"
     },
     {
       "active": false,
       "color": "#000003",
       "created_at": "2020-07-03T03:00:00.000000Z",
+      "custom_questions": [],
       "description_html": "<p>description</p>",
       "description_plain": "description",
       "duration": 30,
@@ -62,9 +67,10 @@
       },
       "scheduling_url": "https://calendly.com/foobar/30min",
       "slug": "30min",
+      "secret": false,
       "type": "StandardEventType",
       "updated_at": "2020-07-13T03:00:00.000000Z",
-      "uri": "https://api.calendly.com/event_types/ET0003"
+      "uri": "https://api.calendly.com/event_types/ET003"
     }
   ],
   "pagination": {

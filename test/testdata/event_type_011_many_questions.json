@@ -1,0 +1,89 @@
+{
+  "resource": {
+    "active": true,
+    "color": "#000001",
+    "created_at": "2020-07-01T03:00:00.000000Z",
+    "custom_questions": [
+      {
+        "answer_choices": [],
+        "enabled": false,
+        "include_other": false,
+        "name": "Please share anything that will help prepare for our meeting.",
+        "position": 0,
+        "required": false,
+        "type": "text"
+      },
+      {
+        "answer_choices": [],
+        "enabled": true,
+        "include_other": false,
+        "name": "One Line",
+        "position": 1,
+        "required": false,
+        "type": "string"
+      },
+      {
+        "answer_choices": [],
+        "enabled": true,
+        "include_other": false,
+        "name": "Multiple Lines",
+        "position": 2,
+        "required": true,
+        "type": "text"
+      },
+      {
+        "answer_choices": [
+          "Answer1",
+          "Answer2",
+          "Answer3"
+        ],
+        "enabled": true,
+        "include_other": true,
+        "name": "Radio Buttons",
+        "position": 3,
+        "required": false,
+        "type": "single_select"
+      },
+      {
+        "answer_choices": [
+          "Answer1",
+          "Answer2",
+          "Answer3"
+        ],
+        "enabled": true,
+        "include_other": true,
+        "name": "CheckBoxes",
+        "position": 4,
+        "required": false,
+        "type": "multi_select"
+      },
+      {
+        "answer_choices": [],
+        "enabled": true,
+        "include_other": false,
+        "name": "Phone Number",
+        "position": 5,
+        "required": false,
+        "type": "phone_number"
+      }
+    ],
+    "description_html": "<p>FooBar</p>",
+    "description_plain": "FooBar",
+    "duration": 15,
+    "internal_note": "Internal Note Foobar",
+    "kind": "solo",
+    "name": "15 Minute Meeting",
+    "pooling_type": "collective",
+    "profile": {
+      "name": "Team Page",
+      "owner": "https://api.calendly.com/teams/T001",
+      "type": "Team"
+    },
+    "scheduling_url": "https://calendly.com/foobar/T001_many_questions",
+    "secret": true,
+    "slug": "T001_many_questions",
+    "type": "StandardEventType",
+    "updated_at": "2020-07-11T03:00:00.000000Z",
+    "uri": "https://api.calendly.com/event_types/ET011"
+  }
+}

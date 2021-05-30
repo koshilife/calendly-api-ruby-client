@@ -12,6 +12,7 @@ module Calendly
     # @return [String]
     # unique id of the Organization object.
     attr_accessor :uuid
+
     # @return [String]
     # Canonical resource reference.
     attr_accessor :uri
@@ -28,7 +29,7 @@ module Calendly
     # @raise [Calendly::ApiError] if the api returns error code.
     # @since 0.1.0
     def memberships(opts = {})
-      return @cached_memberships if @cached_memberships
+      return @cached_memberships if defined?(@cached_memberships) && @cached_memberships
 
       request_proc = proc { |options| client.memberships uri, options }
       @cached_memberships = auto_pagination request_proc, opts
@@ -55,7 +56,7 @@ module Calendly
     # @raise [Calendly::ApiError] if the api returns error code.
     # @since 0.1.0
     def invitations(opts = {})
-      return @cached_invitations if @cached_invitations
+      return @cached_invitations if defined?(@cached_invitations) && @cached_invitations
 
       request_proc = proc { |options| client.invitations uuid, options }
       @cached_invitations = auto_pagination request_proc, opts
@@ -81,6 +82,31 @@ module Calendly
     end
 
     #
+    # Returns all Event Types associated with self.
+    #
+    # @param [Hash] opts the optional request parameters.
+    # @option opts [Integer] :count Number of rows to return.
+    # @option opts [String] :page_token Pass this to get the next portion of collection.
+    # @option opts [String] :sort Order results by the specified field and direction.
+    # Accepts comma-separated list of {field}:{direction} values.
+    # @return [Array<Calendly::EventType>]
+    # @raise [Calendly::Error] if the uri is empty.
+    # @raise [Calendly::ApiError] if the api returns error code.
+    # @since 0.6.0
+    def event_types(opts = {})
+      return @cached_event_types if defined?(@cached_event_types) && @cached_event_types
+
+      request_proc = proc { |options| client.event_types uri, options }
+      @cached_event_types = auto_pagination request_proc, opts
+    end
+
+    # @since 0.6.0
+    def event_types!(opts = {})
+      @cached_event_types = nil
+      event_types opts
+    end
+
+    #
     # Returns all Scheduled Events associated with self.
     #
     # @param [Hash] opts the optional request parameters.
@@ -97,7 +123,7 @@ module Calendly
     # @raise [Calendly::ApiError] if the api returns error code.
     # @since 0.5.0
     def scheduled_events(opts = {})
-      return @cached_scheduled_events if @cached_scheduled_events
+      return @cached_scheduled_events if defined?(@cached_scheduled_events) && @cached_scheduled_events
 
       request_proc = proc { |options| client.scheduled_events uri, options }
       @cached_scheduled_events = auto_pagination request_proc, opts
@@ -122,7 +148,7 @@ module Calendly
     # @raise [Calendly::ApiError] if the api returns error code.
     # @since 0.1.3
     def webhooks(opts = {})
-      return @cached_webhooks if @cached_webhooks
+      return @cached_webhooks if defined?(@cached_webhooks) && @cached_webhooks
 
       request_proc = proc { |options| client.webhooks uri, options }
       @cached_webhooks = auto_pagination request_proc, opts

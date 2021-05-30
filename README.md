@@ -50,21 +50,28 @@ client = Calendly::Client.new '<ACCESS_TOKEN>'
 This client basic usage is below.
 
 ```ruby
+#
 # get a current user's information.
+#
 me = client.me
-# => <Calendly::User uuid:U001>
+# => #<Calendly::User uuid="U001", name="Foo Bar", slug="foobar", email="foobar@example.com", ..>
+
 me.scheduling_url
-# => "https://calendly.com/your_name"
+# => "https://calendly.com/foobar"
 
-# get all Event Types
+#
+# get all event types
+#
 event_types = me.event_types
-# => [#<Calendly::EventType uuid:ET001>, #<Calendly::EventType uuid:ET002>, #<Calendly::EventType uuid:ET003>]
+# => [#<Calendly::EventType uuid="ET001", name="15 Minute Meeting", type="StandardEventType", slug="15min", active=true, kind="solo", scheduling_url="https://calendly.com/foobar/15min", ..>, #<Calendly::EventType uuid="ET002", name="30 Minute Meeting", type="StandardEventType", slug="30min", active=true, kind="solo", scheduling_url="https://calendly.com/foobar/30min", ..>]
 event_types.first.scheduling_url
-# => "https://calendly.com/your_name/30min"
+# => "https://calendly.com/foobar/15min"
 
+#
 # get scheduled events
+#
 events = me.scheduled_events
-# => => [#<Calendly::Event uuid:EV001>, #<Calendly::Event uuid:EV002>, #<Calendly::Event uuid:EV003>]
+# => => [#<Calendly::Event uuid="EV001", name="FooBar Meeting", status="active", ..>, #<Calendly::Event uuid="EV002", name="Team Meeting", status="active", ..>]
 ev = events.first
 ev.name
 # => "FooBar Meeting"
@@ -73,21 +80,23 @@ ev.start_time
 ev.end_time
 # => 2020-07-22 02:00:00 UTC
 
-# get organization information
-own_member = me.organization_membership
-# => #<Calendly::OrganizationMembership uuid:MEM001>
-my_org = own_member.organization
-all_members = my_org.memberships
-# => [#<Calendly::OrganizationMembership uuid:MEM001>, #<Calendly::OrganizationMembership uuid:MEM002>]
+#
+# get a current organization's information
+#
+org = me.current_organization
+# => #<Calendly::Organization uuid="ORG001", ..>
+all_members = org.memberships
+# => [#<Calendly::OrganizationMembership uuid="MEM001", role="owner", ..>, #<Calendly::OrganizationMembership uuid="MEM002", role="user", ..>]
 
+#
 # create new invitation and send invitation email
-invitation = my_org.create_invitation('foobar@example.com')
-# => #<Calendly::OrganizationInvitation uuid:INV001>
-invitation.status
-# => "pending"
+#
+invitation = org.create_invitation('foobar@example.com')
+# => #<Calendly::OrganizationInvitation uuid="INV001", status="pending", email="foobar@example.com", ..>
 
 # cancel the invitation
 invitation.delete
+# => true
 ```
 
 ### Webhook
@@ -96,31 +105,33 @@ The webhook usage is below.
 
 ```ruby
 events = ['invitee.created', 'invitee.canceled']
-own_member = client.me.organization_membership
-org = own_member.organization
-
-# create user scope webhook
 url = 'https://example.com/received_event'
-user_webhook = own_member.create_user_scope_webhook(url, events)
-# => #<Calendly::WebhookSubscription uuid:USER_WEBHOOK_001>
+
+#
+# create a user scope webhook
+#
+me = client.me
+user_webhook = me.create_webhook(url, events)
+# => #<Calendly::WebhookSubscription uuid="USER_WEBHOOK_001", state="active", scope="user", events=["invitee.created", "invitee.canceled"], callback_url="https://example.com/received_event", ..>
 
 # list of user scope webhooks
-own_member.user_scope_webhooks
-# => [#<Calendly::WebhookSubscription uuid:USER_WEBHOOK_001>]
+me.webhooks
+# => [#<Calendly::WebhookSubscription uuid="USER_WEBHOOK_001", state="active", scope="user", events=["invitee.created", "invitee.canceled"], callback_url="https://example.com/received_event", ..>]
 
 # delete the webhook
 user_webhook.delete
 # => true
 
-
-# create organization scope webhook
-url = 'https://example.com/received_event'
+#
+# create an organization scope webhook
+#
+org = client.me.current_organization
 org_webhook = org.create_webhook(url, events)
-# => #<Calendly::WebhookSubscription uuid:ORG_WEBHOOK_001>
+# => #<Calendly::WebhookSubscription uuid="ORG_WEBHOOK_001", state="active", scope="organization", events=["invitee.created", "invitee.canceled"], callback_url="https://example.com/received_event", ..>
 
 # list of organization scope webhooks
 org.webhooks
-# => [#<Calendly::WebhookSubscription uuid:ORG_WEBHOOK_001>]
+# => [#<Calendly::WebhookSubscription uuid="ORG_WEBHOOK_001", state="active", scope="organization", events=["invitee.created", "invitee.canceled"], callback_url="https://example.com/received_event", ..>]
 
 # delete the webhook
 org_webhook.delete

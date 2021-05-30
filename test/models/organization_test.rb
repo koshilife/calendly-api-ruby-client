@@ -45,7 +45,7 @@ module Calendly
       assert_mems.call @org.memberships!
     end
 
-    def test_that_it_returns_memberships_in_plurality_of_pages
+    def test_that_it_returns_memberships_across_pages
       params1 = @org_params.merge(count: 2)
       res_body1 = load_test_data 'organization_memberships_002_page1.json'
       url1 = "#{HOST}/organization_memberships?#{URI.encode_www_form(params1)}"
@@ -86,7 +86,7 @@ module Calendly
       assert_invs.call @org.invitations!
     end
 
-    def test_that_it_returns_invitations_in_plurality_of_pages
+    def test_that_it_returns_invitations_across_pages
       base_params = {count: 2}
       params1 = base_params.merge(sort: 'created_at:desc')
       res_body1 = load_test_data 'organization_invitations_002_page1.json'
@@ -138,7 +138,7 @@ module Calendly
       assert_evs.call @org.scheduled_events!
     end
 
-    def test_that_it_returns_scheduled_events_in_plurality_of_pages
+    def test_that_it_returns_scheduled_events_across_pages
       base_params = @org_params.merge(
         count: 2,
         invitee_email: 'foobar@example.com',
@@ -167,6 +167,45 @@ module Calendly
       assert_event011 evs[2]
     end
 
+    def test_that_it_returns_event_types_in_single_page
+      res_body = load_test_data 'event_types_001.json'
+      url = "#{HOST}/event_types?#{URI.encode_www_form(@org_params)}"
+      add_stub_request :get, url, res_body: res_body
+
+      assert_event_types = proc do |event_types|
+        assert_equal 3, event_types.length
+        assert_event_type001 event_types[0]
+        assert_event_type002 event_types[1]
+        assert_event_type003 event_types[2]
+      end
+      assert_event_types.call @org.event_types
+
+      # test the fetched data should save in cache.
+      WebMock.reset!
+      assert_event_types.call @org.event_types
+
+      add_stub_request :get, url, res_body: res_body
+      assert_event_types.call @org.event_types!
+    end
+
+    def test_that_it_returns_event_types_across_pages
+      params1 = @org_params.merge(count: 2, sort: 'created_at:desc')
+      url1 = "#{HOST}/event_types?#{URI.encode_www_form(params1)}"
+      res_body1 = load_test_data 'event_types_002_page1.json'
+      add_stub_request :get, url1, res_body: res_body1
+
+      params2 = @org_params.merge(count: 2, page_token: 'NEXT_PAGE_TOKEN')
+      url2 = "#{HOST}/event_types?#{URI.encode_www_form(params2)}"
+      res_body2 = load_test_data 'event_types_002_page2.json'
+      add_stub_request :get, url2, res_body: res_body2
+
+      event_types = @org.event_types params1
+      assert_equal 3, event_types.length
+      assert_event_type003 event_types[0]
+      assert_event_type002 event_types[1]
+      assert_event_type001 event_types[2]
+    end
+
     def test_that_it_returns_webhooks_in_single_page
       res_body = load_test_data 'webhooks_organization_001.json'
       params = {
@@ -192,7 +231,7 @@ module Calendly
       assert_webhooks.call @org.webhooks!
     end
 
-    def test_that_it_returns_webhooks_in_plurality_of_pages
+    def test_that_it_returns_webhooks_across_pages
       base_params = {
         organization: @org_uri,
         scope: 'organization',

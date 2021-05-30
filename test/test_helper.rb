@@ -29,7 +29,7 @@ module Calendly
       @refresh_token = 'REFRESH_TOKEN'
       @expires_at = Time.now + 3600
       @expired_at = Time.now - 3600
-      @my_logger = MyLogger.new STDOUT
+      @my_logger = MyLogger.new nil
       @my_logger.level = :info
 
       reset_configuration
@@ -75,12 +75,13 @@ module Calendly
       File.new(filepath).read
     end
 
-    def add_stub_request(method, url, req_headers: nil, req_body: nil, res_status: nil, res_headers: nil, res_body: nil)
+    def add_stub_request(method, url, req_headers: nil, req_body: nil, res_status: nil, res_headers: nil, res_body: nil) # rubocop:disable Metrics/ParameterLists
       WebMock.enable!
       req_headers ||= default_request_headers
       res_headers ||= default_response_headers
       res_status ||= 200
-      stub_request(method, url).with(body: req_body, headers: req_headers).to_return(status: res_status, body: res_body, headers: res_headers)
+      stub_request(method, url).with(body: req_body, headers: req_headers).
+        to_return(status: res_status, body: res_body, headers: res_headers)
     end
   end
 end

@@ -4,6 +4,7 @@
       "active": true,
       "color": "#000001",
       "created_at": "2020-07-01T03:00:00.000000Z",
+      "custom_questions": [],
       "description_html": null,
       "description_plain": null,
       "duration": 15,
@@ -18,9 +19,10 @@
       },
       "scheduling_url": "https://calendly.com/foobar/15min",
       "slug": "15min",
+      "secret": false,
       "type": "StandardEventType",
       "updated_at": "2020-07-11T03:00:00.000000Z",
-      "uri": "https://api.calendly.com/event_types/ET0001"
+      "uri": "https://api.calendly.com/event_types/ET001"
     }
   ],
   "pagination": {
