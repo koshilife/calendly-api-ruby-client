@@ -3,6 +3,9 @@
 require 'calendly/client'
 require 'calendly/models/model_utils'
 require 'calendly/models/event_type'
+require 'calendly/models/guest'
+require 'calendly/models/invitees_counter'
+require 'calendly/models/location'
 
 module Calendly
   # Calendly's event model.
@@ -11,7 +14,12 @@ module Calendly
     include ModelUtils
     UUID_RE = %r{\A#{Client::API_HOST}/scheduled_events/(\w+)\z}.freeze
     TIME_FIELDS = %i[start_time end_time created_at updated_at].freeze
-    ASSOCIATION = {event_type: EventType}.freeze
+    ASSOCIATION = {
+      event_type: EventType,
+      event_guests: Guest,
+      invitees_counter: InviteesCounter,
+      location: Location
+    }.freeze
 
     # @return [String]
     # unique id of the Event object.
@@ -53,17 +61,9 @@ module Calendly
     # location in this event.
     attr_accessor :location
 
-    # @return [Integer]
-    # number of total invitees in this event.
-    attr_accessor :invitees_counter_total
-
-    # @return [Integer]
-    # number of active invitees in this event.
-    attr_accessor :invitees_counter_active
-
-    # @return [Integer]
-    # max invitees in this event.
-    attr_accessor :invitees_counter_limit
+    # @return [InviteesCounter]
+    # invitees counter.
+    attr_accessor :invitees_counter
 
     # @return [Array<User>]
     # Event membership list.
@@ -116,26 +116,12 @@ module Calendly
 
     def after_set_attributes(attrs)
       super attrs
-      loc_params = attrs[:location]
-      @location = Location.new loc_params if loc_params.is_a? Hash
-
-      inv_cnt_attrs = attrs[:invitees_counter]
-      if inv_cnt_attrs.is_a? Hash
-        @invitees_counter_total = inv_cnt_attrs[:total]
-        @invitees_counter_active = inv_cnt_attrs[:active]
-        @invitees_counter_limit = inv_cnt_attrs[:limit]
-      end
-
-      memberships = attrs[:event_memberships]
-      if memberships.is_a? Array
-        @event_memberships = memberships.map do |params|
+      if event_memberships.is_a? Array # rubocop:disable Style/GuardClause
+        @event_memberships = event_memberships.map do |params|
           uri = params[:user]
           User.new({uri: uri}, @client)
         end
       end
-
-      guests = attrs[:event_guests]
-      @event_guests = guests.map { |params| Guest.new params } if guests.is_a? Array
     end
   end
 end

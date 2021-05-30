@@ -85,12 +85,10 @@ module AssertHelper
     assert_equal Time.parse('2020-07-01T03:00:00.000000Z').to_i, ev_type.created_at.to_i
     assert_equal Time.parse('2020-07-11T03:00:00.000000Z').to_i, ev_type.updated_at.to_i
 
-    expected_profile = {
-      name: 'FooBar',
-      owner: 'https://api.calendly.com/users/U001',
-      type: 'User'
-    }
-    assert_equal expected_profile, ev_type.profile
+    assert ev_type.profile.is_a? Calendly::EventTypeProfile
+    assert_equal 'User', ev_type.profile.type
+    assert_equal 'https://api.calendly.com/users/U001', ev_type.profile.owner
+    assert_equal 'FooBar', ev_type.profile.name
     owner = ev_type.owner_user
     assert owner.is_a? Calendly::User
     assert_equal 'U001', owner.id
@@ -119,12 +117,10 @@ module AssertHelper
     assert_equal Time.parse('2020-07-02T03:00:00.000000Z').to_i, ev_type.created_at.to_i
     assert_equal Time.parse('2020-07-12T03:00:00.000000Z').to_i, ev_type.updated_at.to_i
 
-    expected_profile = {
-      name: 'FooBar',
-      owner: 'https://api.calendly.com/users/U001',
-      type: 'User'
-    }
-    assert_equal expected_profile, ev_type.profile
+    assert ev_type.profile.is_a? Calendly::EventTypeProfile
+    assert_equal 'User', ev_type.profile.type
+    assert_equal 'https://api.calendly.com/users/U001', ev_type.profile.owner
+    assert_equal 'FooBar', ev_type.profile.name
     owner = ev_type.owner_user
     assert owner.is_a? Calendly::User
     assert_equal 'U001', owner.id
@@ -154,12 +150,10 @@ module AssertHelper
     assert_equal Time.parse('2020-07-03T03:00:00.000000Z').to_i, ev_type.created_at.to_i
     assert_equal Time.parse('2020-07-13T03:00:00.000000Z').to_i, ev_type.updated_at.to_i
 
-    expected_profile = {
-      name: 'FooBar',
-      owner: 'https://api.calendly.com/users/U001',
-      type: 'User'
-    }
-    assert_equal expected_profile, ev_type.profile
+    assert ev_type.profile.is_a? Calendly::EventTypeProfile
+    assert_equal 'User', ev_type.profile.type
+    assert_equal 'https://api.calendly.com/users/U001', ev_type.profile.owner
+    assert_equal 'FooBar', ev_type.profile.name
     owner = ev_type.owner_user
     assert owner.is_a? Calendly::User
     assert_equal 'U001', owner.id
@@ -189,12 +183,10 @@ module AssertHelper
     assert_equal Time.parse('2020-07-01T03:00:00.000000Z').to_i, ev_type.created_at.to_i
     assert_equal Time.parse('2020-07-11T03:00:00.000000Z').to_i, ev_type.updated_at.to_i
 
-    expected_profile = {
-      name: 'Team Page',
-      owner:  'https://api.calendly.com/teams/T001',
-      type: 'Team'
-    }
-    assert_equal expected_profile, ev_type.profile
+    assert ev_type.profile.is_a? Calendly::EventTypeProfile
+    assert_equal 'Team', ev_type.profile.type
+    assert_equal 'https://api.calendly.com/teams/T001', ev_type.profile.owner
+    assert_equal 'Team Page', ev_type.profile.name
     owner = ev_type.owner_team
     assert owner.is_a? Calendly::Team
     assert_equal 'T001', owner.id
@@ -278,12 +270,10 @@ module AssertHelper
     assert_equal Time.parse('2020-07-01T03:00:00.000000Z').to_i, ev_type.created_at.to_i
     assert_equal Time.parse('2020-07-11T03:00:00.000000Z').to_i, ev_type.updated_at.to_i
 
-    expected_profile = {
-      name: 'Team Page',
-      owner:  'https://api.calendly.com/teams/T001',
-      type: 'Team'
-    }
-    assert_equal expected_profile, ev_type.profile
+    assert ev_type.profile.is_a? Calendly::EventTypeProfile
+    assert_equal 'Team', ev_type.profile.type
+    assert_equal 'https://api.calendly.com/teams/T001', ev_type.profile.owner
+    assert_equal 'Team Page', ev_type.profile.name
     owner = ev_type.owner_team
     assert owner.is_a? Calendly::Team
     assert_equal 'T001', owner.id
@@ -329,9 +319,10 @@ module AssertHelper
     assert_equal 'https://api.calendly.com/event_types/ET001', ev.event_type.uri
     assert_equal 'ET001', ev.event_type.uuid
     assert_nil ev.location
-    assert_equal 1, ev.invitees_counter_total
-    assert_equal 0, ev.invitees_counter_active
-    assert_equal 5, ev.invitees_counter_limit
+    assert ev.invitees_counter.is_a? Calendly::InviteesCounter
+    assert_equal 1, ev.invitees_counter.total
+    assert_equal 0, ev.invitees_counter.active
+    assert_equal 5, ev.invitees_counter.limit
     assert_equal Time.parse('2020-07-22T01:30:00.000000Z').to_i, ev.start_time.to_i
     assert_equal Time.parse('2020-07-22T02:00:00.000000Z').to_i, ev.end_time.to_i
     assert_equal Time.parse('2020-07-10T05:00:00.000000Z').to_i, ev.created_at.to_i
@@ -361,9 +352,10 @@ module AssertHelper
     assert_equal 'https://api.calendly.com/event_types/ET002', ev.event_type.uri
     assert_equal 'ET002', ev.event_type.uuid
     assert_location_tokyo ev.location
-    assert_equal 1, ev.invitees_counter_total
-    assert_equal 1, ev.invitees_counter_active
-    assert_equal 1, ev.invitees_counter_limit
+    assert ev.invitees_counter.is_a? Calendly::InviteesCounter
+    assert_equal 1, ev.invitees_counter.total
+    assert_equal 1, ev.invitees_counter.active
+    assert_equal 1, ev.invitees_counter.limit
     assert_equal Time.parse('2020-07-23T01:15:00.000000Z').to_i, ev.start_time.to_i
     assert_equal Time.parse('2020-07-23T01:30:00.000000Z').to_i, ev.end_time.to_i
     assert_equal Time.parse('2020-07-10T06:00:00.000000Z').to_i, ev.created_at.to_i
@@ -398,9 +390,10 @@ module AssertHelper
     assert_equal 'https://api.calendly.com/event_types/ET001', ev.event_type.uri
     assert_equal 'ET001', ev.event_type.uuid
     assert_location_microsoft_teams ev.location
-    assert_equal 1, ev.invitees_counter_total
-    assert_equal 0, ev.invitees_counter_active
-    assert_equal 5, ev.invitees_counter_limit
+    assert ev.invitees_counter.is_a? Calendly::InviteesCounter
+    assert_equal 1, ev.invitees_counter.total
+    assert_equal 0, ev.invitees_counter.active
+    assert_equal 5, ev.invitees_counter.limit
     assert_equal Time.parse('2020-07-22T01:30:00.000000Z').to_i, ev.start_time.to_i
     assert_equal Time.parse('2020-07-22T02:00:00.000000Z').to_i, ev.end_time.to_i
     assert_equal Time.parse('2020-07-10T05:00:00.000000Z').to_i, ev.created_at.to_i
@@ -429,9 +422,10 @@ module AssertHelper
     assert_equal 'https://api.calendly.com/event_types/ET002', ev.event_type.uri
     assert_equal 'ET002', ev.event_type.uuid
     assert_location_zoom ev.location
-    assert_equal 1, ev.invitees_counter_total
-    assert_equal 1, ev.invitees_counter_active
-    assert_equal 1, ev.invitees_counter_limit
+    assert ev.invitees_counter.is_a? Calendly::InviteesCounter
+    assert_equal 1, ev.invitees_counter.total
+    assert_equal 1, ev.invitees_counter.active
+    assert_equal 1, ev.invitees_counter.limit
     assert_equal Time.parse('2020-07-23T01:15:00.000000Z').to_i, ev.start_time.to_i
     assert_equal Time.parse('2020-07-23T01:30:00.000000Z').to_i, ev.end_time.to_i
     assert_equal Time.parse('2020-07-10T06:00:00.000000Z').to_i, ev.created_at.to_i
@@ -460,9 +454,10 @@ module AssertHelper
     assert_equal 'https://api.calendly.com/event_types/ET003', ev.event_type.uri
     assert_equal 'ET003', ev.event_type.uuid
     assert_location_google_meet ev.location
-    assert_equal 1, ev.invitees_counter_total
-    assert_equal 1, ev.invitees_counter_active
-    assert_equal 1, ev.invitees_counter_limit
+    assert ev.invitees_counter.is_a? Calendly::InviteesCounter
+    assert_equal 1, ev.invitees_counter.total
+    assert_equal 1, ev.invitees_counter.active
+    assert_equal 1, ev.invitees_counter.limit
     assert_equal Time.parse('2020-07-24T01:15:00.000000Z').to_i, ev.start_time.to_i
     assert_equal Time.parse('2020-07-24T02:15:00.000000Z').to_i, ev.end_time.to_i
     assert_equal Time.parse('2020-07-13T06:00:00.000000Z').to_i, ev.created_at.to_i
@@ -503,15 +498,14 @@ module AssertHelper
     assert_equal Time.parse('2020-08-20T01:00:00.000000Z').to_i, inv.created_at.to_i
     assert_equal Time.parse('2020-08-20T01:30:00.000000Z').to_i, inv.updated_at.to_i
 
-    assert_nil inv.cancellation_canceled_by
-    assert_nil inv.cancellation_reason
-
-    assert_equal 'ch_AAAAAAAAAAAAAAAAAAAAAAAA', inv.payment_external_id
-    assert_equal 'stripe', inv.payment_provider
-    assert_equal 1234.56, inv.payment_amount
-    assert_equal 'USD', inv.payment_currency
-    assert_equal 'sample terms of payment (up to 1,024 characters)', inv.payment_terms
-    assert_equal true, inv.payment_successful
+    assert_nil inv.cancellation
+    assert inv.payment.is_a? Calendly::InviteePayment
+    assert_equal 'ch_AAAAAAAAAAAAAAAAAAAAAAAA', inv.payment.external_id
+    assert_equal 'stripe', inv.payment.provider
+    assert_equal 1234.56, inv.payment.amount
+    assert_equal 'USD', inv.payment.currency
+    assert_equal 'sample terms of payment (up to 1,024 characters)', inv.payment.terms
+    assert_equal true, inv.payment.successful
 
     assert_equal 5, inv.questions_and_answers.length
     qa = inv.questions_and_answers[0]
@@ -570,15 +564,8 @@ module AssertHelper
     assert_equal Time.parse('2020-08-01T01:00:00.000000Z').to_i, inv.created_at.to_i
     assert_equal Time.parse('2020-08-01T01:30:00.000000Z').to_i, inv.updated_at.to_i
 
-    assert_nil inv.cancellation_canceled_by
-    assert_nil inv.cancellation_reason
-
-    assert_nil inv.payment_external_id
-    assert_nil inv.payment_provider
-    assert_nil inv.payment_amount
-    assert_nil inv.payment_currency
-    assert_nil inv.payment_terms
-    assert_nil inv.payment_successful
+    assert_nil inv.cancellation
+    assert_nil inv.payment
 
     assert_equal 2, inv.questions_and_answers.length
     qa = inv.questions_and_answers[0]
@@ -622,15 +609,8 @@ module AssertHelper
     assert_equal Time.parse('2020-08-02T01:00:00.000000Z').to_i, inv.created_at.to_i
     assert_equal Time.parse('2020-08-02T01:30:00.000000Z').to_i, inv.updated_at.to_i
 
-    assert_nil inv.cancellation_canceled_by
-    assert_nil inv.cancellation_reason
-
-    assert_nil inv.payment_external_id
-    assert_nil inv.payment_provider
-    assert_nil inv.payment_amount
-    assert_nil inv.payment_currency
-    assert_nil inv.payment_terms
-    assert_nil inv.payment_successful
+    assert_nil inv.cancellation
+    assert_nil inv.payment
 
     assert_equal 2, inv.questions_and_answers.length
     qa = inv.questions_and_answers[0]
@@ -674,15 +654,8 @@ module AssertHelper
     assert_equal Time.parse('2020-08-03T01:00:00.000000Z').to_i, inv.created_at.to_i
     assert_equal Time.parse('2020-08-03T01:30:00.000000Z').to_i, inv.updated_at.to_i
 
-    assert_nil inv.cancellation_canceled_by
-    assert_nil inv.cancellation_reason
-
-    assert_nil inv.payment_external_id
-    assert_nil inv.payment_provider
-    assert_nil inv.payment_amount
-    assert_nil inv.payment_currency
-    assert_nil inv.payment_terms
-    assert_nil inv.payment_successful
+    assert_nil inv.cancellation
+    assert_nil inv.payment
 
     assert_equal 2, inv.questions_and_answers.length
     qa = inv.questions_and_answers[0]
@@ -726,15 +699,10 @@ module AssertHelper
     assert_equal Time.parse('2020-08-20T01:00:00.000000Z').to_i, inv.created_at.to_i
     assert_equal Time.parse('2020-08-20T01:30:00.000000Z').to_i, inv.updated_at.to_i
 
-    assert_equal 'FooBar', inv.cancellation_canceled_by
-    assert_equal 'I have to be absent next week, sorry.', inv.cancellation_reason
-
-    assert_nil inv.payment_external_id
-    assert_nil inv.payment_provider
-    assert_nil inv.payment_amount
-    assert_nil inv.payment_currency
-    assert_nil inv.payment_terms
-    assert_nil inv.payment_successful
+    assert inv.cancellation.is_a? Calendly::InviteeCancellation
+    assert_equal 'FooBar', inv.cancellation.canceled_by
+    assert_equal 'I have to be absent next week, sorry.', inv.cancellation.reason
+    assert_nil inv.payment
 
     assert_equal 5, inv.questions_and_answers.length
     qa = inv.questions_and_answers[0]

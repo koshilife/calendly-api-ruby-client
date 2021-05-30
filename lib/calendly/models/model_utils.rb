@@ -81,8 +81,14 @@ module Calendly
         next unless respond_to? "#{key}=".to_sym
 
         if value && defined?(self.class::ASSOCIATION) && self.class::ASSOCIATION.key?(key)
-          associated_attrs = value.is_a?(Hash) ? value : {uri: value}
-          value = self.class::ASSOCIATION[key].new associated_attrs, @client
+          klass = self.class::ASSOCIATION[key]
+          if value.is_a? String # rubocop:disable Style/CaseLikeIf
+            value = klass.new({uri: value}, @client)
+          elsif value.is_a? Hash
+            value = klass.new(value, @client)
+          elsif value.is_a? Array
+            value = value.map { |v| klass.new(v, @client) }
+          end
         elsif value && defined?(self.class::TIME_FIELDS) && self.class::TIME_FIELDS.include?(key)
           value = Time.parse value
         end

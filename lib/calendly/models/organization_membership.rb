@@ -103,7 +103,7 @@ module Calendly
 
     def after_set_attributes(attrs)
       super attrs
-      if user.is_a?(User) && user.current_organization.nil? && organization.is_a?(Organization)
+      if user.is_a?(User) && user.current_organization.nil? && organization.is_a?(Organization) # rubocop:disable Style/GuardClause
         user.current_organization = organization
       end
     end

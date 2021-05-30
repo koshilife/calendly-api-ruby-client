@@ -2,6 +2,8 @@
 
 require 'calendly/client'
 require 'calendly/models/model_utils'
+require 'calendly/models/event_type_profile'
+require 'calendly/models/event_type_custom_question'
 
 module Calendly
   # Calendly's event type model.
@@ -10,6 +12,7 @@ module Calendly
     include ModelUtils
     UUID_RE = %r{\A#{Client::API_HOST}/event_types/(\w+)\z}.freeze
     TIME_FIELDS = %i[created_at updated_at].freeze
+    ASSOCIATION = {profile: EventTypeProfile, custom_questions: EventTypeCustomQuestion}.freeze
 
     # @return [String]
     # unique id of the EventType object.
@@ -81,21 +84,27 @@ module Calendly
     # Moment when event type was last updated.
     attr_accessor :updated_at
 
-    # @return [Hash]
+    # @return [EventTypeProfile]
     # The profile of the User that's associated with the Event Type.
     attr_accessor :profile
-
-    # @return [User]
-    # The owner user if the profile belongs to a "user" (individual).
-    attr_accessor :owner_user
-
-    # @return [Team]
-    # The owner team if the profile belongs to a "team".
-    attr_accessor :owner_team
 
     # @return [Array<EventTypeCustomQuestion>]
     # A collection of custom questions.
     attr_accessor :custom_questions
+
+    # The owner user if the profile belongs to a "user" (individual).
+    # @return [User]
+    # @since 0.6.0
+    def owner_user
+      profile&.owner_user
+    end
+
+    # The owner team if the profile belongs to a "team".
+    # @return [Team]
+    # @since 0.6.0
+    def owner_team
+      profile&.owner_team
+    end
 
     #
     # Get EventType associated with self.
@@ -128,23 +137,6 @@ module Calendly
     end
 
   private
-
-    def after_set_attributes(attrs) # rubocop:disable Metrics/CyclomaticComplexity
-      super attrs
-      if profile.is_a?(Hash) && profile[:owner] && profile[:type]
-        owner_params = {uri: profile[:owner]}
-        owner_type = profile[:type].downcase if profile[:type].respond_to?(:downcase)
-        case owner_type
-        when 'user'
-          @owner_user = User.new(owner_params, @client)
-        when 'team'
-          @owner_team = Team.new(owner_params, @client)
-        end
-      end
-
-      questions = attrs[:custom_questions]
-      @custom_questions = questions.map { |params| EventTypeCustomQuestion.new params } if questions.is_a? Array
-    end
 
     def inspect_attributes
       super + %i[active kind scheduling_url]

@@ -3,6 +3,10 @@
 require 'calendly/client'
 require 'calendly/models/model_utils'
 require 'calendly/models/event'
+require 'calendly/models/invitee_cancellation'
+require 'calendly/models/invitee_payment'
+require 'calendly/models/invitee_question_and_answer'
+require 'calendly/models/invitee_tracking'
 
 module Calendly
   # Calendly's invitee model.
@@ -11,7 +15,13 @@ module Calendly
     include ModelUtils
     UUID_RE = %r{\A#{Client::API_HOST}/scheduled_events/\w+/invitees/(\w+)\z}.freeze
     TIME_FIELDS = %i[created_at updated_at].freeze
-    ASSOCIATION = {event: Event}.freeze
+    ASSOCIATION = {
+      event: Event,
+      cancellation: InviteeCancellation,
+      payment: InviteePayment,
+      questions_and_answers: InviteeQuestionAndAnswer,
+      tracking: InviteeTracking
+    }.freeze
 
     # @return [String]
     # unique id of the Invitee object.
@@ -80,37 +90,11 @@ module Calendly
     # Moment when user record was last updated.
     attr_accessor :updated_at
 
-    # @return [String]
-    # Reason that the cancellation occurred.
-    attr_accessor :cancellation_canceled_by
+    # @return [InviteeCancellation] Provides data pertaining to the cancellation of the Invitee.
+    attr_accessor :cancellation
 
-    # @return [String]
-    # Name of the person whom canceled.
-    attr_accessor :cancellation_reason
-
-    # @return [String]
-    # Unique identifier for the payment.
-    attr_accessor :payment_external_id
-
-    # @return [String]
-    # Payment provider.
-    attr_accessor :payment_provider
-
-    # @return [Float]
-    # The amount of the payment.
-    attr_accessor :payment_amount
-
-    # @return [String]
-    # The currency format that the payment is in.
-    attr_accessor :payment_currency
-
-    # @return [String]
-    # Terms of the payment.
-    attr_accessor :payment_terms
-
-    # @return [Boolean]
-    # Indicates whether the payment was successfully processed.
-    attr_accessor :payment_successful
+    # @return [InviteePayment] Invitee payment.
+    attr_accessor :payment
 
     # @return [Event]
     # Reference to Event associated with this invitee.
@@ -134,34 +118,6 @@ module Calendly
     def fetch
       ev_uuid = event.uuid if event
       client.event_invitee ev_uuid, uuid
-    end
-
-  private
-
-    def after_set_attributes(attrs)
-      super attrs
-
-      cancel_info = attrs[:cancellation]
-      if cancel_info.is_a? Hash
-        @cancellation_canceled_by = cancel_info[:canceled_by]
-        @cancellation_reason = cancel_info[:reason]
-      end
-
-      payment_info = attrs[:payment]
-      if payment_info.is_a? Hash
-        @payment_external_id = payment_info[:external_id]
-        @payment_provider = payment_info[:provider]
-        @payment_amount = payment_info[:amount]
-        @payment_currency = payment_info[:currency]
-        @payment_terms = payment_info[:terms]
-        @payment_successful = payment_info[:successful]
-      end
-
-      answers = attrs[:questions_and_answers]
-      @questions_and_answers = answers.map { |params| InviteeQuestionAndAnswer.new params } if answers.is_a? Array
-
-      tracking_info = attrs[:tracking]
-      @tracking = InviteeTracking.new tracking_info if tracking_info.is_a? Hash
     end
   end
 end
