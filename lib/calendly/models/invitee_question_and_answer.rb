@@ -3,7 +3,7 @@
 require 'calendly/models/model_utils'
 
 module Calendly
-  # Calendly's InviteeQuestionAndAnswer model.
+  # Calendly's question and answer model.
   # An individual form question and response.
   class InviteeQuestionAndAnswer
     include ModelUtils

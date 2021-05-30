@@ -6,7 +6,7 @@ require 'calendly/models/event_type'
 
 module Calendly
   # Calendly's event model.
-  # A meeting that has been scheduled
+  # A meeting that has been scheduled.
   class Event
     include ModelUtils
     UUID_RE = %r{\A#{Client::API_HOST}/scheduled_events/(\w+)\z}.freeze

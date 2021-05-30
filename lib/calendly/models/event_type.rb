@@ -5,7 +5,7 @@ require 'calendly/models/model_utils'
 
 module Calendly
   # Calendly's event type model.
-  # A configuration for a schedulable event
+  # A configuration for a schedulable event.
   class EventType
     include ModelUtils
     UUID_RE = %r{\A#{Client::API_HOST}/event_types/(\w+)\z}.freeze

@@ -3,7 +3,7 @@
 require 'calendly/models/model_utils'
 
 module Calendly
-  # Calendly's Guest model.
+  # Calendly's guest model.
   # Additional people added to an event by an invitee.
   class Guest
     include ModelUtils
