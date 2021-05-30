@@ -11,7 +11,7 @@ module Calendly
       @user_uri = "#{HOST}/users/#{@user_uuid}"
       @org_uuid = 'ORG001'
       @org_uri = "#{HOST}/organizations/#{@org_uuid}"
-      @uri_params = {user: @user_uri}
+      @user_params = {user: @user_uri}
       attrs = {uri: @user_uri, current_organization: @org_uri}
       @user = User.new attrs, @client
       @user_no_client = User.new attrs
@@ -36,7 +36,7 @@ module Calendly
 
     def test_that_it_returns_an_associated_organization_membership
       res_body = load_test_data 'organization_memberships_001.json'
-      url = "#{HOST}/organization_memberships?#{URI.encode_www_form(@uri_params)}"
+      url = "#{HOST}/organization_memberships?#{URI.encode_www_form(@user_params)}"
       add_stub_request :get, url, res_body: res_body
       assert_org_mem001 @user.organization_membership
 
@@ -50,7 +50,7 @@ module Calendly
 
     def test_that_it_returns_event_types_in_single_page
       res_body = load_test_data 'event_types_001.json'
-      url = "#{HOST}/event_types?#{URI.encode_www_form(@uri_params)}"
+      url = "#{HOST}/event_types?#{URI.encode_www_form(@user_params)}"
       add_stub_request :get, url, res_body: res_body
 
       assert_event_types = proc do |event_types|
@@ -70,12 +70,12 @@ module Calendly
     end
 
     def test_that_it_returns_event_types_across_pages
-      params1 = @uri_params.merge(count: 2, sort: 'created_at:desc')
+      params1 = @user_params.merge(count: 2, sort: 'created_at:desc')
       url1 = "#{HOST}/event_types?#{URI.encode_www_form(params1)}"
       res_body1 = load_test_data 'event_types_002_page1_user.json'
       add_stub_request :get, url1, res_body: res_body1
 
-      params2 = @uri_params.merge(count: 2, page_token: 'NEXT_PAGE_TOKEN')
+      params2 = @user_params.merge(count: 2, page_token: 'NEXT_PAGE_TOKEN')
       url2 = "#{HOST}/event_types?#{URI.encode_www_form(params2)}"
       res_body2 = load_test_data 'event_types_002_page2.json'
       add_stub_request :get, url2, res_body: res_body2
@@ -89,7 +89,7 @@ module Calendly
 
     def test_that_it_returns_scheduled_events_in_single_page
       res_body = load_test_data 'scheduled_events_001.json'
-      url = "#{HOST}/scheduled_events?#{URI.encode_www_form(@uri_params)}"
+      url = "#{HOST}/scheduled_events?#{URI.encode_www_form(@user_params)}"
       add_stub_request :get, url, res_body: res_body
 
       assert_evs = proc do |evs|
@@ -108,7 +108,7 @@ module Calendly
     end
 
     def test_that_it_returns_scheduled_events_across_pages
-      base_params = @uri_params.merge(
+      base_params = @user_params.merge(
         count: 2,
         invitee_email: 'foobar@example.com',
         max_start_time: '2020-08-01T00:00:00.000000Z',
