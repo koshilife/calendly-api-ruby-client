@@ -1,5 +1,40 @@
 # CHANGELOG
 
+## 0.6.0
+
+- supported to new features until April 2021. (#29)
+  - Client
+    - (Change) support organization options in `event_types` api.
+    - (Rename) `event_types` to `event_types_by_user`
+  - User model
+    - (Add field) current_organization
+    - (Add method) webhooks
+    - (Add method) webhooks!
+    - (Add method) create_webhook
+  - Event model
+    - (Remove field) invitees_counter_total
+    - (Remove field) invitees_counter_active
+    - (Remove field) invitees_counter_limit
+    - (Add field) invitees_counter
+    - (Add field) event_memberships
+    - (Add field) event_guests
+  - EventType model
+    - (Remove field) owner_uuid
+    - (Remove field) owner_uri
+    - (Remove field) owner_name
+    - (Add field) profile
+    - (Add field) secret
+    - (Add field) custom_questions
+    - (Add method) owner_user
+    - (Add method) owner_team
+  - Invitee model
+    - (Add field) first_name
+    - (Add field) last_name
+    - (Add field) cancellation
+    - (Add field) payment
+- fixed debug log encoding error. (#30)
+- improved inspect method to be more readable in CLI.
+
 ## 0.5.2
 
 - started to support a API
