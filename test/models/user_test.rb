@@ -69,7 +69,7 @@ module Calendly
       assert_event_types.call @user.event_types!
     end
 
-    def test_that_it_returns_event_types_in_plurality_of_pages
+    def test_that_it_returns_event_types_across_pages
       params1 = @uri_params.merge(count: 2, sort: 'created_at:desc')
       url1 = "#{HOST}/event_types?#{URI.encode_www_form(params1)}"
       res_body1 = load_test_data 'event_types_002_page1_user.json'
@@ -107,7 +107,7 @@ module Calendly
       assert_evs.call @user.scheduled_events!
     end
 
-    def test_that_it_returns_scheduled_events_in_plurality_of_pages
+    def test_that_it_returns_scheduled_events_across_pages
       base_params = @uri_params.merge(
         count: 2,
         invitee_email: 'foobar@example.com',
@@ -162,7 +162,7 @@ module Calendly
       assert_webhooks.call @user.webhooks!
     end
 
-    def test_that_it_returns_webhooks_in_plurality_of_pages
+    def test_that_it_returns_webhooks_across_pages
       base_params = {
         organization: @org_uri,
         user: @user_uri,

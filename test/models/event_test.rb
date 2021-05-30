@@ -52,7 +52,7 @@ module Calendly
       assert_event101_invitee001 invs[0]
     end
 
-    def test_that_it_returns_event_invitees_in_plurality_of_pages
+    def test_that_it_returns_event_invitees_across_pages
       ev = @event.dup
       ev.uuid = 'EV201'
       base_params = {

@@ -45,7 +45,7 @@ module Calendly
       assert_mems.call @org.memberships!
     end
 
-    def test_that_it_returns_memberships_in_plurality_of_pages
+    def test_that_it_returns_memberships_across_pages
       params1 = @org_params.merge(count: 2)
       res_body1 = load_test_data 'organization_memberships_002_page1.json'
       url1 = "#{HOST}/organization_memberships?#{URI.encode_www_form(params1)}"
@@ -86,7 +86,7 @@ module Calendly
       assert_invs.call @org.invitations!
     end
 
-    def test_that_it_returns_invitations_in_plurality_of_pages
+    def test_that_it_returns_invitations_across_pages
       base_params = {count: 2}
       params1 = base_params.merge(sort: 'created_at:desc')
       res_body1 = load_test_data 'organization_invitations_002_page1.json'
@@ -138,7 +138,7 @@ module Calendly
       assert_evs.call @org.scheduled_events!
     end
 
-    def test_that_it_returns_scheduled_events_in_plurality_of_pages
+    def test_that_it_returns_scheduled_events_across_pages
       base_params = @org_params.merge(
         count: 2,
         invitee_email: 'foobar@example.com',
@@ -188,7 +188,7 @@ module Calendly
       assert_event_types.call @org.event_types!
     end
 
-    def test_that_it_returns_event_types_in_plurality_of_pages
+    def test_that_it_returns_event_types_across_pages
       params1 = @org_params.merge(count: 2, sort: 'created_at:desc')
       url1 = "#{HOST}/event_types?#{URI.encode_www_form(params1)}"
       res_body1 = load_test_data 'event_types_002_page1.json'
@@ -231,7 +231,7 @@ module Calendly
       assert_webhooks.call @org.webhooks!
     end
 
-    def test_that_it_returns_webhooks_in_plurality_of_pages
+    def test_that_it_returns_webhooks_across_pages
       base_params = {
         organization: @org_uri,
         scope: 'organization',

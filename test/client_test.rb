@@ -175,7 +175,7 @@ module Calendly
       assert_event_type003 event_types[2]
     end
 
-    def test_that_it_returns_all_items_of_event_type_by_pagination
+    def test_that_it_returns_all_items_of_event_type_across_pages
       org_uri = 'https://api.calendly.com/organizations/ORG001'
 
       res_body1 = load_test_data 'event_types_002_page1.json'
@@ -231,7 +231,7 @@ module Calendly
       assert_event_type003 event_types[2]
     end
 
-    def test_that_it_returns_all_items_of_event_type_by_user_by_pagination
+    def test_that_it_returns_all_items_of_event_type_by_user_across_pages
       user_uri = 'https://api.calendly.com/users/U001'
 
       res_body1 = load_test_data 'event_types_002_page1_user.json'
@@ -308,7 +308,7 @@ module Calendly
       assert_event002 evs[1]
     end
 
-    def test_that_it_returns_all_items_of_org_event_by_pagination # rubocop:disable Metrics/MethodLength
+    def test_that_it_returns_all_items_of_org_event_across_pages # rubocop:disable Metrics/MethodLength
       org_uri = 'https://api.calendly.com/organizations/ORG001'
       base_params = {
         count: 2,
@@ -372,7 +372,7 @@ module Calendly
       assert_event002 evs[1]
     end
 
-    def test_that_it_returns_all_items_of_user_event_by_pagination # rubocop:disable Metrics/MethodLength
+    def test_that_it_returns_all_items_of_user_event_across_pages # rubocop:disable Metrics/MethodLength
       user_uri = 'https://api.calendly.com/users/U001'
       base_params = {
         count: 2,
@@ -528,7 +528,7 @@ module Calendly
     # test for memberships
     #
 
-    def test_that_it_returns_all_memberships_by_pagination # rubocop:disable Metrics/MethodLength
+    def test_that_it_returns_all_memberships_across_pages # rubocop:disable Metrics/MethodLength
       org_uri = 'https://api.calendly.com/organizations/ORG001'
       base_params = {
         organization: org_uri,
@@ -657,7 +657,7 @@ module Calendly
       assert_org_inv003 invs[2]
     end
 
-    def test_that_it_returns_all_organization_invitations_by_pagination
+    def test_that_it_returns_all_organization_invitations_across_pages
       org_uuid = 'ORG001'
       base_params = {count: 2}
 
@@ -785,7 +785,7 @@ module Calendly
       assert_org_webhook_003 webhooks[2]
     end
 
-    def test_that_it_returns_all_items_of_webhooks_by_pagination # rubocop:disable Metrics/MethodLength
+    def test_that_it_returns_all_items_of_webhooks_across_pages # rubocop:disable Metrics/MethodLength
       org_uri = "#{HOST}/organizations/ORG001"
       base_params = {
         organization: org_uri,
@@ -848,7 +848,7 @@ module Calendly
       assert_user_webhook_003 webhooks[2]
     end
 
-    def test_that_it_returns_all_items_of_user_scope_webhooks_by_pagination # rubocop:disable Metrics/MethodLength
+    def test_that_it_returns_all_items_of_user_scope_webhooks_across_pages # rubocop:disable Metrics/MethodLength
       org_uri = "#{HOST}/organizations/ORG001"
       user_uri = "#{HOST}/users/U001"
       base_params = {

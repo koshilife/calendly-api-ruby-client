@@ -65,7 +65,7 @@ module Calendly
       assert_webhooks.call @mem.user_scope_webhooks!
     end
 
-    def test_that_it_returns_user_scope_webhooks_in_plurality_of_pages
+    def test_that_it_returns_user_scope_webhooks_across_pages
       base_params = {
         organization: @org_uri,
         user: @user_uri,
