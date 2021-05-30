@@ -7,7 +7,7 @@ module Calendly
   class EventTypeTest < BaseTest
     def setup
       super
-      @et_uuid = 'ET0001'
+      @et_uuid = 'ET001'
       @et_uri = "#{HOST}/event_types/#{@et_uuid}"
       attrs = {uri: @et_uri}
       @event_type = EventType.new attrs, @client
@@ -26,7 +26,7 @@ module Calendly
     end
 
     def test_that_it_returns_an_associated_invitee
-      res_body = load_test_data 'event_type_001.json'
+      res_body = load_test_data 'event_type_001_user.json'
       add_stub_request :get, @et_uri, res_body: res_body
       assert_event_type001 @event_type.fetch
     end

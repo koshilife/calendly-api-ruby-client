@@ -1,0 +1,22 @@
+{
+  "resource": {
+    "active": true,
+    "color": "#000001",
+    "created_at": "2020-07-01T03:00:00.000000Z",
+    "custom_questions": [],
+    "description_html": null,
+    "description_plain": null,
+    "duration": 15,
+    "internal_note": null,
+    "kind": "solo",
+    "name": "15 Minute Meeting",
+    "pooling_type": "round_robin",
+    "profile": null,
+    "scheduling_url": "https://calendly.com/d/foobar/no_profile_15min",
+    "secret": false,
+    "slug": null,
+    "type": "StandardEventType",
+    "updated_at": "2020-07-11T03:00:00.000000Z",
+    "uri": "https://api.calendly.com/event_types/ET201"
+  }
+}

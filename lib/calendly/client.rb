@@ -103,7 +103,34 @@ module Calendly
     end
 
     #
-    # Returns all Event Types associated with a specified User.
+    # Returns all Event Types associated with a specified organization.
+    #
+    # @param [String] org_uri the specified organization (organization's uri).
+    # @param [Hash] opts the optional request parameters.
+    # @option opts [Integer] :count Number of rows to return.
+    # @option opts [String] :page_token Pass this to get the next portion of collection.
+    # @option opts [String] :sort Order results by the specified field and direction. Accepts comma-separated list of {field}:{direction} values.
+    # @return [Array<Array<Calendly::EventType>, Hash>]
+    #  - [Array<Calendly::EventType>] event_types
+    #  - [Hash] next_params the parameters to get next data. if thre is no next it returns nil.
+    # @raise [Calendly::Error] if the org_uri arg is empty.
+    # @raise [Calendly::ApiError] if the api returns error code.
+    # @since 0.6.0
+    def event_types(org_uri, opts = {})
+      check_not_empty org_uri, 'org_uri'
+
+      opts_keys = %i[count page_token sort]
+      params = {organization: org_uri}
+      params = merge_options opts, opts_keys, params
+      body = request :get, 'event_types', params: params
+
+      items = body[:collection] || []
+      ev_types = items.map { |item| EventType.new item, self }
+      [ev_types, next_page_params(body)]
+    end
+
+    #
+    # Returns all Event Types associated with a specified user.
     #
     # @param [String] user_uri the specified user (user's uri).
     # @param [Hash] opts the optional request parameters.
@@ -116,7 +143,7 @@ module Calendly
     # @raise [Calendly::Error] if the user_uri arg is empty.
     # @raise [Calendly::ApiError] if the api returns error code.
     # @since 0.0.2
-    def event_types(user_uri, opts = {})
+    def event_types_by_user(user_uri, opts = {})
       check_not_empty user_uri, 'user_uri'
 
       opts_keys = %i[count page_token sort]

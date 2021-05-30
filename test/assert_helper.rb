@@ -68,8 +68,8 @@ module AssertHelper
   def assert_event_type001(ev_type)
     assert ev_type.client.is_a? Calendly::Client
     assert_equal true, ev_type.active
-    assert_equal 'ET0001', ev_type.id
-    assert_equal 'ET0001', ev_type.uuid
+    assert_equal 'ET001', ev_type.id
+    assert_equal 'ET001', ev_type.uuid
     assert_equal '#000001', ev_type.color
     assert_nil ev_type.description_html
     assert_nil ev_type.description_plain
@@ -81,20 +81,29 @@ module AssertHelper
     assert_equal 'https://calendly.com/foobar/15min', ev_type.scheduling_url
     assert_equal '15min', ev_type.slug
     assert_equal 'StandardEventType', ev_type.type
-    assert_equal 'https://api.calendly.com/event_types/ET0001', ev_type.uri
+    assert_equal 'https://api.calendly.com/event_types/ET001', ev_type.uri
     assert_equal Time.parse('2020-07-01T03:00:00.000000Z').to_i, ev_type.created_at.to_i
     assert_equal Time.parse('2020-07-11T03:00:00.000000Z').to_i, ev_type.updated_at.to_i
-    assert_equal 'U001', ev_type.owner_uuid
-    assert_equal 'User', ev_type.owner_type
-    assert_equal 'FooBar', ev_type.owner_name
-    assert_equal 'https://api.calendly.com/users/U001', ev_type.owner_uri
+
+    expected_profile = {
+      name: 'FooBar',
+      owner: 'https://api.calendly.com/users/U001',
+      type: 'User'
+    }
+    assert_equal expected_profile, ev_type.profile
+    owner = ev_type.owner_user
+    assert owner.is_a? Calendly::User
+    assert_equal 'U001', owner.id
+    assert_equal 'https://api.calendly.com/users/U001', owner.uri
+    assert_nil ev_type.owner_team
+    assert_equal [], ev_type.custom_questions
   end
 
   def assert_event_type002(ev_type)
     assert ev_type.client.is_a? Calendly::Client
     assert_equal false, ev_type.active
-    assert_equal 'ET0002', ev_type.id
-    assert_equal 'ET0002', ev_type.uuid
+    assert_equal 'ET002', ev_type.id
+    assert_equal 'ET002', ev_type.uuid
     assert_equal '#000002', ev_type.color
     assert_nil ev_type.description_html
     assert_nil ev_type.description_plain
@@ -106,20 +115,29 @@ module AssertHelper
     assert_equal 'https://calendly.com/foobar/60min', ev_type.scheduling_url
     assert_equal '60min', ev_type.slug
     assert_equal 'StandardEventType', ev_type.type
-    assert_equal 'https://api.calendly.com/event_types/ET0002', ev_type.uri
+    assert_equal 'https://api.calendly.com/event_types/ET002', ev_type.uri
     assert_equal Time.parse('2020-07-02T03:00:00.000000Z').to_i, ev_type.created_at.to_i
     assert_equal Time.parse('2020-07-12T03:00:00.000000Z').to_i, ev_type.updated_at.to_i
-    assert_equal 'U001', ev_type.owner_uuid
-    assert_equal 'User', ev_type.owner_type
-    assert_equal 'FooBar', ev_type.owner_name
-    assert_equal 'https://api.calendly.com/users/U001', ev_type.owner_uri
+
+    expected_profile = {
+      name: 'FooBar',
+      owner: 'https://api.calendly.com/users/U001',
+      type: 'User'
+    }
+    assert_equal expected_profile, ev_type.profile
+    owner = ev_type.owner_user
+    assert owner.is_a? Calendly::User
+    assert_equal 'U001', owner.id
+    assert_equal 'https://api.calendly.com/users/U001', owner.uri
+    assert_nil ev_type.owner_team
+    assert_equal [], ev_type.custom_questions
   end
 
   def assert_event_type003(ev_type)
     assert ev_type.client.is_a? Calendly::Client
     assert_equal false, ev_type.active
-    assert_equal 'ET0003', ev_type.id
-    assert_equal 'ET0003', ev_type.uuid
+    assert_equal 'ET003', ev_type.id
+    assert_equal 'ET003', ev_type.uuid
     assert_equal '#000003', ev_type.color
     assert_equal '<p>description</p>', ev_type.description_html
     assert_equal 'description', ev_type.description_plain
@@ -131,13 +149,174 @@ module AssertHelper
     assert_equal 'https://calendly.com/foobar/30min', ev_type.scheduling_url
     assert_equal '30min', ev_type.slug
     assert_equal 'StandardEventType', ev_type.type
-    assert_equal 'https://api.calendly.com/event_types/ET0003', ev_type.uri
+    assert_equal 'https://api.calendly.com/event_types/ET003', ev_type.uri
+    assert_equal false, ev_type.secret
     assert_equal Time.parse('2020-07-03T03:00:00.000000Z').to_i, ev_type.created_at.to_i
     assert_equal Time.parse('2020-07-13T03:00:00.000000Z').to_i, ev_type.updated_at.to_i
-    assert_equal 'U001', ev_type.owner_uuid
-    assert_equal 'User', ev_type.owner_type
-    assert_equal 'FooBar', ev_type.owner_name
-    assert_equal 'https://api.calendly.com/users/U001', ev_type.owner_uri
+
+    expected_profile = {
+      name: 'FooBar',
+      owner: 'https://api.calendly.com/users/U001',
+      type: 'User'
+    }
+    assert_equal expected_profile, ev_type.profile
+    owner = ev_type.owner_user
+    assert owner.is_a? Calendly::User
+    assert_equal 'U001', owner.id
+    assert_equal 'https://api.calendly.com/users/U001', owner.uri
+    assert_nil ev_type.owner_team
+    assert_equal [], ev_type.custom_questions
+  end
+
+  def assert_event_type011(ev_type)
+    assert ev_type.client.is_a? Calendly::Client
+    assert_equal true, ev_type.active
+    assert_equal 'ET011', ev_type.id
+    assert_equal 'ET011', ev_type.uuid
+    assert_equal '#000001', ev_type.color
+    assert_equal '<p>FooBar</p>', ev_type.description_html
+    assert_equal 'FooBar', ev_type.description_plain
+    assert_equal 15, ev_type.duration
+    assert_equal 'Internal Note Foobar', ev_type.internal_note
+    assert_equal 'solo', ev_type.kind
+    assert_equal '15 Minute Meeting', ev_type.name
+    assert_equal 'collective', ev_type.pooling_type
+    assert_equal 'https://calendly.com/foobar/T001_many_questions', ev_type.scheduling_url
+    assert_equal 'T001_many_questions', ev_type.slug
+    assert_equal 'StandardEventType', ev_type.type
+    assert_equal 'https://api.calendly.com/event_types/ET011', ev_type.uri
+    assert_equal true, ev_type.secret
+    assert_equal Time.parse('2020-07-01T03:00:00.000000Z').to_i, ev_type.created_at.to_i
+    assert_equal Time.parse('2020-07-11T03:00:00.000000Z').to_i, ev_type.updated_at.to_i
+
+    expected_profile = {
+      name: 'Team Page',
+      owner:  'https://api.calendly.com/teams/T001',
+      type: 'Team'
+    }
+    assert_equal expected_profile, ev_type.profile
+    owner = ev_type.owner_team
+    assert owner.is_a? Calendly::Team
+    assert_equal 'T001', owner.id
+    assert_equal 'https://api.calendly.com/teams/T001', owner.uri
+    assert_nil ev_type.owner_user
+
+    assert_equal 6, ev_type.custom_questions.length
+    question = ev_type.custom_questions[0]
+    assert_equal [], question.answer_choices
+    assert_equal false, question.enabled
+    assert_equal false, question.include_other
+    assert_equal 'Please share anything that will help prepare for our meeting.', question.name
+    assert_equal 0, question.position
+    assert_equal false, question.required
+    assert_equal 'text', question.type
+
+    question = ev_type.custom_questions[1]
+    assert_equal [], question.answer_choices
+    assert_equal true, question.enabled
+    assert_equal false, question.include_other
+    assert_equal 'One Line', question.name
+    assert_equal 1, question.position
+    assert_equal false, question.required
+    assert_equal 'string', question.type
+
+    question = ev_type.custom_questions[2]
+    assert_equal [], question.answer_choices
+    assert_equal true, question.enabled
+    assert_equal false, question.include_other
+    assert_equal 'Multiple Lines', question.name
+    assert_equal 2, question.position
+    assert_equal true, question.required
+    assert_equal 'text', question.type
+
+    question = ev_type.custom_questions[3]
+    assert_equal %w[Answer1 Answer2 Answer3], question.answer_choices
+    assert_equal true, question.enabled
+    assert_equal true, question.include_other
+    assert_equal 'Radio Buttons', question.name
+    assert_equal 3, question.position
+    assert_equal false, question.required
+    assert_equal 'single_select', question.type
+
+    question = ev_type.custom_questions[4]
+    assert_equal %w[Answer1 Answer2 Answer3], question.answer_choices
+    assert_equal true, question.enabled
+    assert_equal true, question.include_other
+    assert_equal 'CheckBoxes', question.name
+    assert_equal 4, question.position
+    assert_equal false, question.required
+    assert_equal 'multi_select', question.type
+
+    question = ev_type.custom_questions[5]
+    assert_equal [], question.answer_choices
+    assert_equal true, question.enabled
+    assert_equal false, question.include_other
+    assert_equal 'Phone Number', question.name
+    assert_equal 5, question.position
+    assert_equal false, question.required
+    assert_equal 'phone_number', question.type
+  end
+
+  def assert_event_type101(ev_type)
+    assert ev_type.client.is_a? Calendly::Client
+    assert_equal true, ev_type.active
+    assert_equal 'ET101', ev_type.id
+    assert_equal 'ET101', ev_type.uuid
+    assert_equal '#000001', ev_type.color
+    assert_nil ev_type.description_html
+    assert_nil ev_type.description_plain
+    assert_equal 15, ev_type.duration
+    assert_nil ev_type.internal_note
+    assert_equal 'solo', ev_type.kind
+    assert_equal '15 Minute Meeting', ev_type.name
+    assert_equal 'collective', ev_type.pooling_type
+    assert_equal 'https://calendly.com/foobar/T001_15min', ev_type.scheduling_url
+    assert_equal 'T001_15min', ev_type.slug
+    assert_equal 'StandardEventType', ev_type.type
+    assert_equal 'https://api.calendly.com/event_types/ET101', ev_type.uri
+    assert_equal false, ev_type.secret
+    assert_equal Time.parse('2020-07-01T03:00:00.000000Z').to_i, ev_type.created_at.to_i
+    assert_equal Time.parse('2020-07-11T03:00:00.000000Z').to_i, ev_type.updated_at.to_i
+
+    expected_profile = {
+      name: 'Team Page',
+      owner:  'https://api.calendly.com/teams/T001',
+      type: 'Team'
+    }
+    assert_equal expected_profile, ev_type.profile
+    owner = ev_type.owner_team
+    assert owner.is_a? Calendly::Team
+    assert_equal 'T001', owner.id
+    assert_equal 'https://api.calendly.com/teams/T001', owner.uri
+    assert_nil ev_type.owner_user
+    assert_equal [], ev_type.custom_questions
+  end
+
+  def assert_event_type201(ev_type)
+    assert ev_type.client.is_a? Calendly::Client
+    assert_equal true, ev_type.active
+    assert_equal 'ET201', ev_type.id
+    assert_equal 'ET201', ev_type.uuid
+    assert_equal '#000001', ev_type.color
+    assert_nil ev_type.description_html
+    assert_nil ev_type.description_plain
+    assert_equal 15, ev_type.duration
+    assert_nil ev_type.internal_note
+    assert_equal 'solo', ev_type.kind
+    assert_equal '15 Minute Meeting', ev_type.name
+    assert_equal 'round_robin', ev_type.pooling_type
+    assert_equal 'https://calendly.com/d/foobar/no_profile_15min', ev_type.scheduling_url
+    assert_nil ev_type.slug
+    assert_equal 'StandardEventType', ev_type.type
+    assert_equal 'https://api.calendly.com/event_types/ET201', ev_type.uri
+    assert_equal false, ev_type.secret
+    assert_equal Time.parse('2020-07-01T03:00:00.000000Z').to_i, ev_type.created_at.to_i
+    assert_equal Time.parse('2020-07-11T03:00:00.000000Z').to_i, ev_type.updated_at.to_i
+
+    assert_nil ev_type.profile
+    assert_nil ev_type.owner_user
+    assert_nil ev_type.owner_team
+    assert_equal [], ev_type.custom_questions
   end
 
   def assert_event001(ev)

@@ -103,7 +103,7 @@ module Calendly
     def event_types(opts = {})
       return @cached_event_types if defined?(@cached_event_types) && @cached_event_types
 
-      request_proc = proc { |options| client.event_types uri, options }
+      request_proc = proc { |options| client.event_types_by_user uri, options }
       @cached_event_types = auto_pagination request_proc, opts
     end
 

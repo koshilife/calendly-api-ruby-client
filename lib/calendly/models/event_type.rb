@@ -69,6 +69,10 @@ module Calendly
     # Whether the event type is a “StandardEventType” or an "AdhocEventType”.
     attr_accessor :type
 
+    # @return [Boolean]
+    # Indicates if the event type is hidden on the owner's main scheduling page.
+    attr_accessor :secret
+
     # @return [Time]
     # Moment when event type was eventually created.
     attr_accessor :created_at
@@ -77,21 +81,21 @@ module Calendly
     # Moment when event type was last updated.
     attr_accessor :updated_at
 
-    # @return [String]
-    # uuid of User or Team object.
-    attr_accessor :owner_uuid
+    # @return [Hash]
+    # The profile of the User that's associated with the Event Type.
+    attr_accessor :profile
 
-    # @return [String]
-    # Reference to the profile owner.
-    attr_accessor :owner_uri
+    # @return [User]
+    # The owner user if the profile belongs to a "user" (individual).
+    attr_accessor :owner_user
 
-    # @return [String]
-    # Human-readable name.
-    attr_accessor :owner_name
+    # @return [Team]
+    # The owner team if the profile belongs to a "team".
+    attr_accessor :owner_team
 
-    # @return [String]
-    # Whether the profile belongs to a “User” or a “Team”.
-    attr_accessor :owner_type
+    # @return [Array<EventTypeCustomQuestion>]
+    # A collection of custom questions.
+    attr_accessor :custom_questions
 
     #
     # Get EventType associated with self.
@@ -125,20 +129,25 @@ module Calendly
 
   private
 
-    def after_set_attributes(attrs)
+    def after_set_attributes(attrs) # rubocop:disable Metrics/CyclomaticComplexity
       super attrs
-
-      profile = attrs[:profile]
-      if profile.is_a? Hash
-        @owner_uri = attrs[:profile][:owner]
-        @owner_uuid = User.extract_uuid owner_uri
-        @owner_name = attrs[:profile][:name]
-        @owner_type = attrs[:profile][:type]
+      if profile.is_a?(Hash) && profile[:owner] && profile[:type]
+        owner_params = {uri: profile[:owner]}
+        owner_type = profile[:type].downcase if profile[:type].respond_to?(:downcase)
+        case owner_type
+        when 'user'
+          @owner_user = User.new(owner_params, @client)
+        when 'team'
+          @owner_team = Team.new(owner_params, @client)
+        end
       end
+
+      questions = attrs[:custom_questions]
+      @custom_questions = questions.map { |params| EventTypeCustomQuestion.new params } if questions.is_a? Array
     end
 
     def inspect_attributes
-      super + %i[active kind]
+      super + %i[active kind scheduling_url]
     end
   end
 end

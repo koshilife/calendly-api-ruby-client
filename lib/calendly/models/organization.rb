@@ -82,6 +82,31 @@ module Calendly
     end
 
     #
+    # Returns all Event Types associated with self.
+    #
+    # @param [Hash] opts the optional request parameters.
+    # @option opts [Integer] :count Number of rows to return.
+    # @option opts [String] :page_token Pass this to get the next portion of collection.
+    # @option opts [String] :sort Order results by the specified field and direction.
+    # Accepts comma-separated list of {field}:{direction} values.
+    # @return [Array<Calendly::EventType>]
+    # @raise [Calendly::Error] if the uri is empty.
+    # @raise [Calendly::ApiError] if the api returns error code.
+    # @since 0.6.0
+    def event_types(opts = {})
+      return @cached_event_types if defined?(@cached_event_types) && @cached_event_types
+
+      request_proc = proc { |options| client.event_types uri, options }
+      @cached_event_types = auto_pagination request_proc, opts
+    end
+
+    # @since 0.6.0
+    def event_types!(opts = {})
+      @cached_event_types = nil
+      event_types opts
+    end
+
+    #
     # Returns all Scheduled Events associated with self.
     #
     # @param [Hash] opts the optional request parameters.

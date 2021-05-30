@@ -70,7 +70,7 @@ module Calendly
     def test_that_it_returns_event_types_in_plurality_of_pages
       params1 = @uri_params.merge(count: 2, sort: 'created_at:desc')
       url1 = "#{HOST}/event_types?#{URI.encode_www_form(params1)}"
-      res_body1 = load_test_data 'event_types_002_page1.json'
+      res_body1 = load_test_data 'event_types_002_page1_user.json'
       add_stub_request :get, url1, res_body: res_body1
 
       params2 = @uri_params.merge(count: 2, page_token: 'NEXT_PAGE_TOKEN')
