@@ -95,8 +95,8 @@ module Calendly
     # @raise [Calendly::Error] if the organization.uri is empty.
     # @raise [Calendly::ApiError] if the api returns error code.
     # @since 0.1.3
-    def create_user_scope_webhook(url, events)
-      user.create_webhook url, events
+    def create_user_scope_webhook(url, events, signing_key = nil)
+      user.create_webhook url, events, nil, signing_key
     end
 
   private
