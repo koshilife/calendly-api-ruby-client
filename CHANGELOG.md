@@ -1,8 +1,13 @@
 # CHANGELOG
 
+## 0.7.0
+
+- supported a signing key parameter when creating webhooks. (#33)
+- changed `user_uri` argument to keyword argument on Client#create_webhook.
+
 ## 0.6.0
 
-- supported to new features until April 2021. (#29)
+- supported new features until April 2021. (#29)
   - Client
     - (Change) support organization options in `event_types` api.
     - (Rename) `event_types` to `event_types_by_user`
@@ -11,6 +16,9 @@
     - (Add method) webhooks
     - (Add method) webhooks!
     - (Add method) create_webhook
+  - Organization model
+    - (Add method) event_types
+    - (Add method) event_types!
   - Event model
     - (Remove field) invitees_counter_total
     - (Remove field) invitees_counter_active
