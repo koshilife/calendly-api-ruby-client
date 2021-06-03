@@ -928,7 +928,7 @@ signing_key: signing_key}
       url = "#{HOST}/webhook_subscriptions"
       add_stub_request :post, url, req_body: req_body, res_body: res_body, res_status: 201
 
-      webhook = @client.create_webhook webhook_url, events, org_uri, nil, signing_key
+      webhook = @client.create_webhook webhook_url, events, org_uri, signing_key: signing_key
       assert_org_webhook_001 webhook
     end
 
@@ -943,7 +943,7 @@ signing_key: signing_key}
       url = "#{HOST}/webhook_subscriptions"
       add_stub_request :post, url, req_body: req_body, res_body: res_body, res_status: 201
 
-      webhook = @client.create_webhook webhook_url, events, org_uri, user_uri
+      webhook = @client.create_webhook webhook_url, events, org_uri, user_uri: user_uri
       assert_user_webhook_001 webhook
     end
 
@@ -960,7 +960,7 @@ user: user_uri, signing_key: signing_key}
       url = "#{HOST}/webhook_subscriptions"
       add_stub_request :post, url, req_body: req_body, res_body: res_body, res_status: 201
 
-      webhook = @client.create_webhook webhook_url, events, org_uri, user_uri, signing_key
+      webhook = @client.create_webhook webhook_url, events, org_uri, user_uri: user_uri, signing_key: signing_key
       assert_user_webhook_001 webhook
     end
 

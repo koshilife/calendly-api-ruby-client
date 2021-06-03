@@ -528,7 +528,7 @@ module Calendly
     # @raise [Calendly::Error] if the org_uri arg is empty.
     # @raise [Calendly::ApiError] if the api returns error code.
     # @since 0.1.3
-    def create_webhook(url, events, org_uri, user_uri = nil, signing_key = nil) # rubocop:disable Metrics/ParameterLists
+    def create_webhook(url, events, org_uri, user_uri: nil, signing_key: nil) # rubocop:disable Metrics/ParameterLists
       check_not_empty url, 'url'
       check_not_empty events, 'events'
       check_not_empty org_uri, 'org_uri'
