@@ -145,7 +145,7 @@ This library supports a configurable logger.
 ```ruby
 # if the log level set :debug, you can get the request/response information.
 Calendly.configuration.logger.level = :debug
-invitation = my_org.create_invitation('foobar@example.com')
+invitation = org.create_invitation('foobar@example.com')
 # D, [2020-08-10T10:48:15] DEBUG -- : Request POST https://api.calendly.com/organizations/ORG001/invitations params:, body:{:email=>"foobar@example.com"}
 # D, [2020-08-10T10:48:16] DEBUG -- : Response status:201, body:{"resource":{"created_at":"2020-08-10T10:48:16.051159Z","email":"foobar@example.com","last_sent_at":"2020-08-10T10:48:16.096518Z","organization":"https://api.calendly.com/organizations/ORG001","status":"pending","updated_at":"2020-08-10T10:48:16.051159Z","uri":"https://api.calendly.com/organizations/ORG001/invitations/INV001"}}
 ```
