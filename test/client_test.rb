@@ -191,10 +191,10 @@ module Calendly
       add_stub_request :get, url2, res_body: res_body2
 
       # request page1
-      event_types_page1, next_params1 = @client.event_types org_uri, option_params1
+      event_types_page1, next_params1 = @client.event_types org_uri, options: option_params1
       org_uri_page1 = next_params1.delete :organization
       # request page2
-      event_types_page2, next_params2 = @client.event_types org_uri_page1, next_params1
+      event_types_page2, next_params2 = @client.event_types org_uri_page1, options: next_params1
 
       assert_equal 2, event_types_page1.length
       assert_equal 1, event_types_page2.length
@@ -247,10 +247,10 @@ module Calendly
       add_stub_request :get, url2, res_body: res_body2
 
       # request page1
-      event_types_page1, next_params1 = @client.event_types_by_user user_uri, option_params1
+      event_types_page1, next_params1 = @client.event_types_by_user user_uri, options: option_params1
       user_uri_page1 = next_params1.delete :user
       # request page2
-      event_types_page2, next_params2 = @client.event_types_by_user user_uri_page1, next_params1
+      event_types_page2, next_params2 = @client.event_types_by_user user_uri_page1, options: next_params1
 
       assert_equal 2, event_types_page1.length
       assert_equal 1, event_types_page2.length
@@ -333,10 +333,10 @@ module Calendly
       add_stub_request :get, url2, res_body: res_body2
 
       # request page1
-      evs_page1, next_params1 = @client.scheduled_events org_uri, params1
+      evs_page1, next_params1 = @client.scheduled_events org_uri, options: params1
       # org_uri = next_params1.delete :organization
       # request page2
-      evs_page2, next_params2 = @client.scheduled_events org_uri, next_params1
+      evs_page2, next_params2 = @client.scheduled_events org_uri, options: next_params1
 
       assert_equal 2, evs_page1.length
       assert_equal 1, evs_page2.length
@@ -397,10 +397,10 @@ module Calendly
       add_stub_request :get, url2, res_body: res_body2
 
       # request page1
-      evs_page1, next_params1 = @client.scheduled_events_by_user user_uri, params1
+      evs_page1, next_params1 = @client.scheduled_events_by_user user_uri, options: params1
       user_uri = next_params1.delete :user
       # request page2
-      evs_page2, next_params2 = @client.scheduled_events_by_user user_uri, next_params1
+      evs_page2, next_params2 = @client.scheduled_events_by_user user_uri, options: next_params1
 
       assert_equal 2, evs_page1.length
       assert_equal 1, evs_page2.length
@@ -484,9 +484,9 @@ module Calendly
       add_stub_request :get, url2, res_body: res_body2
 
       # request page1
-      invs_page1, next_params1 = @client.event_invitees ev_uuid, params1
+      invs_page1, next_params1 = @client.event_invitees ev_uuid, options: params1
       # request page2
-      invs_page2, next_params2 = @client.event_invitees ev_uuid, next_params1
+      invs_page2, next_params2 = @client.event_invitees ev_uuid, options: next_params1
 
       assert_equal 2, invs_page1.length
       assert_equal 1, invs_page2.length
@@ -548,10 +548,10 @@ module Calendly
       add_stub_request :get, url2, res_body: res_body2
 
       # request page1
-      mems_page1, next_params1 = @client.memberships org_uri, params1
+      mems_page1, next_params1 = @client.memberships org_uri, options: params1
       org_uri = next_params1.delete(:organization)
       # request page2
-      mems_page2, next_params2 = @client.memberships org_uri, next_params1
+      mems_page2, next_params2 = @client.memberships org_uri, options: next_params1
 
       assert_equal 2, mems_page1.length
       assert_equal 1, mems_page2.length
@@ -674,9 +674,9 @@ module Calendly
       add_stub_request :get, url2, res_body: res_body2
 
       # request page1
-      invs_page1, next_params1 = @client.invitations org_uuid, params1
+      invs_page1, next_params1 = @client.invitations org_uuid, options: params1
       # request page2
-      invs_page2, next_params2 = @client.invitations org_uuid, next_params1
+      invs_page2, next_params2 = @client.invitations org_uuid, options: next_params1
 
       assert_equal 2, invs_page1.length
       assert_equal 1, invs_page2.length
@@ -807,10 +807,10 @@ module Calendly
       add_stub_request :get, url2, res_body: res_body2
 
       # request page1
-      webhooks1, next_params1 = @client.webhooks org_uri, params1
+      webhooks1, next_params1 = @client.webhooks org_uri, options: params1
       org_uri = next_params1.delete :organization
       # request page2
-      webhooks2, next_params2 = @client.webhooks org_uri, next_params1
+      webhooks2, next_params2 = @client.webhooks org_uri, options: next_params1
 
       assert_equal 2, webhooks1.length
       assert_equal 1, webhooks2.length
@@ -872,10 +872,10 @@ module Calendly
       add_stub_request :get, url2, res_body: res_body2
 
       # request page1
-      webhooks1, next_params1 = @client.user_scope_webhooks org_uri, user_uri, params1
+      webhooks1, next_params1 = @client.user_scope_webhooks org_uri, user_uri, options: params1
       org_uri = next_params1.delete :organization
       # request page2
-      webhooks2, next_params2 = @client.user_scope_webhooks org_uri, user_uri, next_params1
+      webhooks2, next_params2 = @client.user_scope_webhooks org_uri, user_uri, options: next_params1
 
       assert_equal 2, webhooks1.length
       assert_equal 1, webhooks2.length
@@ -1049,16 +1049,16 @@ user: user_uri, signing_key: signing_key}
     def test_that_it_creates_schedule_link
       max_event_count = 1
       resource_uri = "#{HOST}/resource/0001"
-      resource_type = 'FooBar'
+      owner_type = 'FooBar'
       req_body = {
         max_event_count: max_event_count,
         owner: resource_uri,
-        owner_type: resource_type
+        owner_type: owner_type
       }
       res_body = load_test_data 'schedule_link_001.json'
       url = "#{HOST}/scheduling_links"
       add_stub_request :post, url, req_body: req_body, res_body: res_body, res_status: 201
-      assert_schedule_link_001 @client.create_schedule_link(resource_uri, resource_type: resource_type)
+      assert_schedule_link_001 @client.create_schedule_link(resource_uri, owner_type: owner_type)
     end
 
     def test_that_it_raises_an_argument_error_on_create_schedule_link
@@ -1068,14 +1068,14 @@ user: user_uri, signing_key: signing_key}
       assert_required_error proc_uri_arg_is_empty, 'uri'
 
       proc_max_event_count_arg_is_empty = proc do
-        @client.create_schedule_link 'uri', nil
+        @client.create_schedule_link 'uri', max_event_count: nil
       end
       assert_required_error proc_max_event_count_arg_is_empty, 'max_event_count'
 
-      proc_resource_type_arg_is_empty = proc do
-        @client.create_schedule_link 'uri', resource_type: nil
+      proc_owner_type_arg_is_empty = proc do
+        @client.create_schedule_link 'uri', owner_type: nil
       end
-      assert_required_error proc_resource_type_arg_is_empty, 'resource_type'
+      assert_required_error proc_owner_type_arg_is_empty, 'owner_type'
     end
 
   private

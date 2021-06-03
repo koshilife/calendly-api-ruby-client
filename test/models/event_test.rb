@@ -75,7 +75,7 @@ module Calendly
       url2 = "#{HOST}/scheduled_events/#{ev.uuid}/invitees?#{URI.encode_www_form(params2)}"
       add_stub_request :get, url2, res_body: res_body2
 
-      invs = ev.invitees params1
+      invs = ev.invitees options: params1
       assert_equal 3, invs.length
       assert_event201_invitee003 invs[0]
       assert_event201_invitee002 invs[1]

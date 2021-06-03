@@ -91,82 +91,82 @@ module Calendly
     #
     # Returns all Event Types associated with self.
     #
-    # @param [Hash] opts the optional request parameters.
-    # @option opts [Integer] :count Number of rows to return.
-    # @option opts [String] :page_token Pass this to get the next portion of collection.
-    # @option opts [String] :sort Order results by the specified field and direction.
+    # @param [Hash] options the optional request parameters. Optional.
+    # @option options [Integer] :count Number of rows to return.
+    # @option options [String] :page_token Pass this to get the next portion of collection.
+    # @option options [String] :sort Order results by the specified field and direction.
     # Accepts comma-separated list of {field}:{direction} values.
     # @return [Array<Calendly::EventType>]
     # @raise [Calendly::Error] if the uri is empty.
     # @raise [Calendly::ApiError] if the api returns error code.
     # @since 0.1.0
-    def event_types(opts = {})
+    def event_types(options: nil)
       return @cached_event_types if defined?(@cached_event_types) && @cached_event_types
 
-      request_proc = proc { |options| client.event_types_by_user uri, options }
-      @cached_event_types = auto_pagination request_proc, opts
+      request_proc = proc { |opts| client.event_types_by_user uri, options: opts }
+      @cached_event_types = auto_pagination request_proc, options
     end
 
     # @since 0.2.0
-    def event_types!(opts = {})
+    def event_types!(options: nil)
       @cached_event_types = nil
-      event_types opts
+      event_types options: options
     end
 
     #
     # Returns all Scheduled Events associated with self.
     #
-    # @param [Hash] opts the optional request parameters.
-    # @option opts [Integer] :count Number of rows to return.
-    # @option opts [String] :invitee_email Return events scheduled with the specified invitee email
-    # @option opts [String] :max_start_timeUpper bound (inclusive) for an event's start time to filter by.
-    # @option opts [String] :min_start_time Lower bound (inclusive) for an event's start time to filter by.
-    # @option opts [String] :page_token Pass this to get the next portion of collection.
-    # @option opts [String] :sort Order results by the specified field and directin.
+    # @param [Hash] options the optional request parameters. Optional.
+    # @option options [Integer] :count Number of rows to return.
+    # @option options [String] :invitee_email Return events scheduled with the specified invitee email
+    # @option options [String] :max_start_timeUpper bound (inclusive) for an event's start time to filter by.
+    # @option options [String] :min_start_time Lower bound (inclusive) for an event's start time to filter by.
+    # @option options [String] :page_token Pass this to get the next portion of collection.
+    # @option options [String] :sort Order results by the specified field and directin.
     # Accepts comma-separated list of {field}:{direction} values.
-    # @option opts [String] :status Whether the scheduled event is active or canceled
+    # @option options [String] :status Whether the scheduled event is active or canceled
     # @return [Array<Calendly::Event>]
     # @raise [Calendly::Error] if the uri is empty.
     # @raise [Calendly::ApiError] if the api returns error code.
     # @since 0.1.0
-    def scheduled_events(opts = {})
+    def scheduled_events(options: nil)
       return @cached_scheduled_events if defined?(@cached_scheduled_events) && @cached_scheduled_events
 
-      request_proc = proc { |options| client.scheduled_events_by_user uri, options }
-      @cached_scheduled_events = auto_pagination request_proc, opts
+      request_proc = proc { |opts| client.scheduled_events_by_user uri, options: opts }
+      @cached_scheduled_events = auto_pagination request_proc, options
     end
 
     # @since 0.2.0
-    def scheduled_events!(opts = {})
+    def scheduled_events!(options: nil)
       @cached_scheduled_events = nil
-      scheduled_events opts
+      scheduled_events options: options
     end
 
     #
     # Get List of user scope Webhooks associated with self.
     #
-    # @param [Hash] opts the optional request parameters.
-    # @option opts [Integer] :count Number of rows to return.
-    # @option opts [String] :page_token Pass this to get the next portion of collection.
-    # @option opts [String] :sort Order results by the specified field and directin. Accepts comma-separated list of {field}:{direction} values.
+    # @param [Hash] options the optional request parameters. Optional.
+    # @option options [Integer] :count Number of rows to return.
+    # @option options [String] :page_token Pass this to get the next portion of collection.
+    # @option options [String] :sort Order results by the specified field and directin. Accepts comma-separated list of {field}:{direction} values.
     # Accepts comma-separated list of {field}:{direction} values.
     # @return [Array<Calendly::WebhookSubscription>]
     # @raise [Calendly::Error] if the organization.uri is empty.
     # @raise [Calendly::Error] if the uri is empty.
     # @raise [Calendly::ApiError] if the api returns error code.
     # @since 0.6.0
-    def webhooks(opts = {})
+    def webhooks(options: nil)
       return @cached_webhooks if defined?(@cached_webhooks) && @cached_webhooks
 
       org_uri = current_organization&.uri
-      request_proc = proc { |options| client.user_scope_webhooks org_uri, uri, options }
-      @cached_webhooks = auto_pagination request_proc, opts
+      request_proc = proc { |opts| client.user_scope_webhooks org_uri, uri, options: opts }
+      @cached_webhooks = auto_pagination request_proc, options
     end
 
     # @since 0.6.0
-    def webhooks!(opts = {})
+    def webhooks!(options: nil)
       @cached_webhooks = nil
-      webhooks opts
+      webhooks options: options
     end
 
     #

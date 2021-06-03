@@ -86,7 +86,7 @@ module Calendly
       url2 = "#{HOST}/webhook_subscriptions?#{URI.encode_www_form(params2)}"
       add_stub_request :get, url2, res_body: res_body2
 
-      webhooks = @mem.user_scope_webhooks params1
+      webhooks = @mem.user_scope_webhooks options: params1
       assert_equal 3, webhooks.length
       assert_user_webhook_003 webhooks[0]
       assert_user_webhook_002 webhooks[1]

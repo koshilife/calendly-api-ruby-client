@@ -1,5 +1,46 @@
 # CHANGELOG
 
+## 0.8.0
+
+- used keyword arguments for optional parameters, to be friendly for programmer.
+- changed methods are followings:
+  - Client
+    - event_types
+    - event_types_by_user
+    - scheduled_events
+    - scheduled_events_by_user
+    - event_invitees
+    - memberships
+    - memberships_by_user
+    - invitations
+    - webhooks
+    - user_scope_webhooks
+    - create_schedule_link
+  - Event
+    - invitees
+    - invitees!
+  - EventType
+    - create_schedule_link
+  - Organization
+    - memberships
+    - memberships!
+    - invitations
+    - invitations!
+    - event_types
+    - event_types!
+    - scheduled_events
+    - scheduled_events!
+    - webhooks
+    - webhooks!
+  - OrganizationMembership
+    - user_scope_webhooks
+    - user_scope_webhooks!
+  - User
+    - event_types
+    - scheduled_events
+    - webhooks
+    - webhooks!
+
 ## 0.7.0
 
 - supported a signing key parameter when creating webhooks. (#33)

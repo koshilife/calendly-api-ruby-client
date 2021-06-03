@@ -132,8 +132,8 @@ module Calendly
     # @raise [Calendly::Error] if the max_event_count arg is empty.
     # @raise [Calendly::ApiError] if the api returns error code.
     # @since 0.5.2
-    def create_schedule_link(max_event_count = 1)
-      client.create_schedule_link uri, max_event_count, resource_type: 'EventType'
+    def create_schedule_link(max_event_count: 1)
+      client.create_schedule_link uri, max_event_count: max_event_count, owner_type: 'EventType'
     end
 
   private

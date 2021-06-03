@@ -40,7 +40,7 @@ module Calendly
       res_body = load_test_data 'schedule_link_001.json'
       url = "#{HOST}/scheduling_links"
       add_stub_request :post, url, req_body: req_body, res_body: res_body, res_status: 201
-      assert_schedule_link_001 @event_type.create_schedule_link(3)
+      assert_schedule_link_001 @event_type.create_schedule_link(max_event_count: 3)
     end
   end
 end

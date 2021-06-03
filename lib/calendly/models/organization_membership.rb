@@ -65,23 +65,23 @@ module Calendly
     #
     # Get List of user scope Webhooks associated with self.
     #
-    # @param [Hash] opts the optional request parameters.
-    # @option opts [Integer] :count Number of rows to return.
-    # @option opts [String] :page_token Pass this to get the next portion of collection.
-    # @option opts [String] :sort Order results by the specified field and directin. Accepts comma-separated list of {field}:{direction} values.
+    # @param [Hash] options the optional request parameters. Optional.
+    # @option options [Integer] :count Number of rows to return.
+    # @option options [String] :page_token Pass this to get the next portion of collection.
+    # @option options [String] :sort Order results by the specified field and directin. Accepts comma-separated list of {field}:{direction} values.
     # Accepts comma-separated list of {field}:{direction} values.
     # @return [Array<Calendly::WebhookSubscription>]
     # @raise [Calendly::Error] if the organization.uri is empty.
     # @raise [Calendly::Error] if the user.uri is empty.
     # @raise [Calendly::ApiError] if the api returns error code.
     # @since 0.1.3
-    def user_scope_webhooks(opts = {})
-      user.webhooks(opts)
+    def user_scope_webhooks(options: nil)
+      user.webhooks options: options
     end
 
     # @since 0.2.0
-    def user_scope_webhooks!(opts = {})
-      user.webhooks!(opts)
+    def user_scope_webhooks!(options: nil)
+      user.webhooks! options: options
     end
 
     #
