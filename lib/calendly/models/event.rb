@@ -87,10 +87,10 @@ module Calendly
     #
     # Returns all Event Invitees associated with self.
     #
-    # @param [Hash] opts the optional request parameters.
-    # @option opts [Integer] :count Number of rows to return.
-    # @option opts [String] :email Filter by email.
-    # @option opts [String] :page_token
+    # @param [Hash] options the optional request parameters. Optional.
+    # @option options [Integer] :count Number of rows to return.
+    # @option options [String] :email Filter by email.
+    # @option options [String] :page_token
     # Pass this to get the next portion of collection.
     # @option opts [String] :sort Order results by the specified field and directin.
     # Accepts comma-separated list of {field}:{direction} values.
@@ -99,17 +99,17 @@ module Calendly
     # @raise [Calendly::Error] if the uuid is empty.
     # @raise [Calendly::ApiError] if the api returns error code.
     # @since 0.1.0
-    def invitees(opts = {})
+    def invitees(options: nil)
       return @cached_invitees if defined?(@cached_invitees) && @cached_invitees
 
-      request_proc = proc { |options| client.event_invitees uuid, options }
-      @cached_invitees = auto_pagination request_proc, opts
+      request_proc = proc { |opts| client.event_invitees uuid, options: opts }
+      @cached_invitees = auto_pagination request_proc, options
     end
 
     # @since 0.2.0
-    def invitees!(opts = {})
+    def invitees!(options: nil)
       @cached_invitees = nil
-      invitees opts
+      invitees options: options
     end
 
   private

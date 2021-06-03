@@ -80,7 +80,7 @@ module Calendly
       res_body2 = load_test_data 'event_types_002_page2.json'
       add_stub_request :get, url2, res_body: res_body2
 
-      event_types = @user.event_types params1
+      event_types = @user.event_types options: params1
       assert_equal 3, event_types.length
       assert_event_type003 event_types[0]
       assert_event_type002 event_types[1]
@@ -129,7 +129,7 @@ module Calendly
       url2 = "#{HOST}/scheduled_events?#{URI.encode_www_form(params2)}"
       add_stub_request :get, url2, res_body: res_body2
 
-      evs = @user.scheduled_events params1
+      evs = @user.scheduled_events options: params1
       assert_equal 3, evs.length
       assert_event013 evs[0]
       assert_event012 evs[1]
@@ -183,7 +183,7 @@ module Calendly
       url2 = "#{HOST}/webhook_subscriptions?#{URI.encode_www_form(params2)}"
       add_stub_request :get, url2, res_body: res_body2
 
-      webhooks = @user.webhooks params1
+      webhooks = @user.webhooks options: params1
       assert_equal 3, webhooks.length
       assert_user_webhook_003 webhooks[0]
       assert_user_webhook_002 webhooks[1]

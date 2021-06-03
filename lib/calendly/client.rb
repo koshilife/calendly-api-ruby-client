@@ -106,22 +106,22 @@ module Calendly
     # Returns all Event Types associated with a specified organization.
     #
     # @param [String] org_uri the specified organization (organization's uri).
-    # @param [Hash] opts the optional request parameters.
-    # @option opts [Integer] :count Number of rows to return.
-    # @option opts [String] :page_token Pass this to get the next portion of collection.
-    # @option opts [String] :sort Order results by the specified field and direction. Accepts comma-separated list of {field}:{direction} values.
+    # @param [Hash] options the optional request parameters. Optional.
+    # @option options [Integer] :count Number of rows to return.
+    # @option options [String] :page_token Pass this to get the next portion of collection.
+    # @option options [String] :sort Order results by the specified field and direction. Accepts comma-separated list of {field}:{direction} values.
     # @return [Array<Array<Calendly::EventType>, Hash>]
     #  - [Array<Calendly::EventType>] event_types
     #  - [Hash] next_params the parameters to get next data. if thre is no next it returns nil.
     # @raise [Calendly::Error] if the org_uri arg is empty.
     # @raise [Calendly::ApiError] if the api returns error code.
     # @since 0.6.0
-    def event_types(org_uri, opts = {})
+    def event_types(org_uri, options: nil)
       check_not_empty org_uri, 'org_uri'
 
       opts_keys = %i[count page_token sort]
       params = {organization: org_uri}
-      params = merge_options opts, opts_keys, params
+      params = merge_options options, opts_keys, params
       body = request :get, 'event_types', params: params
 
       items = body[:collection] || []
@@ -133,22 +133,22 @@ module Calendly
     # Returns all Event Types associated with a specified user.
     #
     # @param [String] user_uri the specified user (user's uri).
-    # @param [Hash] opts the optional request parameters.
-    # @option opts [Integer] :count Number of rows to return.
-    # @option opts [String] :page_token Pass this to get the next portion of collection.
-    # @option opts [String] :sort Order results by the specified field and direction. Accepts comma-separated list of {field}:{direction} values.
+    # @param [Hash] options the optional request parameters. Optional.
+    # @option options [Integer] :count Number of rows to return.
+    # @option options [String] :page_token Pass this to get the next portion of collection.
+    # @option options [String] :sort Order results by the specified field and direction. Accepts comma-separated list of {field}:{direction} values.
     # @return [Array<Array<Calendly::EventType>, Hash>]
     #  - [Array<Calendly::EventType>] event_types
     #  - [Hash] next_params the parameters to get next data. if thre is no next it returns nil.
     # @raise [Calendly::Error] if the user_uri arg is empty.
     # @raise [Calendly::ApiError] if the api returns error code.
     # @since 0.0.2
-    def event_types_by_user(user_uri, opts = {})
+    def event_types_by_user(user_uri, options: nil)
       check_not_empty user_uri, 'user_uri'
 
       opts_keys = %i[count page_token sort]
       params = {user: user_uri}
-      params = merge_options opts, opts_keys, params
+      params = merge_options options, opts_keys, params
       body = request :get, 'event_types', params: params
 
       items = body[:collection] || []
@@ -174,26 +174,26 @@ module Calendly
     # Get List of scheduled events belonging to a specific organization.
     #
     # @param [String] org_uri the specified organization (organization's uri).
-    # @param [Hash] opts the optional request parameters.
-    # @option opts [Integer] :count Number of rows to return.
-    # @option opts [String] :invitee_email Return events scheduled with the specified invitee email.
-    # @option opts [String] :max_start_time Upper bound (inclusive) for an event's start time to filter by.
-    # @option opts [String] :min_start_time Lower bound (inclusive) for an event's start time to filter by.
-    # @option opts [String] :page_token Pass this to get the next portion of collection.
-    # @option opts [String] :sort Order results by the specified field and directin. Accepts comma-separated list of {field}:{direction} values.
-    # @option opts [String] :status Whether the scheduled event is active or canceled.
+    # @param [Hash] options the optional request parameters. Optional.
+    # @option options [Integer] :count Number of rows to return.
+    # @option options [String] :invitee_email Return events scheduled with the specified invitee email.
+    # @option options [String] :max_start_time Upper bound (inclusive) for an event's start time to filter by.
+    # @option options [String] :min_start_time Lower bound (inclusive) for an event's start time to filter by.
+    # @option options [String] :page_token Pass this to get the next portion of collection.
+    # @option options [String] :sort Order results by the specified field and directin. Accepts comma-separated list of {field}:{direction} values.
+    # @option options [String] :status Whether the scheduled event is active or canceled.
     # @return [Array<Array<Calendly::Event>, Hash>]
     #  - [Array<Calendly::Event>] events
     #  - [Hash] next_params the parameters to get next data. if thre is no next it returns nil.
     # @raise [Calendly::Error] if the org_uri arg is empty.
     # @raise [Calendly::ApiError] if the api returns error code.
     # @since 0.5.0
-    def scheduled_events(org_uri, opts = {})
+    def scheduled_events(org_uri, options: nil)
       check_not_empty org_uri, 'org_uri'
 
       opts_keys = %i[count invitee_email max_start_time min_start_time page_token sort status]
       params = {organization: org_uri}
-      params = merge_options opts, opts_keys, params
+      params = merge_options options, opts_keys, params
       body = request :get, 'scheduled_events', params: params
 
       items = body[:collection] || []
@@ -205,27 +205,27 @@ module Calendly
     # Get List of scheduled events belonging to a specific user.
     #
     # @param [String] user_uri the specified user (user's uri).
-    # @param [Hash] opts the optional request parameters.
-    # @option opts [String] :organization the specified organization (organization's uri).
-    # @option opts [Integer] :count Number of rows to return.
-    # @option opts [String] :invitee_email Return events scheduled with the specified invitee email.
-    # @option opts [String] :max_start_time Upper bound (inclusive) for an event's start time to filter by.
-    # @option opts [String] :min_start_time Lower bound (inclusive) for an event's start time to filter by.
-    # @option opts [String] :page_token Pass this to get the next portion of collection.
-    # @option opts [String] :sort Order results by the specified field and directin. Accepts comma-separated list of {field}:{direction} values.
-    # @option opts [String] :status Whether the scheduled event is active or canceled.
+    # @param [Hash] options the optional request parameters. Optional.
+    # @option options [String] :organization the specified organization (organization's uri).
+    # @option options [Integer] :count Number of rows to return.
+    # @option options [String] :invitee_email Return events scheduled with the specified invitee email.
+    # @option options [String] :max_start_time Upper bound (inclusive) for an event's start time to filter by.
+    # @option options [String] :min_start_time Lower bound (inclusive) for an event's start time to filter by.
+    # @option options [String] :page_token Pass this to get the next portion of collection.
+    # @option options [String] :sort Order results by the specified field and directin. Accepts comma-separated list of {field}:{direction} values.
+    # @option options [String] :status Whether the scheduled event is active or canceled.
     # @return [Array<Array<Calendly::Event>, Hash>]
     #  - [Array<Calendly::Event>] events
     #  - [Hash] next_params the parameters to get next data. if thre is no next it returns nil.
     # @raise [Calendly::Error] if the user_uri arg is empty.
     # @raise [Calendly::ApiError] if the api returns error code.
     # @since 0.0.3
-    def scheduled_events_by_user(user_uri, opts = {})
+    def scheduled_events_by_user(user_uri, options: nil)
       check_not_empty user_uri, 'user_uri'
 
       opts_keys = %i[organization count invitee_email max_start_time min_start_time page_token sort status]
       params = {user: user_uri}
-      params = merge_options opts, opts_keys, params
+      params = merge_options options, opts_keys, params
       body = request :get, 'scheduled_events', params: params
 
       items = body[:collection] || []
@@ -255,23 +255,23 @@ module Calendly
     # Get List of Event Invitees.
     #
     # @param [String] uuid the specified event (event's uuid).
-    # @param [Hash] opts the optional request parameters.
-    # @option opts [Integer] :count Number of rows to return.
-    # @option opts [String] :email Filter by email.
-    # @option opts [String] :page_token Pass this to get the next portion of collection.
-    # @option opts [String] :sort Order results by the specified field and directin. Accepts comma-separated list of {field}:{direction} values.
-    # @option opts [String] :status Whether the scheduled event is active or canceled.
+    # @param [Hash] options the optional request parameters. Optional.
+    # @option options [Integer] :count Number of rows to return.
+    # @option options [String] :email Filter by email.
+    # @option options [String] :page_token Pass this to get the next portion of collection.
+    # @option options [String] :sort Order results by the specified field and directin. Accepts comma-separated list of {field}:{direction} values.
+    # @option options [String] :status Whether the scheduled event is active or canceled.
     # @return [Array<Array<Calendly::Invitee>, Hash>]
     #  - [Array<Calendly::Invitee>] invitees
     #  - [Hash] next_params the parameters to get next data. if thre is no next it returns nil.
     # @raise [Calendly::Error] if the uuid arg is empty.
     # @raise [Calendly::ApiError] if the api returns error code.
     # @since 0.0.4
-    def event_invitees(uuid, opts = {})
+    def event_invitees(uuid, options: nil)
       check_not_empty uuid, 'uuid'
 
       opts_keys = %i[count email page_token sort status]
-      params = merge_options opts, opts_keys
+      params = merge_options options, opts_keys
       body = request :get, "scheduled_events/#{uuid}/invitees", params: params
 
       items = body[:collection] || []
@@ -297,22 +297,22 @@ module Calendly
     # Get List of memberships belonging to specific an organization.
     #
     # @param [String] org_uri the specified organization (organization's uri).
-    # @param [Hash] opts the optional request parameters.
-    # @option opts [Integer] :count Number of rows to return.
-    # @option opts [String] :email Filter by email.
-    # @option opts [String] :page_token Pass this to get the next portion of collection.
+    # @param [Hash] options the optional request parameters. Optional.
+    # @option options [Integer] :count Number of rows to return.
+    # @option options [String] :email Filter by email.
+    # @option options [String] :page_token Pass this to get the next portion of collection.
     # @return [Array<Array<Calendly::OrganizationMembership>, Hash>]
     #  - [Array<Calendly::OrganizationMembership>] memberships
     #  - [Hash] next_params the parameters to get next data. if thre is no next it returns nil.
     # @raise [Calendly::Error] if the org_uri arg is empty.
     # @raise [Calendly::ApiError] if the api returns error code.
     # @since 0.0.5
-    def memberships(org_uri, opts = {})
+    def memberships(org_uri, options: nil)
       check_not_empty org_uri, 'org_uri'
 
       opts_keys = %i[count email page_token]
       params = {organization: org_uri}
-      params = merge_options opts, opts_keys, params
+      params = merge_options options, opts_keys, params
       body = request :get, 'organization_memberships', params: params
 
       items = body[:collection] || []
@@ -324,22 +324,22 @@ module Calendly
     # Get List of memberships belonging to specific a user.
     #
     # @param [String] user_uri the specified user (user's uri).
-    # @param [Hash] opts the optional request parameters.
-    # @option opts [Integer] :count Number of rows to return.
-    # @option opts [String] :email Filter by email.
-    # @option opts [String] :page_token Pass this to get the next portion of collection.
+    # @param [Hash] options the optional request parameters. Optional.
+    # @option options [Integer] :count Number of rows to return.
+    # @option options [String] :email Filter by email.
+    # @option options [String] :page_token Pass this to get the next portion of collection.
     # @return [Array<Array<Calendly::OrganizationMembership>, Hash>]
     #  - [Array<Calendly::OrganizationMembership>] memberships
     #  - [Hash] next_params the parameters to get next data. if thre is no next it returns nil.
     # @raise [Calendly::Error] if the user_uri arg is empty.
     # @raise [Calendly::ApiError] if the api returns error code.
     # @since 0.0.5
-    def memberships_by_user(user_uri, opts = {})
+    def memberships_by_user(user_uri, options: nil)
       check_not_empty user_uri, 'user_uri'
 
       opts_keys = %i[count email page_token]
       params = {user: user_uri}
-      params = merge_options opts, opts_keys, params
+      params = merge_options options, opts_keys, params
       body = request :get, 'organization_memberships', params: params
 
       items = body[:collection] || []
@@ -383,23 +383,23 @@ module Calendly
     # Get Organization Invitations.
     #
     # @param [String] uuid the specified organization (organization's uuid).
-    # @param [Hash] opts the optional request parameters.
-    # @option opts [Integer] :count Number of rows to return.
-    # @option opts [String] :email Filter by email.
-    # @option opts [String] :page_token Pass this to get the next portion of collection.
-    # @option opts [String] :sort Order results by the specified field and directin. Accepts comma-separated list of {field}:{direction} values.
-    # @option opts [String] :status Filter by status.
+    # @param [Hash] options the optional request parameters. Optional.
+    # @option options [Integer] :count Number of rows to return.
+    # @option options [String] :email Filter by email.
+    # @option options [String] :page_token Pass this to get the next portion of collection.
+    # @option options [String] :sort Order results by the specified field and directin. Accepts comma-separated list of {field}:{direction} values.
+    # @option options [String] :status Filter by status.
     # @return [<Array<Array<Calendly::OrganizationInvitation>, Hash>]
     #  - [Array<Calendly::OrganizationInvitation>] organizations
     #  - [Hash] next_params the parameters to get next data. if thre is no next it returns nil.
     # @raise [Calendly::Error] if the uuid arg is empty.
     # @raise [Calendly::ApiError] if the api returns error code.
     # @since 0.0.6
-    def invitations(uuid, opts = {})
+    def invitations(uuid, options: nil)
       check_not_empty uuid, 'uuid'
 
       opts_keys = %i[count email page_token sort status]
-      params = merge_options opts, opts_keys
+      params = merge_options options, opts_keys
 
       body = request :get, "organizations/#{uuid}/invitations", params: params
       items = body[:collection] || []
@@ -463,22 +463,22 @@ module Calendly
     # Get List of organization scope Webhooks.
     #
     # @param [String] org_uri the specified organization (organization's uri).
-    # @param [Hash] opts the optional request parameters.
-    # @option opts [Integer] :count Number of rows to return.
-    # @option opts [String] :page_token Pass this to get the next portion of collection.
-    # @option opts [String] :sort Order results by the specified field and directin. Accepts comma-separated list of {field}:{direction} values.
+    # @param [Hash] options the optional request parameters. Optional.
+    # @option options [Integer] :count Number of rows to return.
+    # @option options [String] :page_token Pass this to get the next portion of collection.
+    # @option options [String] :sort Order results by the specified field and directin. Accepts comma-separated list of {field}:{direction} values.
     # @return [Array<Array<Calendly::WebhookSubscription>, Hash>]
     #  - [Array<Calendly::WebhookSubscription>] webhooks
     #  - [Hash] next_params the parameters to get next data. if thre is no next it returns nil.
     # @raise [Calendly::Error] if the org_uri arg is empty.
     # @raise [Calendly::ApiError] if the api returns error code.
     # @since 0.1.3
-    def webhooks(org_uri, opts = {})
+    def webhooks(org_uri, options: nil)
       check_not_empty org_uri, 'org_uri'
 
       opts_keys = %i[count page_token sort]
       params = {organization: org_uri, scope: 'organization'}
-      params = merge_options opts, opts_keys, params
+      params = merge_options options, opts_keys, params
       body = request :get, 'webhook_subscriptions', params: params
       items = body[:collection] || []
       evs = items.map { |item| WebhookSubscription.new item, self }
@@ -490,10 +490,10 @@ module Calendly
     #
     # @param [String] org_uri the specified organization (organization's uri).
     # @param [String] user_uri the specified user (user's uri).
-    # @param [Hash] opts the optional request parameters.
-    # @option opts [Integer] :count Number of rows to return.
-    # @option opts [String] :page_token Pass this to get the next portion of collection.
-    # @option opts [String] :sort Order results by the specified field and directin. Accepts comma-separated list of {field}:{direction} values.
+    # @param [Hash] options the optional request parameters. Optional.
+    # @option options [Integer] :count Number of rows to return.
+    # @option options [String] :page_token Pass this to get the next portion of collection.
+    # @option options [String] :sort Order results by the specified field and directin. Accepts comma-separated list of {field}:{direction} values.
     # @return [Array<Array<Calendly::WebhookSubscription>, Hash>]
     #  - [Array<Calendly::WebhookSubscription>] webhooks
     #  - [Hash] next_params the parameters to get next data. if thre is no next it returns nil.
@@ -501,13 +501,13 @@ module Calendly
     # @raise [Calendly::Error] if the user_uri arg is empty.
     # @raise [Calendly::ApiError] if the api returns error code.
     # @since 0.1.3
-    def user_scope_webhooks(org_uri, user_uri, opts = {})
+    def user_scope_webhooks(org_uri, user_uri, options: nil)
       check_not_empty org_uri, 'org_uri'
       check_not_empty user_uri, 'user_uri'
 
       opts_keys = %i[count page_token sort]
       params = {organization: org_uri, user: user_uri, scope: 'user'}
-      params = merge_options opts, opts_keys, params
+      params = merge_options options, opts_keys, params
       body = request :get, 'webhook_subscriptions', params: params
       items = body[:collection] || []
       evs = items.map { |item| WebhookSubscription.new item, self }
@@ -565,7 +565,7 @@ module Calendly
     #
     # @param [String] uri A link to the resource that owns this scheduling Link.
     # @param [String] max_event_count The max number of events that can be scheduled using this scheduling link.
-    # @param [String] resource_type Resource type.
+    # @param [String] owner_type Resource type.
     # @return [Hash]
     # e.g.
     # {
@@ -575,17 +575,17 @@ module Calendly
     # }
     # @raise [Calendly::Error] if the uri arg is empty.
     # @raise [Calendly::Error] if the max_event_count arg is empty.
-    # @raise [Calendly::Error] if the resource_type arg is empty.
+    # @raise [Calendly::Error] if the owner_type arg is empty.
     # @raise [Calendly::ApiError] if the api returns error code.
     # @since 0.5.2
-    def create_schedule_link(uri, max_event_count = 1, resource_type: 'EventType')
+    def create_schedule_link(uri, max_event_count: 1, owner_type: 'EventType')
       check_not_empty uri, 'uri'
       check_not_empty max_event_count, 'max_event_count'
-      check_not_empty resource_type, 'resource_type'
+      check_not_empty owner_type, 'owner_type'
       params = {
         max_event_count: max_event_count,
         owner: uri,
-        owner_type: resource_type
+        owner_type: owner_type
       }
       body = request :post, 'scheduling_links', body: params
       body[:resource]
