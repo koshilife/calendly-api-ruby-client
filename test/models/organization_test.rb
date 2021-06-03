@@ -269,5 +269,19 @@ module Calendly
 
       assert_org_webhook_001 @org.create_webhook webhook_url, events
     end
+
+    def test_that_it_creates_webhook_with_signing_key
+      webhook_url = 'https://example.com/organization/webhook001'
+      events = ['invitee.created', 'invitee.canceled']
+      signing_key = 'secret_string'
+      req_body = {url: webhook_url, events: events, organization: @org_uri, scope: 'organization',
+signing_key: signing_key}
+      res_body = load_test_data 'webhook_organization_001.json'
+
+      url = "#{HOST}/webhook_subscriptions"
+      add_stub_request :post, url, req_body: req_body, res_body: res_body, res_status: 201
+
+      assert_org_webhook_001 @org.create_webhook webhook_url, events, signing_key
+    end
   end
 end

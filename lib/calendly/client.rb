@@ -520,14 +520,15 @@ module Calendly
     # @param [String] url Canonical reference (unique identifier) for the resource.
     # @param [Array<String>] events List of user events to subscribe to. options: invitee.created or invitee.canceled
     # @param [String] org_uri The unique reference to the organization that the webhook will be tied to.
-    # @param [String] user_uri The unique reference to the user that the webhook will be tied to.
+    # @param [String] user_uri The unique reference to the user that the webhook will be tied to. Optional.
+    # @param [String] signing_key secret key shared between your application and Calendly. Optional.
     # @return [Calendly::WebhookSubscription]
     # @raise [Calendly::Error] if the url arg is empty.
     # @raise [Calendly::Error] if the events arg is empty.
     # @raise [Calendly::Error] if the org_uri arg is empty.
     # @raise [Calendly::ApiError] if the api returns error code.
     # @since 0.1.3
-    def create_webhook(url, events, org_uri, user_uri = nil, signing_key = nil)
+    def create_webhook(url, events, org_uri, user_uri = nil, signing_key = nil) # rubocop:disable Metrics/ParameterLists
       check_not_empty url, 'url'
       check_not_empty events, 'events'
       check_not_empty org_uri, 'org_uri'

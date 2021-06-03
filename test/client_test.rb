@@ -916,6 +916,22 @@ module Calendly
       assert_org_webhook_001 webhook
     end
 
+    def test_that_it_creates_organization_scope_webhook_with_signing_key
+      webhook_url = 'https://example.com/organization/webhook001'
+      org_uri = "#{HOST}/organizations/ORG001"
+      events = ['invitee.created', 'invitee.canceled']
+      signing_key = 'secret_string'
+      req_body = {url: webhook_url, events: events, organization: org_uri, scope: 'organization',
+signing_key: signing_key}
+      res_body = load_test_data 'webhook_organization_001.json'
+
+      url = "#{HOST}/webhook_subscriptions"
+      add_stub_request :post, url, req_body: req_body, res_body: res_body, res_status: 201
+
+      webhook = @client.create_webhook webhook_url, events, org_uri, nil, signing_key
+      assert_org_webhook_001 webhook
+    end
+
     def test_that_it_creates_user_scope_webhook
       webhook_url = 'https://example.com/user/webhook001'
       org_uri = "#{HOST}/organizations/ORG001"
@@ -928,6 +944,23 @@ module Calendly
       add_stub_request :post, url, req_body: req_body, res_body: res_body, res_status: 201
 
       webhook = @client.create_webhook webhook_url, events, org_uri, user_uri
+      assert_user_webhook_001 webhook
+    end
+
+    def test_that_it_creates_user_scope_webhook_with_signing_key
+      webhook_url = 'https://example.com/user/webhook001'
+      org_uri = "#{HOST}/organizations/ORG001"
+      user_uri = "#{HOST}/users/U001"
+      events = ['invitee.created', 'invitee.canceled']
+      signing_key = 'secret_string'
+      req_body = {url: webhook_url, events: events, organization: org_uri, scope: 'user',
+user: user_uri, signing_key: signing_key}
+      res_body = load_test_data 'webhook_user_001.json'
+
+      url = "#{HOST}/webhook_subscriptions"
+      add_stub_request :post, url, req_body: req_body, res_body: res_body, res_status: 201
+
+      webhook = @client.create_webhook webhook_url, events, org_uri, user_uri, signing_key
       assert_user_webhook_001 webhook
     end
 

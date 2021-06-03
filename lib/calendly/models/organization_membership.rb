@@ -89,6 +89,7 @@ module Calendly
     #
     # @param [String] url Canonical reference (unique identifier) for the resource.
     # @param [Array<String>] events List of user events to subscribe to. options: invitee.created or invitee.canceled
+    # @param [String] signing_key secret key shared between your application and Calendly. Optional.
     # @return [Calendly::WebhookSubscription]
     # @raise [Calendly::Error] if the url arg is empty.
     # @raise [Calendly::Error] if the events arg is empty.
@@ -96,7 +97,7 @@ module Calendly
     # @raise [Calendly::ApiError] if the api returns error code.
     # @since 0.1.3
     def create_user_scope_webhook(url, events, signing_key = nil)
-      user.create_webhook url, events, nil, signing_key
+      user.create_webhook url, events, signing_key
     end
 
   private
