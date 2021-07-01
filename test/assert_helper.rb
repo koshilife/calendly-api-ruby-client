@@ -880,7 +880,6 @@ module AssertHelper
     assert_equal Time.parse('2020-09-17T02:00:00.000000Z'), webhook.created_at
     assert_equal Time.parse('2020-09-17T03:00:00.000000Z'), webhook.updated_at
     assert_equal Time.parse('2020-09-17T04:00:00.000000Z'), webhook.retry_started_at
-    assert_equal '03517b0f-f0f7-4b2c-ba8a-46cf95b85887', webhook.signing_key
     assert_equal 'active', webhook.state
     assert_equal ['invitee.created', 'invitee.canceled'], webhook.events
     assert_equal 'organization', webhook.scope
@@ -925,6 +924,25 @@ module AssertHelper
     assert_equal 'https://api.calendly.com/users/U001', webhook.creator.uri
   end
 
+  def assert_org_webhook_004(webhook)
+    assert webhook.client.is_a? Calendly::Client
+    assert_equal 'https://api.calendly.com/webhook_subscriptions/ORG_WEBHOOK001', webhook.uri
+    assert_equal 'https://example.com/organization/webhook001', webhook.callback_url
+    assert_equal Time.parse('2020-09-17T02:00:00.000000Z'), webhook.created_at
+    assert_equal Time.parse('2020-09-17T03:00:00.000000Z'), webhook.updated_at
+    assert_equal Time.parse('2020-09-17T04:00:00.000000Z'), webhook.retry_started_at
+    assert_equal '03517b0f-f0f7-4b2c-ba8a-46cf95b85887', webhook.signing_key
+    assert_equal 'active', webhook.state
+    assert_equal ['invitee.created', 'invitee.canceled'], webhook.events
+    assert_equal 'organization', webhook.scope
+    assert_equal 'ORG001', webhook.organization.uuid
+    assert_equal 'https://api.calendly.com/organizations/ORG001', webhook.organization.uri
+    assert_nil webhook.user
+    assert_equal 'U001', webhook.creator.uuid
+    assert_equal 'https://api.calendly.com/users/U001', webhook.creator.uri
+  end
+
+
   def assert_user_webhook_001(webhook)
     assert webhook.client.is_a? Calendly::Client
     assert_equal 'https://api.calendly.com/webhook_subscriptions/USER_WEBHOOK001', webhook.uri
@@ -932,7 +950,6 @@ module AssertHelper
     assert_equal Time.parse('2020-09-17T02:00:00.000000Z'), webhook.created_at
     assert_equal Time.parse('2020-09-17T03:00:00.000000Z'), webhook.updated_at
     assert_equal Time.parse('2020-09-17T04:00:00.000000Z'), webhook.retry_started_at
-    assert_equal '10093ca7-aef1-4455-9024-8f68eaf0558f', webhook.signing_key
     assert_equal 'active', webhook.state
     assert_equal ['invitee.created', 'invitee.canceled'], webhook.events
     assert_equal 'user', webhook.scope
@@ -971,6 +988,25 @@ module AssertHelper
     assert_nil webhook.retry_started_at
     assert_equal 'active', webhook.state
     assert_equal ['invitee.canceled'], webhook.events
+    assert_equal 'user', webhook.scope
+    assert_equal 'ORG001', webhook.organization.uuid
+    assert_equal 'https://api.calendly.com/organizations/ORG001', webhook.organization.uri
+    assert_equal 'U001', webhook.user.uuid
+    assert_equal 'https://api.calendly.com/users/U001', webhook.user.uri
+    assert_equal 'U001', webhook.creator.uuid
+    assert_equal 'https://api.calendly.com/users/U001', webhook.creator.uri
+  end
+
+  def assert_user_webhook_004(webhook)
+    assert webhook.client.is_a? Calendly::Client
+    assert_equal 'https://api.calendly.com/webhook_subscriptions/USER_WEBHOOK001', webhook.uri
+    assert_equal 'https://example.com/user/webhook001', webhook.callback_url
+    assert_equal Time.parse('2020-09-17T02:00:00.000000Z'), webhook.created_at
+    assert_equal Time.parse('2020-09-17T03:00:00.000000Z'), webhook.updated_at
+    assert_equal Time.parse('2020-09-17T04:00:00.000000Z'), webhook.retry_started_at
+    assert_equal '10093ca7-aef1-4455-9024-8f68eaf0558f', webhook.signing_key
+    assert_equal 'active', webhook.state
+    assert_equal ['invitee.created', 'invitee.canceled'], webhook.events
     assert_equal 'user', webhook.scope
     assert_equal 'ORG001', webhook.organization.uuid
     assert_equal 'https://api.calendly.com/organizations/ORG001', webhook.organization.uri

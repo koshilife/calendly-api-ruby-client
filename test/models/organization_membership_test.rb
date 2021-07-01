@@ -116,7 +116,7 @@ signing_key: signing_key}
       url = "#{HOST}/webhook_subscriptions"
       add_stub_request :post, url, req_body: req_body, res_body: res_body, res_status: 201
 
-      assert_user_webhook_001 @mem.create_user_scope_webhook webhook_url, events, signing_key: signing_key
+      assert_user_webhook_004 @mem.create_user_scope_webhook webhook_url, events, signing_key: signing_key
     end
   end
 end

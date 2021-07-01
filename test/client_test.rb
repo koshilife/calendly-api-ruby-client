@@ -929,7 +929,7 @@ signing_key: signing_key}
       add_stub_request :post, url, req_body: req_body, res_body: res_body, res_status: 201
 
       webhook = @client.create_webhook webhook_url, events, org_uri, signing_key: signing_key
-      assert_org_webhook_001 webhook
+      assert_org_webhook_004 webhook
     end
 
     def test_that_it_creates_user_scope_webhook
@@ -944,7 +944,7 @@ signing_key: signing_key}
       add_stub_request :post, url, req_body: req_body, res_body: res_body, res_status: 201
 
       webhook = @client.create_webhook webhook_url, events, org_uri, user_uri: user_uri
-      assert_user_webhook_001 webhook
+      assert_user_webhook_004 webhook
     end
 
     def test_that_it_creates_user_scope_webhook_with_signing_key
@@ -961,7 +961,7 @@ user: user_uri, signing_key: signing_key}
       add_stub_request :post, url, req_body: req_body, res_body: res_body, res_status: 201
 
       webhook = @client.create_webhook webhook_url, events, org_uri, user_uri: user_uri, signing_key: signing_key
-      assert_user_webhook_001 webhook
+      assert_user_webhook_004 webhook
     end
 
     def test_that_it_raises_an_argument_error_on_create_webhook
