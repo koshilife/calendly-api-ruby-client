@@ -923,7 +923,7 @@ module Calendly
       signing_key = 'secret_string'
       req_body = {url: webhook_url, events: events, organization: org_uri, scope: 'organization',
 signing_key: signing_key}
-      res_body = load_test_data 'webhook_organization_001.json'
+      res_body = load_test_data 'webhook_organization_004.json'
 
       url = "#{HOST}/webhook_subscriptions"
       add_stub_request :post, url, req_body: req_body, res_body: res_body, res_status: 201
@@ -944,7 +944,7 @@ signing_key: signing_key}
       add_stub_request :post, url, req_body: req_body, res_body: res_body, res_status: 201
 
       webhook = @client.create_webhook webhook_url, events, org_uri, user_uri: user_uri
-      assert_user_webhook_004 webhook
+      assert_user_webhook_001 webhook
     end
 
     def test_that_it_creates_user_scope_webhook_with_signing_key
@@ -955,7 +955,7 @@ signing_key: signing_key}
       signing_key = 'secret_string'
       req_body = {url: webhook_url, events: events, organization: org_uri, scope: 'user',
 user: user_uri, signing_key: signing_key}
-      res_body = load_test_data 'webhook_user_001.json'
+      res_body = load_test_data 'webhook_user_004.json'
 
       url = "#{HOST}/webhook_subscriptions"
       add_stub_request :post, url, req_body: req_body, res_body: res_body, res_status: 201

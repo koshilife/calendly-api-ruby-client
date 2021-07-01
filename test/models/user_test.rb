@@ -208,12 +208,12 @@ module Calendly
       signing_key = 'secret_string'
       req_body = {url: webhook_url, events: events, organization: @org_uri, scope: 'user', user: @user_uri,
 signing_key: signing_key}
-      res_body = load_test_data 'webhook_user_001.json'
+      res_body = load_test_data 'webhook_user_004.json'
 
       url = "#{HOST}/webhook_subscriptions"
       add_stub_request :post, url, req_body: req_body, res_body: res_body, res_status: 201
 
-      assert_user_webhook_001 @user.create_webhook webhook_url, events, signing_key: signing_key
+      assert_user_webhook_004 @user.create_webhook webhook_url, events, signing_key: signing_key
     end
   end
 end

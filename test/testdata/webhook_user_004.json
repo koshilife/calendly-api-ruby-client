@@ -14,6 +14,6 @@
     "updated_at": "2020-09-17T03:00:00.000000Z",
     "uri": "https://api.calendly.com/webhook_subscriptions/USER_WEBHOOK001",
     "user": "https://api.calendly.com/users/U001",
-    "signing_key": "10093ca7-aef1-4455-9024-8f68eaf0558f"
+    "signing_key": "secret_string'"
   }
 }
