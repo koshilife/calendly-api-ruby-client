@@ -49,6 +49,10 @@ module Calendly
     # The scope of the webhook subscription.
     attr_accessor :scope
 
+    # @return [String]
+    # Secret key shared between your application and Calendly. Optional.
+    attr_accessor :signing_key
+
     # @return [Calendly::Organization]
     # The organization that's associated with the webhook subscription.
     attr_accessor :organization

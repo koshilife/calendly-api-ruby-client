@@ -129,6 +129,14 @@ org = client.me.current_organization
 org_webhook = org.create_webhook(url, events)
 # => #<Calendly::WebhookSubscription uuid="ORG_WEBHOOK_001", state="active", scope="organization", events=["invitee.created", "invitee.canceled"], callback_url="https://example.com/received_event", ..>
 
+#
+# create an organization scope webhook with a signing_key.
+#
+secret = SecureRandom.uuid
+org_webhook = org.create_webhook(url, events, signing_key: secret)
+# => #<Calendly::WebhookSubscription uuid="ORG_WEBHOOK_001", state="active", scope="organization", events=["invitee.created", "invitee.canceled"], callback_url="https://example.com/received_event", signing_key="10093ca7-aef1-4455-9024-8f68eaf0558f"..>
+
+
 # list of organization scope webhooks
 org.webhooks
 # => [#<Calendly::WebhookSubscription uuid="ORG_WEBHOOK_001", state="active", scope="organization", events=["invitee.created", "invitee.canceled"], callback_url="https://example.com/received_event", ..>]

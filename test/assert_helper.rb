@@ -880,6 +880,7 @@ module AssertHelper
     assert_equal Time.parse('2020-09-17T02:00:00.000000Z'), webhook.created_at
     assert_equal Time.parse('2020-09-17T03:00:00.000000Z'), webhook.updated_at
     assert_equal Time.parse('2020-09-17T04:00:00.000000Z'), webhook.retry_started_at
+    assert_equal '03517b0f-f0f7-4b2c-ba8a-46cf95b85887', webhook.signing_key
     assert_equal 'active', webhook.state
     assert_equal ['invitee.created', 'invitee.canceled'], webhook.events
     assert_equal 'organization', webhook.scope
@@ -931,6 +932,7 @@ module AssertHelper
     assert_equal Time.parse('2020-09-17T02:00:00.000000Z'), webhook.created_at
     assert_equal Time.parse('2020-09-17T03:00:00.000000Z'), webhook.updated_at
     assert_equal Time.parse('2020-09-17T04:00:00.000000Z'), webhook.retry_started_at
+    assert_equal '10093ca7-aef1-4455-9024-8f68eaf0558f', webhook.signing_key
     assert_equal 'active', webhook.state
     assert_equal ['invitee.created', 'invitee.canceled'], webhook.events
     assert_equal 'user', webhook.scope
