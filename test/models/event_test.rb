@@ -81,5 +81,11 @@ module Calendly
       assert_event201_invitee002 invs[1]
       assert_event201_invitee001 invs[2]
     end
+
+    def test_that_it_parses_uuid_be_formatted_ascii_from_uri
+      uuid = '8c7f1091-37b9-42fb-bb25-760cfc5c3ad3'
+      uri = "#{HOST}/scheduled_events/#{uuid}"
+      assert_equal(uuid, Event.extract_uuid(uri))
+    end
   end
 end

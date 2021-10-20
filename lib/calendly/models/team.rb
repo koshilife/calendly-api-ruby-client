@@ -7,7 +7,7 @@ module Calendly
   # Calendly's team model.
   class Team
     include ModelUtils
-    UUID_RE = %r{\A#{Client::API_HOST}/teams/(\w+)\z}.freeze
+    UUID_RE = %r{\A#{Client::API_HOST}/teams/(#{UUID_FORMAT})\z}.freeze
 
     # @return [String]
     # unique id of the Team object.

@@ -36,5 +36,11 @@ module Calendly
       result = @webhook.delete
       assert_equal true, result
     end
+
+    def test_that_it_parses_uuid_be_formatted_ascii_from_uri
+      uuid = '64190761-e851-410f-9e0a-25cbeebfa550'
+      uri = "#{HOST}/webhook_subscriptions/#{uuid}"
+      assert_equal(uuid, WebhookSubscription.extract_uuid(uri))
+    end
   end
 end

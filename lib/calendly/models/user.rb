@@ -8,7 +8,7 @@ module Calendly
   # Primary account details of a specific user.
   class User
     include ModelUtils
-    UUID_RE = %r{\A#{Client::API_HOST}/users/(\w+)\z}.freeze
+    UUID_RE = %r{\A#{Client::API_HOST}/users/(#{UUID_FORMAT})\z}.freeze
     TIME_FIELDS = %i[created_at updated_at].freeze
     ASSOCIATION = {current_organization: Organization}.freeze
 

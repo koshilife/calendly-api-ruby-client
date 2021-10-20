@@ -6,6 +6,10 @@ require 'calendly/error'
 module Calendly
   # Calendly model utility.
   module ModelUtils
+    # UUID's format is ASCII.
+    # refs to official release note of October 2021.
+    UUID_FORMAT = '[[:ascii:]]+'
+
     # @param [Hash] attrs the attributes of the model.
     # @param [Calendly::Client] the api client.
     def initialize(attrs = nil, client = nil)

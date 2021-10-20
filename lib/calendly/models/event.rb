@@ -12,7 +12,7 @@ module Calendly
   # A meeting that has been scheduled.
   class Event
     include ModelUtils
-    UUID_RE = %r{\A#{Client::API_HOST}/scheduled_events/(\w+)\z}.freeze
+    UUID_RE = %r{\A#{Client::API_HOST}/scheduled_events/(#{UUID_FORMAT})\z}.freeze
     TIME_FIELDS = %i[start_time end_time created_at updated_at].freeze
     ASSOCIATION = {
       event_type: EventType,
