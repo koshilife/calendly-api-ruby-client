@@ -1,6 +1,10 @@
 # CHANGELOG
 
-## 0.8.0
+## 0.8.1 - 2021-10-20
+
+- support new UUID format like 'bbc4f475-6125-435a-b713-2d1634651e10'. (#38, thanks to jameswilliamiii)
+
+## 0.8.0 - 2021-06-03
 
 - used keyword arguments for optional parameters, to be friendly for programmer.
 - changed methods are followings:
@@ -41,12 +45,12 @@
     - webhooks
     - webhooks!
 
-## 0.7.0
+## 0.7.0 - 2021-06-03
 
-- supported a signing key parameter when creating webhooks. (#33)
+- supported a signing key parameter when creating webhooks. (#33, thanks to ismael-texidor)
 - changed `user_uri` argument to keyword argument on Client#create_webhook.
 
-## 0.6.0
+## 0.6.0 - 2021-05-30
 
 - supported new features until April 2021. (#29)
   - Client
@@ -84,16 +88,16 @@
 - fixed debug log encoding error. (#30)
 - improved inspect method to be more readable in CLI.
 
-## 0.5.2
+## 0.5.2 - 2020-12-13
 
 - started to support a API
   - `POST /scheduling_links`
 
-## 0.5.1
+## 0.5.1 - 2020-12-13
 
 - added method EventType#fetch
 
-## 0.5.0
+## 0.5.0 - 2020-12-13
 
 - changed Calendly::Client#scheduled_events behavior (refs #21)
   - previous version:
@@ -102,7 +106,7 @@
     - getting all events belonging to a specific ORGANIZATION
 - added Calendly::Client#scheduled_events_by_user method instead_of the before behavior
 
-## 0.4.2
+## 0.4.2 - 2020-11-26
 
 - added new following fields to Invitee model (refs #21)
   - :rescheduled
@@ -111,24 +115,24 @@
   - :cancel_url
   - :reschedule_url
 
-## 0.4.1
+## 0.4.1 - 2020-11-22
 
 - started to support a API
   - `GET /event_types/{uuid}`
 
-## 0.4.0
+## 0.4.0 - 2020-11-21
 
 - fixed a changes for Location fields such as `kind` to `type`. (refs #18)
 
-## 0.3.0
+## 0.3.0 - 2020-11-18
 
 - removed zeitwerk dependency. (refs #16)
 
-## 0.2.0
+## 0.2.0 - 2020-09-18
 
 - added caching features in object when fetching data. (refs #14)
 
-## 0.1.3
+## 0.1.3 - 2020-09-17
 
 - support webhook APIs (refs #9)
   - `GET /webhook_subscriptions`
@@ -136,34 +140,34 @@
   - `POST /webhook_subscriptions`
   - `DELETE /webhook_subscriptions/{webhook_uuid}`
 
-## 0.1.2
+## 0.1.2 - 2020-09-03
 
 - fixed rubocop warnings.
 
-## 0.1.1
+## 0.1.1 - 2020-08-27
 
 - added tests to make coverage 100%.
 
-## 0.1.0
+## 0.1.0 - 2020-08-25
 
 - defined methods to access associated resources with each model.
 - renamed methods:
   - `Calendly::Client#events` to `Calendly::Client#scheduled_events`
 
-## 0.0.7.alpha
+## 0.0.7.alpha - 2020-08-23
 
 - started to support APIs
   - `POST /organizations/{uuid}/invitations`
   - `DELETE /organizations/{org_uuid}/invitations/{invitation_uuid}`
   - `DELETE /organization_memberships/{uuid}`
 
-## 0.0.6.alpha
+## 0.0.6.alpha - 2020-08-22
 
 - started to support APIs
   - `GET /organizations/{uuid}/invitations`
   - `GET /organizations/{organization_uuid}/invitations/{invitation_uuid}`
 
-## 0.0.5.alpha
+## 0.0.5.alpha - 2020-08-22
 
 - started to support APIs
   - `GET /organization_memberships`
@@ -172,24 +176,24 @@
   - Invitee#event to Invitee#event_uri
   - Event#event_type to Event#event_type_uri
 
-## 0.0.4.alpha
+## 0.0.4.alpha - 2020-08-22
 
 - started to support APIs
   - `GET /scheduled_events/{event_uuid}/invitees`
   - `GET /scheduled_events/{event_uuid}/invitees/{invitee_uuid}`
 
-## 0.0.3.alpha
+## 0.0.3.alpha - 2020-08-19
 
 - started to support APIs
   - `GET /scheduled_events`
   - `GET /scheduled_events/{uuid}`
 
-## 0.0.2.alpha
+## 0.0.2.alpha - 2020-08-12
 
 - started to support APIs
   - `GET /event_types`
 
-## 0.0.1.alpha
+## 0.0.1.alpha - 2020-08-09
 
 - Initial release
 - started to support a API
