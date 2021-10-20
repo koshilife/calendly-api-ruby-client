@@ -42,5 +42,11 @@ module Calendly
       add_stub_request :post, url, req_body: req_body, res_body: res_body, res_status: 201
       assert_schedule_link_001 @event_type.create_schedule_link(max_event_count: 3)
     end
+
+    def test_that_it_parses_uuid_be_formatted_ascii_from_uri
+      uuid = 'ff200bd6-af4b-4fd4-a110-e35b2bb5e7ab'
+      uri = "#{HOST}/event_types/#{uuid}"
+      assert_equal(uuid, EventType.extract_uuid(uri))
+    end
   end
 end

@@ -13,7 +13,7 @@ module Calendly
   # An individual who has been invited to meet with a Calendly member.
   class Invitee
     include ModelUtils
-    UUID_RE = %r{\A#{Client::API_HOST}/scheduled_events/\S+/invitees/(\S+)\z}.freeze
+    UUID_RE = %r{\A#{Client::API_HOST}/scheduled_events/#{UUID_FORMAT}/invitees/(#{UUID_FORMAT})\z}.freeze
     TIME_FIELDS = %i[created_at updated_at].freeze
     ASSOCIATION = {
       event: Event,

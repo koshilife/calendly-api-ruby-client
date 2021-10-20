@@ -118,5 +118,11 @@ signing_key: signing_key}
 
       assert_user_webhook_001 @mem.create_user_scope_webhook webhook_url, events, signing_key: signing_key
     end
+
+    def test_that_it_parses_uuid_be_formatted_ascii_from_uri
+      uuid = '7276e6ef-2282-4834-92ff-5eae3d5758a1'
+      uri = "#{HOST}/organization_memberships/#{uuid}"
+      assert_equal(uuid, OrganizationMembership.extract_uuid(uri))
+    end
   end
 end

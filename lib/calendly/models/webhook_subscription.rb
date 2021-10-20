@@ -9,7 +9,7 @@ module Calendly
   # Calendly's webhook model.
   class WebhookSubscription
     include ModelUtils
-    UUID_RE = %r{\A#{Client::API_HOST}/webhook_subscriptions/(\S+)\z}.freeze
+    UUID_RE = %r{\A#{Client::API_HOST}/webhook_subscriptions/(#{UUID_FORMAT})\z}.freeze
     TIME_FIELDS = %i[created_at updated_at retry_started_at].freeze
     ASSOCIATION = {organization: Organization, user: User, creator: User}.freeze
 

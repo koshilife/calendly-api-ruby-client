@@ -7,7 +7,7 @@ module Calendly
   # Calendly's organization model.
   class Organization
     include ModelUtils
-    UUID_RE = %r{\A#{Client::API_HOST}/organizations/(\S+)\z}.freeze
+    UUID_RE = %r{\A#{Client::API_HOST}/organizations/(#{UUID_FORMAT})\z}.freeze
 
     # @return [String]
     # unique id of the Organization object.

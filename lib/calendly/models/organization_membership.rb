@@ -9,7 +9,7 @@ module Calendly
   # Calendly's organization membership model.
   class OrganizationMembership
     include ModelUtils
-    UUID_RE = %r{\A#{Client::API_HOST}/organization_memberships/(\S+)\z}.freeze
+    UUID_RE = %r{\A#{Client::API_HOST}/organization_memberships/(#{UUID_FORMAT})\z}.freeze
     TIME_FIELDS = %i[created_at updated_at].freeze
     ASSOCIATION = {user: User, organization: Organization}.freeze
 

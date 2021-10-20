@@ -10,7 +10,7 @@ module Calendly
   # A configuration for a schedulable event.
   class EventType
     include ModelUtils
-    UUID_RE = %r{\A#{Client::API_HOST}/event_types/(\S+)\z}.freeze
+    UUID_RE = %r{\A#{Client::API_HOST}/event_types/(#{UUID_FORMAT})\z}.freeze
     TIME_FIELDS = %i[created_at updated_at].freeze
     ASSOCIATION = {profile: EventTypeProfile, custom_questions: EventTypeCustomQuestion}.freeze
 

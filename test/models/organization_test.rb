@@ -283,5 +283,11 @@ signing_key: signing_key}
 
       assert_org_webhook_001 @org.create_webhook webhook_url, events, signing_key: signing_key
     end
+
+    def test_that_it_parses_uuid_be_formatted_ascii_from_uri
+      uuid = '1624634d-0798-49df-80d6-d24b6718a5c6'
+      uri = "#{HOST}/organizations/#{uuid}"
+      assert_equal(uuid, Organization.extract_uuid(uri))
+    end
   end
 end
