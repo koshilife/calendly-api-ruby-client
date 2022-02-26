@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 0.8.2 - 2022-02-26
+
+- support cancellation field in the response of scheduled event endpoints. (#41)
+
 ## 0.8.1 - 2021-10-20
 
 - support new UUID format like 'bbc4f475-6125-435a-b713-2d1634651e10'. (#38, thanks to jameswilliamiii)
