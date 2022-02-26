@@ -1,6 +1,11 @@
 {
   "collection": [
     {
+      "cancellation": {
+        "canceled_by": "FooBar",
+        "reason": "I have to be absent next week, sorry.",
+        "canceler_type": "invitee"
+      },
       "created_at": "2020-07-10T05:00:00.000Z",
       "end_time": "2020-07-22T02:00:00.000Z",
       "event_guests": [],

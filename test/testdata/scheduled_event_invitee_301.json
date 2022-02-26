@@ -3,7 +3,8 @@
     "cancel_url": "https://calendly.com/cancellations/INV001",
     "cancellation": {
       "canceled_by": "FooBar",
-      "reason": "I have to be absent next week, sorry."
+      "reason": "I have to be absent next week, sorry.",
+      "canceler_type": "invitee"
     },
     "created_at": "2020-08-20T01:00:00.000000Z",
     "email": "foobar@example.com",

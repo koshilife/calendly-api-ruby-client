@@ -4,6 +4,7 @@ require 'calendly/client'
 require 'calendly/models/model_utils'
 require 'calendly/models/event_type'
 require 'calendly/models/guest'
+require 'calendly/models/invitee_cancellation'
 require 'calendly/models/invitees_counter'
 require 'calendly/models/location'
 
@@ -17,6 +18,7 @@ module Calendly
     ASSOCIATION = {
       event_type: EventType,
       event_guests: Guest,
+      cancellation: InviteeCancellation,
       invitees_counter: InviteesCounter,
       location: Location
     }.freeze
@@ -57,13 +59,17 @@ module Calendly
     # Reference to Event Type associated with this event.
     attr_accessor :event_type
 
-    # @return [Calendly::Location]
-    # location in this event.
-    attr_accessor :location
+    # @return [InviteeCancellation]
+    # Provides data pertaining to the cancellation of the Invitee.
+    attr_accessor :cancellation
 
     # @return [InviteesCounter]
     # invitees counter.
     attr_accessor :invitees_counter
+
+    # @return [Calendly::Location]
+    # location in this event.
+    attr_accessor :location
 
     # @return [Array<User>]
     # Event membership list.
