@@ -319,6 +319,10 @@ module AssertHelper
     assert_equal 'https://api.calendly.com/event_types/ET001', ev.event_type.uri
     assert_equal 'ET001', ev.event_type.uuid
     assert_nil ev.location
+    assert ev.cancellation.is_a? Calendly::InviteeCancellation
+    assert_equal 'FooBar', ev.cancellation.canceled_by
+    assert_equal 'I have to be absent next week, sorry.', ev.cancellation.reason
+    assert_equal 'invitee', ev.cancellation.canceler_type
     assert ev.invitees_counter.is_a? Calendly::InviteesCounter
     assert_equal 1, ev.invitees_counter.total
     assert_equal 0, ev.invitees_counter.active
@@ -352,6 +356,7 @@ module AssertHelper
     assert_equal 'https://api.calendly.com/event_types/ET002', ev.event_type.uri
     assert_equal 'ET002', ev.event_type.uuid
     assert_location_tokyo ev.location
+    assert_nil ev.cancellation
     assert ev.invitees_counter.is_a? Calendly::InviteesCounter
     assert_equal 1, ev.invitees_counter.total
     assert_equal 1, ev.invitees_counter.active
@@ -390,6 +395,10 @@ module AssertHelper
     assert_equal 'https://api.calendly.com/event_types/ET001', ev.event_type.uri
     assert_equal 'ET001', ev.event_type.uuid
     assert_location_microsoft_teams ev.location
+    assert ev.cancellation.is_a? Calendly::InviteeCancellation
+    assert_equal 'FooBar', ev.cancellation.canceled_by
+    assert_equal 'I have to be absent next week, sorry.', ev.cancellation.reason
+    assert_equal 'invitee', ev.cancellation.canceler_type
     assert ev.invitees_counter.is_a? Calendly::InviteesCounter
     assert_equal 1, ev.invitees_counter.total
     assert_equal 0, ev.invitees_counter.active
@@ -422,6 +431,7 @@ module AssertHelper
     assert_equal 'https://api.calendly.com/event_types/ET002', ev.event_type.uri
     assert_equal 'ET002', ev.event_type.uuid
     assert_location_zoom ev.location
+    assert_nil ev.cancellation
     assert ev.invitees_counter.is_a? Calendly::InviteesCounter
     assert_equal 1, ev.invitees_counter.total
     assert_equal 1, ev.invitees_counter.active
@@ -454,6 +464,7 @@ module AssertHelper
     assert_equal 'https://api.calendly.com/event_types/ET003', ev.event_type.uri
     assert_equal 'ET003', ev.event_type.uuid
     assert_location_google_meet ev.location
+    assert_nil ev.cancellation
     assert ev.invitees_counter.is_a? Calendly::InviteesCounter
     assert_equal 1, ev.invitees_counter.total
     assert_equal 1, ev.invitees_counter.active
@@ -702,6 +713,7 @@ module AssertHelper
     assert inv.cancellation.is_a? Calendly::InviteeCancellation
     assert_equal 'FooBar', inv.cancellation.canceled_by
     assert_equal 'I have to be absent next week, sorry.', inv.cancellation.reason
+    assert_equal 'invitee', inv.cancellation.canceler_type
     assert_nil inv.payment
 
     assert_equal 5, inv.questions_and_answers.length

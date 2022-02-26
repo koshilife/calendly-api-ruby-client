@@ -13,5 +13,8 @@ module Calendly
 
     # @return [String] Reason that the cancellation occurred.
     attr_accessor :reason
+
+    # @return [String] Allowed values: host or invitee.
+    attr_accessor :canceler_type
   end
 end
