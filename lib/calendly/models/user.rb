@@ -92,6 +92,7 @@ module Calendly
     # Returns all Event Types associated with self.
     #
     # @param [Hash] options the optional request parameters. Optional.
+    # @option options [Boolean] :active Return only active event types if true, only inactive if false, or all event types if this parameter is omitted.
     # @option options [Integer] :count Number of rows to return.
     # @option options [String] :page_token Pass this to get the next portion of collection.
     # @option options [String] :sort Order results by the specified field and direction.
