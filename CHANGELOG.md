@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 0.8.3 - 2022-03-08
+
+- support for filtering Event Types by 'active' or 'inactive' status. (#43)
+
 ## 0.8.2 - 2022-02-26
 
 - support cancellation field in the response of scheduled event endpoints. (#41)
