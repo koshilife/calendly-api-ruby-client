@@ -204,6 +204,20 @@ module Calendly
       assert_event_type001 event_types_page2[0]
     end
 
+    def test_that_it_returns_active_items_of_event_type
+      org_uri = 'https://api.calendly.com/organizations/ORG001'
+      res_body = load_test_data 'event_types_003.json'
+      params = {organization: org_uri, active: true}
+
+      url = "#{HOST}/event_types?#{URI.encode_www_form(params)}"
+      add_stub_request :get, url, res_body: res_body
+
+      event_types, next_params = @client.event_types org_uri, options: {active: true}
+      assert_equal 1, event_types.length
+      assert_nil next_params
+      assert_event_type001 event_types[0]
+    end
+
     def test_that_it_raises_an_argument_error_on_event_types
       proc_arg_is_empty = proc do
         @client.event_types ''
@@ -258,6 +272,20 @@ module Calendly
       assert_event_type003 event_types_page1[0]
       assert_event_type002 event_types_page1[1]
       assert_event_type001 event_types_page2[0]
+    end
+
+    def test_that_it_returns_active_items_of_event_type_by_user
+      user_uri = 'https://api.calendly.com/users/U001'
+      res_body = load_test_data 'event_types_003.json'
+      params = {user: user_uri, active: true}
+
+      url = "#{HOST}/event_types?#{URI.encode_www_form(params)}"
+      add_stub_request :get, url, res_body: res_body
+
+      event_types, next_params = @client.event_types_by_user user_uri, options: {active: true}
+      assert_equal 1, event_types.length
+      assert_nil next_params
+      assert_event_type001 event_types[0]
     end
 
     def test_that_it_raises_an_argument_error_on_event_types_by_user

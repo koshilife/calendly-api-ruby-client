@@ -107,6 +107,7 @@ module Calendly
     #
     # @param [String] org_uri the specified organization (organization's uri).
     # @param [Hash] options the optional request parameters. Optional.
+    # @option options [Boolean] :active Return only active event types if true, only inactive if false, or all event types if this parameter is omitted.
     # @option options [Integer] :count Number of rows to return.
     # @option options [String] :page_token Pass this to get the next portion of collection.
     # @option options [String] :sort Order results by the specified field and direction. Accepts comma-separated list of {field}:{direction} values.
@@ -119,7 +120,7 @@ module Calendly
     def event_types(org_uri, options: nil)
       check_not_empty org_uri, 'org_uri'
 
-      opts_keys = %i[count page_token sort]
+      opts_keys = %i[active count page_token sort]
       params = {organization: org_uri}
       params = merge_options options, opts_keys, params
       body = request :get, 'event_types', params: params
@@ -134,6 +135,7 @@ module Calendly
     #
     # @param [String] user_uri the specified user (user's uri).
     # @param [Hash] options the optional request parameters. Optional.
+    # @option options [Boolean] :active Return only active event types if true, only inactive if false, or all event types if this parameter is omitted.
     # @option options [Integer] :count Number of rows to return.
     # @option options [String] :page_token Pass this to get the next portion of collection.
     # @option options [String] :sort Order results by the specified field and direction. Accepts comma-separated list of {field}:{direction} values.
@@ -146,7 +148,7 @@ module Calendly
     def event_types_by_user(user_uri, options: nil)
       check_not_empty user_uri, 'user_uri'
 
-      opts_keys = %i[count page_token sort]
+      opts_keys = %i[active count page_token sort]
       params = {user: user_uri}
       params = merge_options options, opts_keys, params
       body = request :get, 'event_types', params: params
