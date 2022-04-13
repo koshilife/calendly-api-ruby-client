@@ -57,15 +57,19 @@ module Calendly
     end
 
     module ClassMethods
-      def extract_uuid(str)
+      def extract_uuid_match(str)
         return unless defined? self::UUID_RE
         return unless str
         return if str.empty?
 
-        m = self::UUID_RE.match str
-        return if m.nil?
+        self::UUID_RE.match str
+      end
 
-        m[1]
+      def extract_uuid(str)
+        m = extract_uuid_match str
+        return unless m
+
+        defined?(self::UUID_RE_INDEX) ? m[self::UUID_RE_INDEX] : m[1]
       end
     end
 
@@ -101,7 +105,10 @@ module Calendly
     end
 
     def after_set_attributes(attrs)
-      @uuid = self.class.extract_uuid(attrs[:uri]) if respond_to? :uuid=
+      return unless respond_to? :uuid=
+      return unless attrs[:uri]
+
+      @uuid = self.class.extract_uuid(attrs[:uri])
     end
 
     #

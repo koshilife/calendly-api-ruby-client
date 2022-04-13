@@ -283,6 +283,55 @@ module Calendly
     end
 
     #
+    # Get Invitee No Show
+    # Returns information about a specified Invitee No Show.
+    #
+    # @param [String] uuid the specified no show.
+    # @return [Calendly::InviteeNoShow]
+    # @raise [Calendly::Error] if the uuid arg is empty.
+    # @raise [Calendly::ApiError] if the api returns error code.
+    # @since 0.9.0
+    def invitee_no_show(uuid)
+      check_not_empty uuid, 'uuid'
+      body = request :get, "invitee_no_shows/#{uuid}"
+      InviteeNoShow.new body[:resource], self
+    end
+
+    #
+    # Create Invitee No Show
+    # Marks an Invitee as a No Show.
+    #
+    # @param [String] invitee_uri the specified invitee's uri.
+    # @return [Calendly::InviteeNoShow]
+    # @raise [Calendly::Error] if the invitee_uri arg is empty.
+    # @raise [Calendly::ApiError] if the api returns error code.
+    # @since 0.9.0
+    def create_invitee_no_show(invitee_uri)
+      check_not_empty invitee_uri, 'invitee_uri'
+      body = request(
+        :post,
+        'invitee_no_shows',
+        body: {invitee: invitee_uri}
+      )
+      InviteeNoShow.new body[:resource], self
+    end
+
+    #
+    # Delete Invitee No Show
+    # Undoes marking an Invitee as a No Show.
+    #
+    # @param [String] uuid the specified no show.
+    # @return [true]
+    # @raise [Calendly::Error] if the uuid arg is empty.
+    # @raise [Calendly::ApiError] if the api returns error code.
+    # @since 0.9.0
+    def delete_invitee_no_show(uuid)
+      check_not_empty uuid, 'uuid'
+      request :delete, "invitee_no_shows/#{uuid}"
+      true
+    end
+
+    #
     # Returns information about a user's organization membership
     #
     # @param [String] uuid the specified membership (organization membership's uuid).

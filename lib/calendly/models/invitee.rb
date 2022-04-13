@@ -5,7 +5,8 @@ module Calendly
   # An individual who has been invited to meet with a Calendly member.
   class Invitee
     include ModelUtils
-    UUID_RE = %r{\A#{Client::API_HOST}/scheduled_events/#{UUID_FORMAT}/invitees/(#{UUID_FORMAT})\z}.freeze
+    UUID_RE = %r{\A#{Client::API_HOST}/scheduled_events/(#{UUID_FORMAT})/invitees/(#{UUID_FORMAT})\z}.freeze
+    UUID_RE_INDEX = 2
     TIME_FIELDS = %i[created_at updated_at].freeze
 
     def self.association
@@ -13,9 +14,17 @@ module Calendly
         event: Event,
         cancellation: InviteeCancellation,
         payment: InviteePayment,
+        no_show: InviteeNoShow,
         questions_and_answers: InviteeQuestionAndAnswer,
         tracking: InviteeTracking
       }
+    end
+
+    def self.extract_event_uuid(str)
+      m = extract_uuid_match str
+      return unless m
+
+      m[1]
     end
 
     # @return [String]
@@ -91,6 +100,10 @@ module Calendly
     # @return [InviteePayment] Invitee payment.
     attr_accessor :payment
 
+    # @return [InviteeNoShow, nil]
+    # Provides data pertaining to the associated no show for the Invitee.
+    attr_accessor :no_show
+
     # @return [Event]
     # Reference to Event associated with this invitee.
     attr_accessor :event
@@ -113,6 +126,46 @@ module Calendly
     def fetch
       ev_uuid = event.uuid if event
       client.event_invitee ev_uuid, uuid
+    end
+
+    #
+    # Marks as a No Show.
+    # If already marked as a No Show, do nothing.
+    #
+    # @return [Calendly::InviteeNoShow]
+    # @raise [Calendly::Error] if the uri is empty.
+    # @raise [Calendly::ApiError] if the api returns error code.
+    # @since 0.9.0
+    def mark_no_show
+      return no_show if no_show
+
+      @no_show = client.create_invitee_no_show uri
+    end
+
+    #
+    # Unmarks as a No Show.
+    # If already unmarked as a No Show, do nothing.
+    #
+    # @return [true, nil]
+    # @raise [Calendly::Error] if the no_show.uuid is empty.
+    # @raise [Calendly::ApiError] if the api returns error code.
+    # @since 0.9.0
+    def unmark_no_show
+      return unless no_show
+
+      no_show.delete
+      @no_show = nil
+      true
+    end
+
+  private
+
+    def after_set_attributes(attrs)
+      super attrs
+      if event.nil? && attrs[:uri]
+        event_uuid = Invitee.extract_event_uuid attrs[:uri]
+        @event = Event.new({uuid: event_uuid}, @client) if event_uuid
+      end
     end
   end
 end
