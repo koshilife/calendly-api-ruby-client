@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'calendly/models/model_utils'
-
 module Calendly
   # Calendly's custom question model.
   class EventTypeCustomQuestion

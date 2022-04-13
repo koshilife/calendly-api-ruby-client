@@ -1,13 +1,5 @@
 # frozen_string_literal: true
 
-require 'calendly/client'
-require 'calendly/models/model_utils'
-require 'calendly/models/event'
-require 'calendly/models/invitee_cancellation'
-require 'calendly/models/invitee_payment'
-require 'calendly/models/invitee_question_and_answer'
-require 'calendly/models/invitee_tracking'
-
 module Calendly
   # Calendly's invitee model.
   # An individual who has been invited to meet with a Calendly member.
@@ -15,13 +7,16 @@ module Calendly
     include ModelUtils
     UUID_RE = %r{\A#{Client::API_HOST}/scheduled_events/#{UUID_FORMAT}/invitees/(#{UUID_FORMAT})\z}.freeze
     TIME_FIELDS = %i[created_at updated_at].freeze
-    ASSOCIATION = {
-      event: Event,
-      cancellation: InviteeCancellation,
-      payment: InviteePayment,
-      questions_and_answers: InviteeQuestionAndAnswer,
-      tracking: InviteeTracking
-    }.freeze
+
+    def self.association
+      {
+        event: Event,
+        cancellation: InviteeCancellation,
+        payment: InviteePayment,
+        questions_and_answers: InviteeQuestionAndAnswer,
+        tracking: InviteeTracking
+      }
+    end
 
     # @return [String]
     # unique id of the Invitee object.

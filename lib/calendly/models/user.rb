@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-require 'calendly/client'
-require 'calendly/models/model_utils'
-
 module Calendly
   # Calendly's user model.
   # Primary account details of a specific user.
@@ -10,7 +7,12 @@ module Calendly
     include ModelUtils
     UUID_RE = %r{\A#{Client::API_HOST}/users/(#{UUID_FORMAT})\z}.freeze
     TIME_FIELDS = %i[created_at updated_at].freeze
-    ASSOCIATION = {current_organization: Organization}.freeze
+
+    def self.association
+      {
+        current_organization: Organization
+      }
+    end
 
     # @return [String]
     # unique id of the User object.

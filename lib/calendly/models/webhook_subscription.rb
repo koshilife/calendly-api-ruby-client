@@ -1,17 +1,19 @@
 # frozen_string_literal: true
 
-require 'calendly/client'
-require 'calendly/models/model_utils'
-require 'calendly/models/organization'
-require 'calendly/models/user'
-
 module Calendly
   # Calendly's webhook model.
   class WebhookSubscription
     include ModelUtils
     UUID_RE = %r{\A#{Client::API_HOST}/webhook_subscriptions/(#{UUID_FORMAT})\z}.freeze
     TIME_FIELDS = %i[created_at updated_at retry_started_at].freeze
-    ASSOCIATION = {organization: Organization, user: User, creator: User}.freeze
+
+    def self.association
+      {
+        organization: Organization,
+        user: User,
+        creator: User
+      }
+    end
 
     # @return [String]
     # unique id of the WebhookSubscription object.

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'oauth2'
+require 'calendly/loggable'
 
 module Calendly
   # Calendly apis client.

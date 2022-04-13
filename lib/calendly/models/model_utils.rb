@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'time'
-require 'calendly/error'
 
 module Calendly
   # Calendly model utility.
@@ -84,8 +83,8 @@ module Calendly
       attrs.each do |key, value|
         next unless respond_to? "#{key}=".to_sym
 
-        if value && defined?(self.class::ASSOCIATION) && self.class::ASSOCIATION.key?(key)
-          klass = self.class::ASSOCIATION[key]
+        if value && defined?(self.class.association) && self.class.association.key?(key)
+          klass = self.class.association[key]
           if value.is_a? String # rubocop:disable Style/CaseLikeIf
             value = klass.new({uri: value}, @client)
           elsif value.is_a? Hash

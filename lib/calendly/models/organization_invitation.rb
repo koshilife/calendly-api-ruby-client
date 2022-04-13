@@ -1,17 +1,18 @@
 # frozen_string_literal: true
 
-require 'calendly/client'
-require 'calendly/models/model_utils'
-require 'calendly/models/organization'
-require 'calendly/models/user'
-
 module Calendly
   # Calendly's organization invitation model.
   class OrganizationInvitation
     include ModelUtils
     UUID_RE = %r{\A#{Client::API_HOST}/organizations/#{UUID_FORMAT}/invitations/(#{UUID_FORMAT})\z}.freeze
     TIME_FIELDS = %i[created_at updated_at last_sent_at].freeze
-    ASSOCIATION = {user: User, organization: Organization}.freeze
+
+    def self.association
+      {
+        user: User,
+        organization: Organization
+      }
+    end
 
     # @return [String]
     # unique id of the OrganizationInvitation object.

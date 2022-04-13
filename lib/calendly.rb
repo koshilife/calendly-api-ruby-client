@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'calendly/client'
+require 'calendly/models/model_utils'
 Dir[
   File.join(
     File.dirname(__FILE__),

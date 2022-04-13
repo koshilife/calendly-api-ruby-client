@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'calendly/models/model_utils'
-
 module Calendly
   # Calendly's guest model.
   # Additional people added to an event by an invitee.
