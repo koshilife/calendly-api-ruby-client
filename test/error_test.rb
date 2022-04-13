@@ -5,8 +5,8 @@ require 'test_helper'
 module Calendly
   # test double for Faraday::Response
   class DoubleFaradayResponse
-    attr_accessor :body
-    attr_accessor :status
+    attr_accessor :body, :status
+
     def initialize(body, status)
       @body = body
       @status = status
