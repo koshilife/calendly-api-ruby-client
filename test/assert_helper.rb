@@ -799,6 +799,20 @@ module AssertHelper
     assert_equal expected_data, loc.data
   end
 
+  def assert_no_show001(no_show)
+    assert no_show.client.is_a? Calendly::Client
+    assert_equal 'NO_SHOW001', no_show.id
+    assert_equal 'NO_SHOW001', no_show.uuid
+    assert_equal Time.parse('2022-04-13T14:28:18.123000Z').to_i, no_show.created_at.to_i
+
+    assert no_show.invitee.client.is_a? Calendly::Client
+    assert_equal 'INV001', no_show.invitee.uuid
+    assert_equal 'https://api.calendly.com/scheduled_events/EV001/invitees/INV001', no_show.invitee.uri
+
+    assert no_show.invitee.event.client.is_a? Calendly::Client
+    assert_equal 'EV001', no_show.invitee.event.uuid
+  end
+
   def assert_org_mem001(org_mem)
     assert org_mem.client.is_a? Calendly::Client
     assert_equal 'MEM001', org_mem.id

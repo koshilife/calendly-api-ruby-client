@@ -532,6 +532,71 @@ module Calendly
     end
 
     #
+    # test for invitee_no_show
+    #
+
+    def test_that_it_returns_a_specific_no_show
+      uuid = 'NO_SHOW001'
+      res_body = load_test_data 'no_show_001.json'
+
+      url = "#{HOST}/invitee_no_shows/#{uuid}"
+      add_stub_request :get, url, res_body: res_body
+
+      no_show = @client.invitee_no_show uuid
+      assert_no_show001 no_show
+    end
+
+    def test_that_it_raises_an_argument_error_on_invitee_no_show
+      proc_arg_is_empty = proc do
+        @client.invitee_no_show ''
+      end
+      assert_required_error proc_arg_is_empty, 'uuid'
+    end
+
+    #
+    # test for create_invitee_no_show
+    #
+
+    def test_that_it_creates_no_show
+      inv_uri = 'https://api.calendly.com/scheduled_events/EV001/invitees/INV001'
+      req_body = {invitee: inv_uri}
+      res_body = load_test_data 'no_show_001.json'
+
+      url = "#{HOST}/invitee_no_shows"
+      add_stub_request :post, url, req_body: req_body, res_body: res_body, res_status: 201
+
+      no_show = @client.create_invitee_no_show inv_uri
+      assert_no_show001 no_show
+    end
+
+    def test_that_it_raises_an_argument_error_on_create_invitee_no_show
+      proc_arg_is_empty = proc do
+        @client.create_invitee_no_show ''
+      end
+      assert_required_error proc_arg_is_empty, 'invitee_uri'
+    end
+
+    #
+    # test for delete_invitee_no_show
+    #
+
+    def test_that_it_deletes_an_exists_no_show
+      uuid = 'NO_SHOW001'
+      url = "#{HOST}/invitee_no_shows/#{uuid}"
+      add_stub_request :delete, url, res_status: 204
+
+      result = @client.delete_invitee_no_show uuid
+      assert_equal true, result
+    end
+
+    def test_that_it_raises_an_argument_error_on_delete_invitee_no_show
+      proc_arg_is_empty = proc do
+        @client.delete_invitee_no_show ''
+      end
+      assert_required_error proc_arg_is_empty, 'uuid'
+    end
+
+    #
     # test for membership
     #
 

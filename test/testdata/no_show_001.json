@@ -1,0 +1,7 @@
+{
+    "resource": {
+        "created_at": "2022-04-13T14:28:18.123Z",
+        "invitee": "https://api.calendly.com/scheduled_events/EV001/invitees/INV001",
+        "uri": "https://api.calendly.com/invitee_no_shows/NO_SHOW001"
+    }
+}
