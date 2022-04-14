@@ -59,8 +59,7 @@ module Calendly
     # @raise [Calendly::ApiError] if the api returns error code.
     # @since 0.1.0
     def fetch
-      org_uuid = organization.uuid if organization
-      client.invitation org_uuid, uuid
+      client.invitation organization&.uuid, uuid
     end
 
     #
@@ -72,8 +71,7 @@ module Calendly
     # @raise [Calendly::ApiError] if the api returns error code.
     # @since 0.1.0
     def delete
-      org_uuid = organization.uuid if organization
-      client.delete_invitation org_uuid, uuid
+      client.delete_invitation organization&.uuid, uuid
     end
   end
 end

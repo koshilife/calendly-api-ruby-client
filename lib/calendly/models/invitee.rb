@@ -124,8 +124,7 @@ module Calendly
     # @raise [Calendly::ApiError] if the api returns error code.
     # @since 0.1.0
     def fetch
-      ev_uuid = event.uuid if event
-      client.event_invitee ev_uuid, uuid
+      client.event_invitee event&.uuid, uuid
     end
 
     #
