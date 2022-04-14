@@ -1,13 +1,5 @@
 # frozen_string_literal: true
 
-require 'calendly/client'
-require 'calendly/models/model_utils'
-require 'calendly/models/event_type'
-require 'calendly/models/guest'
-require 'calendly/models/invitee_cancellation'
-require 'calendly/models/invitees_counter'
-require 'calendly/models/location'
-
 module Calendly
   # Calendly's event model.
   # A meeting that has been scheduled.
@@ -15,13 +7,16 @@ module Calendly
     include ModelUtils
     UUID_RE = %r{\A#{Client::API_HOST}/scheduled_events/(#{UUID_FORMAT})\z}.freeze
     TIME_FIELDS = %i[start_time end_time created_at updated_at].freeze
-    ASSOCIATION = {
-      event_type: EventType,
-      event_guests: Guest,
-      cancellation: InviteeCancellation,
-      invitees_counter: InviteesCounter,
-      location: Location
-    }.freeze
+
+    def self.association
+      {
+        event_type: EventType,
+        event_guests: Guest,
+        cancellation: InviteeCancellation,
+        invitees_counter: InviteesCounter,
+        location: Location
+      }
+    end
 
     # @return [String]
     # unique id of the Event object.

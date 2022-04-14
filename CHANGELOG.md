@@ -1,5 +1,23 @@
 # CHANGELOG
 
+## 0.9.0 - 2022-04-14
+
+- supported no show APIs. (#45)
+  - `GET /invitee_no_shows/{no_show_uuid}`
+  - `POST /invitee_no_shows`
+  - `DELETE /invitee_no_shows/{no_show_uuid}`
+  - changed files:
+    - Client
+      - (Add method) invitee_no_show
+      - (Add method) create_invitee_no_show
+      - (Add method) delete_invitee_no_show
+    - Invitee model
+      - (Add field) no_show
+      - (Add method) mark_no_show
+      - (Add method) unmark_no_show
+    - (New) InviteeNoShow model
+- To simplify `require` statements changed `Model::ASSOCIATION` constant to class methods and removed unused lines.
+
 ## 0.8.3 - 2022-03-08
 
 - support for filtering Event Types by 'active' or 'inactive' status. (#43)

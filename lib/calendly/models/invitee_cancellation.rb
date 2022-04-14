@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'calendly/models/model_utils'
-
 module Calendly
   # Calendly's invitee cancellation model.
   # Provides data pertaining to the cancellation of the Invitee.

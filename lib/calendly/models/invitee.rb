@@ -1,27 +1,31 @@
 # frozen_string_literal: true
 
-require 'calendly/client'
-require 'calendly/models/model_utils'
-require 'calendly/models/event'
-require 'calendly/models/invitee_cancellation'
-require 'calendly/models/invitee_payment'
-require 'calendly/models/invitee_question_and_answer'
-require 'calendly/models/invitee_tracking'
-
 module Calendly
   # Calendly's invitee model.
   # An individual who has been invited to meet with a Calendly member.
   class Invitee
     include ModelUtils
-    UUID_RE = %r{\A#{Client::API_HOST}/scheduled_events/#{UUID_FORMAT}/invitees/(#{UUID_FORMAT})\z}.freeze
+    UUID_RE = %r{\A#{Client::API_HOST}/scheduled_events/(#{UUID_FORMAT})/invitees/(#{UUID_FORMAT})\z}.freeze
+    UUID_RE_INDEX = 2
     TIME_FIELDS = %i[created_at updated_at].freeze
-    ASSOCIATION = {
-      event: Event,
-      cancellation: InviteeCancellation,
-      payment: InviteePayment,
-      questions_and_answers: InviteeQuestionAndAnswer,
-      tracking: InviteeTracking
-    }.freeze
+
+    def self.association
+      {
+        event: Event,
+        cancellation: InviteeCancellation,
+        payment: InviteePayment,
+        no_show: InviteeNoShow,
+        questions_and_answers: InviteeQuestionAndAnswer,
+        tracking: InviteeTracking
+      }
+    end
+
+    def self.extract_event_uuid(str)
+      m = extract_uuid_match str
+      return unless m
+
+      m[1]
+    end
 
     # @return [String]
     # unique id of the Invitee object.
@@ -96,6 +100,10 @@ module Calendly
     # @return [InviteePayment] Invitee payment.
     attr_accessor :payment
 
+    # @return [InviteeNoShow, nil]
+    # Provides data pertaining to the associated no show for the Invitee.
+    attr_accessor :no_show
+
     # @return [Event]
     # Reference to Event associated with this invitee.
     attr_accessor :event
@@ -116,8 +124,47 @@ module Calendly
     # @raise [Calendly::ApiError] if the api returns error code.
     # @since 0.1.0
     def fetch
-      ev_uuid = event.uuid if event
-      client.event_invitee ev_uuid, uuid
+      client.event_invitee event&.uuid, uuid
+    end
+
+    #
+    # Marks as a No Show.
+    # If already marked as a No Show, do nothing.
+    #
+    # @return [Calendly::InviteeNoShow]
+    # @raise [Calendly::Error] if the uri is empty.
+    # @raise [Calendly::ApiError] if the api returns error code.
+    # @since 0.9.0
+    def mark_no_show
+      return no_show if no_show
+
+      @no_show = client.create_invitee_no_show uri
+    end
+
+    #
+    # Unmarks as a No Show.
+    # If already unmarked as a No Show, do nothing.
+    #
+    # @return [true, nil]
+    # @raise [Calendly::Error] if the no_show.uuid is empty.
+    # @raise [Calendly::ApiError] if the api returns error code.
+    # @since 0.9.0
+    def unmark_no_show
+      return unless no_show
+
+      no_show.delete
+      @no_show = nil
+      true
+    end
+
+  private
+
+    def after_set_attributes(attrs)
+      super attrs
+      if event.nil? && attrs[:uri]
+        event_uuid = Invitee.extract_event_uuid attrs[:uri]
+        @event = Event.new({uuid: event_uuid}, @client) if event_uuid
+      end
     end
   end
 end

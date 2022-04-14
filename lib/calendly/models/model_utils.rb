@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'time'
-require 'calendly/error'
 
 module Calendly
   # Calendly model utility.
@@ -58,15 +57,19 @@ module Calendly
     end
 
     module ClassMethods
-      def extract_uuid(str)
+      def extract_uuid_match(str)
         return unless defined? self::UUID_RE
         return unless str
         return if str.empty?
 
-        m = self::UUID_RE.match str
-        return if m.nil?
+        self::UUID_RE.match str
+      end
 
-        m[1]
+      def extract_uuid(str)
+        m = extract_uuid_match str
+        return unless m
+
+        defined?(self::UUID_RE_INDEX) ? m[self::UUID_RE_INDEX] : m[1]
       end
     end
 
@@ -84,8 +87,8 @@ module Calendly
       attrs.each do |key, value|
         next unless respond_to? "#{key}=".to_sym
 
-        if value && defined?(self.class::ASSOCIATION) && self.class::ASSOCIATION.key?(key)
-          klass = self.class::ASSOCIATION[key]
+        if value && defined?(self.class.association) && self.class.association.key?(key)
+          klass = self.class.association[key]
           if value.is_a? String # rubocop:disable Style/CaseLikeIf
             value = klass.new({uri: value}, @client)
           elsif value.is_a? Hash
@@ -102,7 +105,10 @@ module Calendly
     end
 
     def after_set_attributes(attrs)
-      @uuid = self.class.extract_uuid(attrs[:uri]) if respond_to? :uuid=
+      return unless respond_to? :uuid=
+      return unless attrs[:uri]
+
+      @uuid = self.class.extract_uuid(attrs[:uri])
     end
 
     #

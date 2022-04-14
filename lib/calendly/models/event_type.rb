@@ -1,10 +1,5 @@
 # frozen_string_literal: true
 
-require 'calendly/client'
-require 'calendly/models/model_utils'
-require 'calendly/models/event_type_profile'
-require 'calendly/models/event_type_custom_question'
-
 module Calendly
   # Calendly's event type model.
   # A configuration for a schedulable event.
@@ -12,7 +7,13 @@ module Calendly
     include ModelUtils
     UUID_RE = %r{\A#{Client::API_HOST}/event_types/(#{UUID_FORMAT})\z}.freeze
     TIME_FIELDS = %i[created_at updated_at].freeze
-    ASSOCIATION = {profile: EventTypeProfile, custom_questions: EventTypeCustomQuestion}.freeze
+
+    def self.association
+      {
+        profile: EventTypeProfile,
+        custom_questions: EventTypeCustomQuestion
+      }
+    end
 
     # @return [String]
     # unique id of the EventType object.
