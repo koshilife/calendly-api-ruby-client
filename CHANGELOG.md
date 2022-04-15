@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## 0.10.0 - 2022-04-15
+
+- supported a API `POST /data_compliance/deletion/invitees`. (#28)
+  - changed files:
+    - Client
+      - (Add method) delete_invitee_data
+
 ## 0.9.0 - 2022-04-14
 
 - supported no show APIs. (#45)
@@ -16,7 +23,7 @@
       - (Add method) mark_no_show
       - (Add method) unmark_no_show
     - (New) InviteeNoShow model
-- To simplify `require` statements changed `Model::ASSOCIATION` constant to class methods and removed unused lines.
+- To simplify `require` statements, changed `Model::ASSOCIATION` constant to class methods and removed unused lines.
 
 ## 0.8.3 - 2022-03-08
 
