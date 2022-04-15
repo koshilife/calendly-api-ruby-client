@@ -332,6 +332,25 @@ module Calendly
     end
 
     #
+    # Delete Invitee Data
+    # To submit a request to remove invitee data from all previously booked events in your organization.
+    #
+    # @param [Array<String>] emails invitees' emails
+    # @return [true]
+    # @raise [Calendly::Error] if the emails arg is empty.
+    # @raise [Calendly::ApiError] if the api returns error code.
+    # @since 0.10.0
+    def delete_invitee_data(emails)
+      check_not_empty emails, 'emails'
+      request(
+        :post,
+        'data_compliance/deletion/invitees',
+        body: {emails: emails}
+      )
+      true
+    end
+
+    #
     # Returns information about a user's organization membership
     #
     # @param [String] uuid the specified membership (organization membership's uuid).

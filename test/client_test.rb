@@ -597,6 +597,29 @@ module Calendly
     end
 
     #
+    # test for delete_invitee_data
+    #
+
+    def test_that_it_deletes_invitee_data
+      invitee_emails = ['foo@example.com', 'bar@example.com']
+      req_body = {emails: invitee_emails}
+      res_body = '{}'
+
+      url = "#{HOST}/data_compliance/deletion/invitees"
+      add_stub_request :post, url, req_body: req_body, res_body: res_body, res_status: 202
+
+      result = @client.delete_invitee_data invitee_emails
+      assert_equal true, result
+    end
+
+    def test_that_it_raises_an_argument_error_on_delete_invitee_data
+      proc_arg_is_empty = proc do
+        @client.delete_invitee_data []
+      end
+      assert_required_error proc_arg_is_empty, 'emails'
+    end
+
+    #
     # test for membership
     #
 
