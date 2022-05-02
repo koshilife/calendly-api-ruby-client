@@ -205,6 +205,26 @@ module Calendly
     end
 
     #
+    # Cancels specified event.
+    #
+    # @param [String] uuid the event's unique indentifier.
+    # @param [Hash] options the optional request parameters. Optional.
+    # @option options [String] :reason reason for cancellation.
+    # @return [InviteeCancellation]
+    # @raise [Calendly::Error] if the uuid arg is empty.
+    # @raise [Calendly::ApiError] if the api returns error code.
+    # @since 0.11.0
+    def cancel_event(uuid, options: nil)
+      check_not_empty uuid, 'uuid'
+
+      opts_keys = %i[reason]
+      params = merge_options options, opts_keys
+
+      body = request :post, "scheduled_events/#{uuid}/cancellation", body: params
+      InviteeCancellation.new body[:resource], self
+    end
+
+    #
     # Get List of scheduled events belonging to a specific user.
     #
     # @param [String] user_uri the specified user (user's uri).

@@ -86,6 +86,19 @@ module Calendly
     end
 
     #
+    # Cancels specified event.
+    #
+    # @param [Hash] options the optional request parameters. Optional.
+    # @option options [String] :reason reason for cancellation.
+    # @return [InviteeCancellation]
+    # @raise [Calendly::Error] if the uuid is empty.
+    # @raise [Calendly::ApiError] if the api returns error code.
+    # @since 0.11.0
+    def cancel(options: nil)
+      client.cancel_event uuid, options: options
+    end
+
+    #
     # Returns all Event Invitees associated with self.
     #
     # @param [Hash] options the optional request parameters. Optional.
