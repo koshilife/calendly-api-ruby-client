@@ -1,0 +1,7 @@
+{
+    "resource": {
+        "canceled_by": "FooBar",
+        "canceler_type": "host",
+        "reason": "something"
+    }
+}

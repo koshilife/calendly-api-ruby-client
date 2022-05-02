@@ -487,6 +487,22 @@ module AssertHelper
     assert_equal [], ev.event_guests
   end
 
+  def assert_invitee_cancel001(invitee_cancel)
+    assert invitee_cancel.is_a? Calendly::InviteeCancellation
+    assert invitee_cancel.client.is_a? Calendly::Client
+    assert_equal 'FooBar', invitee_cancel.canceled_by
+    assert_nil invitee_cancel.reason
+    assert_equal 'host', invitee_cancel.canceler_type
+  end
+
+  def assert_invitee_cancel002(invitee_cancel)
+    assert invitee_cancel.is_a? Calendly::InviteeCancellation
+    assert invitee_cancel.client.is_a? Calendly::Client
+    assert_equal 'FooBar', invitee_cancel.canceled_by
+    assert_equal 'something', invitee_cancel.reason
+    assert_equal 'host', invitee_cancel.canceler_type
+  end
+
   def assert_event101_invitee001(inv)
     assert inv.client.is_a? Calendly::Client
     assert_equal 'INV001', inv.id

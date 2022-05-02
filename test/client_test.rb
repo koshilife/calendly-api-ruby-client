@@ -446,6 +446,40 @@ module Calendly
     end
 
     #
+    # test for cancel_event
+    #
+
+    def test_that_it_cancels_a_specific_event
+      ev_uuid = 'EV001'
+      res_body = load_test_data 'cancel_event_001.json'
+
+      url = "#{HOST}/scheduled_events/#{ev_uuid}/cancellation"
+      add_stub_request :post, url, req_body: {}, res_body: res_body
+
+      invitee_cancel = @client.cancel_event ev_uuid
+      assert_invitee_cancel001 invitee_cancel
+    end
+
+    def test_that_it_cancels_a_specific_event_with_reason
+      ev_uuid = 'EV001'
+      req_body = {reason: 'something'}
+      res_body = load_test_data 'cancel_event_002.json'
+
+      url = "#{HOST}/scheduled_events/#{ev_uuid}/cancellation"
+      add_stub_request :post, url, req_body: req_body, res_body: res_body
+
+      invitee_cancel = @client.cancel_event ev_uuid, options: req_body
+      assert_invitee_cancel002 invitee_cancel
+    end
+
+    def test_that_it_raises_an_argument_error_on_cancel_event
+      proc_arg_is_empty = proc do
+        @client.cancel_event ''
+      end
+      assert_required_error proc_arg_is_empty, 'uuid'
+    end
+
+    #
     # test for event_invitee
     #
 

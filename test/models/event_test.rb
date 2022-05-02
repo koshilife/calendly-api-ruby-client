@@ -31,6 +31,32 @@ module Calendly
       assert_event001 @event.fetch
     end
 
+    def test_that_it_cancels_a_specific_event
+      res_body = load_test_data 'cancel_event_001.json'
+      url = "#{@ev_uri}/cancellation"
+      add_stub_request :post, url, req_body: {}, res_body: res_body
+
+      invitee_cancel = @event.cancel
+      assert_invitee_cancel001 invitee_cancel
+    end
+
+    def test_that_it_cancels_a_specific_event_with_reason
+      req_body = {reason: 'something'}
+      res_body = load_test_data 'cancel_event_002.json'
+      url = "#{@ev_uri}/cancellation"
+      add_stub_request :post, url, req_body: req_body, res_body: res_body
+
+      invitee_cancel = @event.cancel options: req_body
+      assert_invitee_cancel002 invitee_cancel
+    end
+
+    def test_that_it_returns_an_error_client_is_not_ready_on_cancel
+      proc_client_is_blank = proc do
+        @event_no_client.cancel
+      end
+      assert_error proc_client_is_blank, '@client is not ready.'
+    end
+
     def test_that_it_returns_event_invitees_in_single_page
       res_body = load_test_data 'scheduled_event_invitees_101.json'
       url = "#{@ev_uri}/invitees"
