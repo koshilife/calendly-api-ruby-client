@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## 0.11.0 - 2022-05-02
+
+- supported a API `POST /scheduled_events/{uuid}/cancellation`. (#48)
+  - changed files:
+    - Client
+      - (Add method) cancel_event
+    - Event
+      - (Add method) cancel
+- improved CI to test by multiple Ruby versions.
+
 ## 0.10.0 - 2022-04-15
 
 - supported a API `POST /data_compliance/deletion/invitees`. (#28)
