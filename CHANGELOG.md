@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 0.11.1 - 2022-06-29
+
+- added `faraday >= 1.0.0` dependency. (#50)
+
 ## 0.11.0 - 2022-05-02
 
 - supported a API `POST /scheduled_events/{uuid}/cancellation`. (#48)
