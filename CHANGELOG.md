@@ -3,8 +3,8 @@
 ## 0.11.1 - 2022-06-29
 
 - specified dependencies:
-  - oauth2: 1.x series (refs #53)
-  - faraday: 1.x or 2.x seriese (refs #51)
+  - oauth2: 1.x series (#53)
+  - faraday: 1.x or 2.x seriese (#50)
 
 ## 0.11.0 - 2022-05-02
 
