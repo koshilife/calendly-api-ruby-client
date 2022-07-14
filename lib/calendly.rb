@@ -2,6 +2,7 @@
 
 require 'calendly/client'
 require 'calendly/models/model_utils'
+require 'calendly/models/tracking_fields'
 Dir[
   File.join(
     File.dirname(__FILE__),

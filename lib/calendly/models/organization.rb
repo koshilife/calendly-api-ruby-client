@@ -169,5 +169,29 @@ module Calendly
     def create_webhook(url, events, signing_key: nil)
       client.create_webhook url, events, uri, signing_key: signing_key
     end
+
+    #
+    # Returns all Routing Forms associated with self.
+    #
+    # @param [Hash] options the optional request parameters. Optional.
+    # @option options [Integer] :count Number of rows to return.
+    # @option options [String] :page_token Pass this to get the next portion of collection.
+    # @option options [String] :sort Order results by the specified field and directin. Accepts comma-separated list of {field}:{direction} values.
+    # @return [Array<Calendly::RoutingForm>]
+    # @raise [Calendly::Error] if the uri is empty.
+    # @raise [Calendly::ApiError] if the api returns error code.
+    # @since 0.12.0
+    def routing_forms(options: nil)
+      return @cached_routing_forms if defined?(@cached_routing_forms) && @cached_routing_forms
+
+      request_proc = proc { |opts| client.routing_forms uri, options: opts }
+      @cached_routing_forms = auto_pagination request_proc, options
+    end
+
+    # @since 0.12.0
+    def routing_forms!(options: nil)
+      @cached_routing_forms = nil
+      routing_forms options: options
+    end
   end
 end

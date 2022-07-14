@@ -609,7 +609,7 @@ module Calendly
     # Create a webhook subscription for an organization or user.
     #
     # @param [String] url Canonical reference (unique identifier) for the resource.
-    # @param [Array<String>] events List of user events to subscribe to. options: invitee.created or invitee.canceled
+    # @param [Array<String>] events List of user events to subscribe to. options: invitee.created or invitee.canceled or routing_form_submission.created
     # @param [String] org_uri The unique reference to the organization that the webhook will be tied to.
     # @param [String] user_uri The unique reference to the user that the webhook will be tied to. Optional.
     # @param [String] signing_key secret key shared between your application and Calendly. Optional.
@@ -649,6 +649,88 @@ module Calendly
       check_not_empty uuid, 'uuid'
       request :delete, "webhook_subscriptions/#{uuid}"
       true
+    end
+
+    #
+    # Get a specified Routing Form.
+    #
+    # @param [String] uuid the specified routing form (routing form's uuid).
+    # @return [Calendly::RoutingForm]
+    # @raise [Calendly::Error] if the uuid arg is empty.
+    # @raise [Calendly::ApiError] if the api returns error code.
+    # @since 0.12.0
+    def routing_form(uuid)
+      check_not_empty uuid, 'uuid'
+      body = request :get, "routing_forms/#{uuid}"
+      RoutingForm.new body[:resource], self
+    end
+
+    #
+    # Get a list of Routing Forms for a specified Organization.
+    #
+    # @param [String] org_uri the specified organization (organization's uri).
+    # @param [Hash] options the optional request parameters. Optional.
+    # @option options [Integer] :count Number of rows to return.
+    # @option options [String] :page_token Pass this to get the next portion of collection.
+    # @option options [String] :sort Order results by the specified field and direction. Accepts comma-separated list of {field}:{direction} values.
+    # @return [Array<Array<Calendly::RoutingForm>, Hash>]
+    #  - [Array<Calendly::RoutingForm>] routing forms
+    #  - [Hash] next_params the parameters to get next data. if thre is no next it returns nil.
+    # @raise [Calendly::Error] if the org_uri arg is empty.
+    # @raise [Calendly::ApiError] if the api returns error code.
+    # @since 0.12.0
+    def routing_forms(org_uri, options: nil)
+      check_not_empty org_uri, 'org_uri'
+
+      opts_keys = %i[count page_token sort]
+      params = {organization: org_uri}
+      params = merge_options options, opts_keys, params
+      body = request :get, 'routing_forms', params: params
+
+      items = body[:collection] || []
+      forms = items.map { |item| RoutingForm.new item, self }
+      [forms, next_page_params(body)]
+    end
+
+    #
+    # Get a specified Routing Form Submission.
+    #
+    # @param [String] uuid the specified routing form submission (routing form submission's uuid).
+    # @return [Calendly::RoutingFormSubmission]
+    # @raise [Calendly::Error] if the uuid arg is empty.
+    # @raise [Calendly::ApiError] if the api returns error code.
+    # @since 0.12.0
+    def routing_form_submission(uuid)
+      check_not_empty uuid, 'uuid'
+      body = request :get, "routing_form_submissions/#{uuid}"
+      RoutingFormSubmission.new body[:resource], self
+    end
+
+    #
+    # Get a list of Routing Form Submissions for a specified Routing Form.
+    #
+    # @param [String] form_uri the specified organization (routing form's uri).
+    # @param [Hash] options the optional request parameters. Optional.
+    # @option options [Integer] :count Number of rows to return.
+    # @option options [String] :page_token Pass this to get the next portion of collection.
+    # @option options [String] :sort Order results by the specified field and direction. Accepts comma-separated list of {field}:{direction} values.
+    # @return [Array<Array<Calendly::RoutingFormSubmission>, Hash>]
+    #  - [Array<Calendly::RoutingFormSubmission>] routing form submissions
+    #  - [Hash] next_params the parameters to get next data. if thre is no next it returns nil.
+    # @raise [Calendly::Error] if the form_uri arg is empty.
+    # @raise [Calendly::ApiError] if the api returns error code.
+    # @since 0.12.0
+    def routing_form_submissions(form_uri, options: nil)
+      check_not_empty form_uri, 'form_uri'
+
+      opts_keys = %i[count page_token sort]
+      params = {form: form_uri}
+      params = merge_options options, opts_keys, params
+      body = request :get, 'routing_form_submissions', params: params
+
+      items = body[:collection] || []
+      submissions = items.map { |item| RoutingFormSubmission.new item, self }
+      [submissions, next_page_params(body)]
     end
 
     #

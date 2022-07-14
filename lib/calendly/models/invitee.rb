@@ -16,7 +16,8 @@ module Calendly
         payment: InviteePayment,
         no_show: InviteeNoShow,
         questions_and_answers: InviteeQuestionAndAnswer,
-        tracking: InviteeTracking
+        tracking: InviteeTracking,
+        routing_form_submission: RoutingFormSubmission
       }
     end
 
@@ -114,6 +115,9 @@ module Calendly
 
     # @return [Calendly::InviteeTracking]
     attr_accessor :tracking
+
+    # @return [Calendly::RoutingFormSubmission, nil]
+    attr_accessor :routing_form_submission
 
     #
     # Get Event Invitee associated with self.
