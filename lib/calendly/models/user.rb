@@ -97,8 +97,7 @@ module Calendly
     # @option options [Boolean] :active Return only active event types if true, only inactive if false, or all event types if this parameter is omitted.
     # @option options [Integer] :count Number of rows to return.
     # @option options [String] :page_token Pass this to get the next portion of collection.
-    # @option options [String] :sort Order results by the specified field and direction.
-    # Accepts comma-separated list of {field}:{direction} values.
+    # @option options [String] :sort Order results by the specified field and direction. Accepts comma-separated list of {field}:{direction} values.
     # @return [Array<Calendly::EventType>]
     # @raise [Calendly::Error] if the uri is empty.
     # @raise [Calendly::ApiError] if the api returns error code.
@@ -125,8 +124,7 @@ module Calendly
     # @option options [String] :max_start_timeUpper bound (inclusive) for an event's start time to filter by.
     # @option options [String] :min_start_time Lower bound (inclusive) for an event's start time to filter by.
     # @option options [String] :page_token Pass this to get the next portion of collection.
-    # @option options [String] :sort Order results by the specified field and directin.
-    # Accepts comma-separated list of {field}:{direction} values.
+    # @option options [String] :sort Order results by the specified field and directin. Accepts comma-separated list of {field}:{direction} values.
     # @option options [String] :status Whether the scheduled event is active or canceled
     # @return [Array<Calendly::Event>]
     # @raise [Calendly::Error] if the uri is empty.
@@ -152,7 +150,6 @@ module Calendly
     # @option options [Integer] :count Number of rows to return.
     # @option options [String] :page_token Pass this to get the next portion of collection.
     # @option options [String] :sort Order results by the specified field and directin. Accepts comma-separated list of {field}:{direction} values.
-    # Accepts comma-separated list of {field}:{direction} values.
     # @return [Array<Calendly::WebhookSubscription>]
     # @raise [Calendly::Error] if the organization.uri is empty.
     # @raise [Calendly::Error] if the uri is empty.

@@ -104,11 +104,9 @@ module Calendly
     # @param [Hash] options the optional request parameters. Optional.
     # @option options [Integer] :count Number of rows to return.
     # @option options [String] :email Filter by email.
-    # @option options [String] :page_token
-    # Pass this to get the next portion of collection.
-    # @option opts [String] :sort Order results by the specified field and directin.
-    # Accepts comma-separated list of {field}:{direction} values.
-    # @option opts [String] :status Whether the scheduled event is active or canceled.
+    # @option options [String] :page_token Pass this to get the next portion of collection.
+    # @option options [String] :sort Order results by the specified field and directin. Accepts comma-separated list of {field}:{direction} values.
+    # @option options [String] :status Whether the scheduled event is active or canceled.
     # @return [Array<Calendly::Invitee>]
     # @raise [Calendly::Error] if the uuid is empty.
     # @raise [Calendly::ApiError] if the api returns error code.
