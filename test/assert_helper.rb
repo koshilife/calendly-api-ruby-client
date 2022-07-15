@@ -1020,6 +1020,123 @@ module AssertHelper
     assert_equal 'https://api.calendly.com/users/U001', webhook.creator.uri
   end
 
+  def assert_org_routing_form_001(form)
+    assert form.client.is_a? Calendly::Client
+    assert_equal 'ROUTING_FORM001', form.uuid
+    assert_equal 'https://api.calendly.com/routing_forms/ROUTING_FORM001', form.uri
+    assert_equal 'routing-form-001', form.name
+    assert_equal 'published', form.status
+    assert_equal Time.parse('2022-07-13T16:01:56.192155Z'), form.created_at
+    assert_equal Time.parse('2022-07-13T16:17:46.641648Z'), form.updated_at
+    # check form.organization
+    org = form.organization
+    assert org.is_a? Calendly::Organization
+    assert_equal 'ORG001', org.uuid
+    assert_equal 'https://api.calendly.com/organizations/ORG001', org.uri
+    # check form.questions
+    questions = form.questions
+    assert_equal 2, questions.length
+    q = questions[0]
+    assert q.is_a? Calendly::RoutingFormQuestion
+    assert_equal 'question-001', q.uuid
+    assert_equal 'Name question', q.name
+    assert_equal 'name', q.type
+    assert_equal true, q.required
+    assert_equal [], q.answer_choices
+    q = questions[1]
+    assert q.is_a? Calendly::RoutingFormQuestion
+    assert_equal 'question-002', q.uuid
+    assert_equal 'Radio button question', q.name
+    assert_equal 'radios', q.type
+    assert_equal true, q.required
+    assert_equal ['A.event_type', 'B.custom_message', 'C.external_url'], q.answer_choices
+  end
+
+  def assert_org_routing_form_002(form)
+    assert form.client.is_a? Calendly::Client
+    assert_equal 'ROUTING_FORM002', form.uuid
+    assert_equal 'https://api.calendly.com/routing_forms/ROUTING_FORM002', form.uri
+    assert_equal 'routing-form-002', form.name
+    assert_equal 'published', form.status
+    assert_equal Time.parse('2022-07-15T02:38:58.497886Z'), form.created_at
+    assert_equal Time.parse('2022-07-15T03:54:59.959101Z'), form.updated_at
+    # check form.organization
+    org = form.organization
+    assert org.is_a? Calendly::Organization
+    assert_equal 'ORG001', org.uuid
+    assert_equal 'https://api.calendly.com/organizations/ORG001', org.uri
+    # check form.questions
+    questions = form.questions
+    assert_equal 7, questions.length
+    q = questions[0]
+    assert q.is_a? Calendly::RoutingFormQuestion
+    assert_equal 'question-001', q.uuid
+    assert_equal 'Name question', q.name
+    assert_equal 'name', q.type
+    assert_equal true, q.required
+    assert_equal [], q.answer_choices
+    q = questions[1]
+    assert q.is_a? Calendly::RoutingFormQuestion
+    assert_equal 'question-002', q.uuid
+    assert_equal 'Email question', q.name
+    assert_equal 'email', q.type
+    assert_equal true, q.required
+    assert_equal [], q.answer_choices
+    q = questions[2]
+    assert q.is_a? Calendly::RoutingFormQuestion
+    assert_equal 'question-003', q.uuid
+    assert_equal 'Phone number question', q.name
+    assert_equal 'phone', q.type
+    assert_equal false, q.required
+    assert_equal [], q.answer_choices
+    q = questions[3]
+    assert q.is_a? Calendly::RoutingFormQuestion
+    assert_equal 'question-004', q.uuid
+    assert_equal 'Dropdown question', q.name
+    assert_equal 'select', q.type
+    assert_equal false, q.required
+    assert_equal %w[choice1 choice2 choice3], q.answer_choices
+    q = questions[4]
+    assert q.is_a? Calendly::RoutingFormQuestion
+    assert_equal 'question-005', q.uuid
+    assert_equal 'Radio button question', q.name
+    assert_equal 'radios', q.type
+    assert_equal true, q.required
+    assert_equal %w[choice1 choice2 choice3], q.answer_choices
+    q = questions[5]
+    assert q.is_a? Calendly::RoutingFormQuestion
+    assert_equal 'question-006', q.uuid
+    assert_equal 'Short answer question', q.name
+    assert_equal 'text', q.type
+    assert_equal false, q.required
+    assert_equal [], q.answer_choices
+    q = questions[6]
+    assert q.is_a? Calendly::RoutingFormQuestion
+    assert_equal 'question-007', q.uuid
+    assert_equal 'Paragraph question', q.name
+    assert_equal 'textarea', q.type
+    assert_equal false, q.required
+    assert_equal [], q.answer_choices
+  end
+
+  def assert_org_routing_form_003(form)
+    assert form.client.is_a? Calendly::Client
+    assert_equal 'ROUTING_FORM003', form.uuid
+    assert_equal 'https://api.calendly.com/routing_forms/ROUTING_FORM003', form.uri
+    assert_equal 'routing-form-003', form.name
+    assert_equal 'draft', form.status
+    assert_equal Time.parse('2022-07-15T02:39:12.128934Z'), form.created_at
+    assert_equal Time.parse('2022-07-15T02:39:12.128934Z'), form.updated_at
+    # check form.organization
+    org = form.organization
+    assert org.is_a? Calendly::Organization
+    assert_equal 'ORG001', org.uuid
+    assert_equal 'https://api.calendly.com/organizations/ORG001', org.uri
+    # check form.questions
+    questions = form.questions
+    assert_equal 0, questions.length
+  end
+
   def assert_schedule_link_001(s_link)
     expected = {
       booking_url: 'https://calendly.com/s/FOO-BAR-SLUG',
