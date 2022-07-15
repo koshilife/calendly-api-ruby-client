@@ -1071,8 +1071,10 @@ module Calendly
       org_uri = "#{HOST}/organizations/ORG001"
       events = ['invitee.created', 'invitee.canceled']
       signing_key = 'secret_string'
-      req_body = {url: webhook_url, events: events, organization: org_uri, scope: 'organization',
-signing_key: signing_key}
+      req_body = {
+        url: webhook_url, events: events, organization: org_uri,
+        scope: 'organization',signing_key: signing_key
+      }
       res_body = load_test_data 'webhook_organization_001.json'
 
       url = "#{HOST}/webhook_subscriptions"
@@ -1103,8 +1105,10 @@ signing_key: signing_key}
       user_uri = "#{HOST}/users/U001"
       events = ['invitee.created', 'invitee.canceled']
       signing_key = 'secret_string'
-      req_body = {url: webhook_url, events: events, organization: org_uri, scope: 'user',
-user: user_uri, signing_key: signing_key}
+      req_body = {
+        url: webhook_url, events: events, organization: org_uri,
+        scope: 'user', user: user_uri, signing_key: signing_key
+      }
       res_body = load_test_data 'webhook_user_001.json'
 
       url = "#{HOST}/webhook_subscriptions"
