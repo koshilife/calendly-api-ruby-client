@@ -45,8 +45,7 @@ module Calendly
     # @option options [Integer] :count Number of rows to return.
     # @option options [String] :email Filter by email.
     # @option options [String] :page_token Pass this to get the next portion of collection.
-    # @option options [String] :sort Order results by the specified field and directin.
-    # Accepts comma-separated list of {field}:{direction} values.
+    # @option options [String] :sort Order results by the specified field and directin. Accepts comma-separated list of {field}:{direction} values.
     # @option options [String] :status Filter by status.
     # @return [Array<Calendly::OrganizationInvitation>]
     # @raise [Calendly::Error] if the uuid is empty.
@@ -85,8 +84,7 @@ module Calendly
     # @option options [Boolean] :active Return only active event types if true, only inactive if false, or all event types if this parameter is omitted.
     # @option options [Integer] :count Number of rows to return.
     # @option options [String] :page_token Pass this to get the next portion of collection.
-    # @option options [String] :sort Order results by the specified field and direction.
-    # Accepts comma-separated list of {field}:{direction} values.
+    # @option options [String] :sort Order results by the specified field and direction. Accepts comma-separated list of {field}:{direction} values.
     # @return [Array<Calendly::EventType>]
     # @raise [Calendly::Error] if the uri is empty.
     # @raise [Calendly::ApiError] if the api returns error code.
@@ -113,8 +111,7 @@ module Calendly
     # @option options [String] :max_start_timeUpper bound (inclusive) for an event's start time to filter by.
     # @option options [String] :min_start_time Lower bound (inclusive) for an event's start time to filter by.
     # @option options [String] :page_token Pass this to get the next portion of collection.
-    # @option options [String] :sort Order results by the specified field and directin.
-    # Accepts comma-separated list of {field}:{direction} values.
+    # @option options [String] :sort Order results by the specified field and directin. Accepts comma-separated list of {field}:{direction} values.
     # @option options [String] :status Whether the scheduled event is active or canceled
     # @return [Array<Calendly::Event>]
     # @raise [Calendly::Error] if the uri is empty.
@@ -140,7 +137,6 @@ module Calendly
     # @option options [Integer] :count Number of rows to return.
     # @option options [String] :page_token Pass this to get the next portion of collection.
     # @option options [String] :sort Order results by the specified field and directin. Accepts comma-separated list of {field}:{direction} values.
-    # Accepts comma-separated list of {field}:{direction} values.
     # @return [Array<Calendly::WebhookSubscription>]
     # @raise [Calendly::Error] if the uri is empty.
     # @raise [Calendly::ApiError] if the api returns error code.
@@ -172,6 +168,30 @@ module Calendly
     # @since 0.1.3
     def create_webhook(url, events, signing_key: nil)
       client.create_webhook url, events, uri, signing_key: signing_key
+    end
+
+    #
+    # Returns all Routing Forms associated with self.
+    #
+    # @param [Hash] options the optional request parameters. Optional.
+    # @option options [Integer] :count Number of rows to return.
+    # @option options [String] :page_token Pass this to get the next portion of collection.
+    # @option options [String] :sort Order results by the specified field and directin. Accepts comma-separated list of {field}:{direction} values.
+    # @return [Array<Calendly::RoutingForm>]
+    # @raise [Calendly::Error] if the uri is empty.
+    # @raise [Calendly::ApiError] if the api returns error code.
+    # @since 0.12.0
+    def routing_forms(options: nil)
+      return @cached_routing_forms if defined?(@cached_routing_forms) && @cached_routing_forms
+
+      request_proc = proc { |opts| client.routing_forms uri, options: opts }
+      @cached_routing_forms = auto_pagination request_proc, options
+    end
+
+    # @since 0.12.0
+    def routing_forms!(options: nil)
+      @cached_routing_forms = nil
+      routing_forms options: options
     end
   end
 end

@@ -16,7 +16,8 @@ module Calendly
         payment: InviteePayment,
         no_show: InviteeNoShow,
         questions_and_answers: InviteeQuestionAndAnswer,
-        tracking: InviteeTracking
+        tracking: InviteeTracking,
+        routing_form_submission: RoutingFormSubmission
       }
     end
 
@@ -94,13 +95,13 @@ module Calendly
     # Moment when user record was last updated.
     attr_accessor :updated_at
 
-    # @return [InviteeCancellation] Provides data pertaining to the cancellation of the Invitee.
+    # @return [Calendly::InviteeCancellation] Provides data pertaining to the cancellation of the Invitee.
     attr_accessor :cancellation
 
-    # @return [InviteePayment] Invitee payment.
+    # @return [Calendly::InviteePayment] Invitee payment.
     attr_accessor :payment
 
-    # @return [InviteeNoShow, nil]
+    # @return [Calendly::InviteeNoShow, nil]
     # Provides data pertaining to the associated no show for the Invitee.
     attr_accessor :no_show
 
@@ -114,6 +115,9 @@ module Calendly
 
     # @return [Calendly::InviteeTracking]
     attr_accessor :tracking
+
+    # @return [Calendly::RoutingFormSubmission, nil]
+    attr_accessor :routing_form_submission
 
     #
     # Get Event Invitee associated with self.

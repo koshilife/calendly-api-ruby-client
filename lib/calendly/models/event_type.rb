@@ -85,23 +85,23 @@ module Calendly
     # Moment when event type was last updated.
     attr_accessor :updated_at
 
-    # @return [EventTypeProfile]
+    # @return [Calendly::EventTypeProfile]
     # The profile of the User that's associated with the Event Type.
     attr_accessor :profile
 
-    # @return [Array<EventTypeCustomQuestion>]
+    # @return [Array<Calendly::EventTypeCustomQuestion>]
     # A collection of custom questions.
     attr_accessor :custom_questions
 
     # The owner user if the profile belongs to a "user" (individual).
-    # @return [User]
+    # @return [Calendly::User]
     # @since 0.6.0
     def owner_user
       profile&.owner_user
     end
 
     # The owner team if the profile belongs to a "team".
-    # @return [Team]
+    # @return [Calendly::Team]
     # @since 0.6.0
     def owner_team
       profile&.owner_team

@@ -38,7 +38,7 @@ module Calendly
     # Primary account details of a specific user.
     attr_accessor :user
 
-    # @return [Organization]
+    # @return [Calendly::Organization]
     # Reference to Organization associated with this membership.
     attr_accessor :organization
 
@@ -70,7 +70,6 @@ module Calendly
     # @option options [Integer] :count Number of rows to return.
     # @option options [String] :page_token Pass this to get the next portion of collection.
     # @option options [String] :sort Order results by the specified field and directin. Accepts comma-separated list of {field}:{direction} values.
-    # Accepts comma-separated list of {field}:{direction} values.
     # @return [Array<Calendly::WebhookSubscription>]
     # @raise [Calendly::Error] if the organization.uri is empty.
     # @raise [Calendly::Error] if the user.uri is empty.

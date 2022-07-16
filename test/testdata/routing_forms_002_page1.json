@@ -1,0 +1,87 @@
+{
+    "collection": [
+        {
+            "created_at": "2022-07-15T02:39:12.128934Z",
+            "name": "routing-form-003",
+            "organization": "https://api.calendly.com/organizations/ORG001",
+            "questions": [],
+            "status": "draft",
+            "updated_at": "2022-07-15T02:39:12.128934Z",
+            "uri": "https://api.calendly.com/routing_forms/ROUTING_FORM003"
+        },
+        {
+            "created_at": "2022-07-15T02:38:58.497886Z",
+            "name": "routing-form-002",
+            "organization": "https://api.calendly.com/organizations/ORG001",
+            "questions": [
+                {
+                    "answer_choices": [],
+                    "name": "Name question",
+                    "required": true,
+                    "type": "name",
+                    "uuid": "question-001"
+                },
+                {
+                    "answer_choices": [],
+                    "name": "Email question",
+                    "required": true,
+                    "type": "email",
+                    "uuid": "question-002"
+                },
+                {
+                    "answer_choices": [],
+                    "name": "Phone number question",
+                    "required": false,
+                    "type": "phone",
+                    "uuid": "question-003"
+                },
+                {
+                    "answer_choices": [
+                        "choice1",
+                        "choice2",
+                        "choice3"
+                    ],
+                    "name": "Dropdown question",
+                    "required": false,
+                    "type": "select",
+                    "uuid": "question-004"
+                },
+                {
+                    "answer_choices": [
+                        "choice1",
+                        "choice2",
+                        "choice3"
+                    ],
+                    "name": "Radio button question",
+                    "required": true,
+                    "type": "radios",
+                    "uuid": "question-005"
+                },
+                {
+                    "answer_choices": [],
+                    "name": "Short answer question",
+                    "required": false,
+                    "type": "text",
+                    "uuid": "question-006"
+                },
+                {
+                    "answer_choices": [],
+                    "name": "Paragraph question",
+                    "required": false,
+                    "type": "textarea",
+                    "uuid": "question-007"
+                }
+            ],
+            "status": "published",
+            "updated_at": "2022-07-15T03:54:59.959101Z",
+            "uri": "https://api.calendly.com/routing_forms/ROUTING_FORM002"
+        }
+    ],
+    "pagination": {
+        "count": 2,
+        "next_page": "https://api.calendly.com/routing_forms?count=2&organization=https%3A%2F%2Fapi.calendly.com%2Forganizations%2FORG001&page_token=NEXT_PAGE_TOKEN",
+        "next_page_token": "NEXT_PAGE_TOKEN",
+        "previous_page": null,
+        "previous_page_token": null
+    }
+}

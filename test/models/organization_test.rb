@@ -272,7 +272,7 @@ module Calendly
 
     def test_that_it_creates_webhook_with_signing_key
       webhook_url = 'https://example.com/organization/webhook001'
-      events = ['invitee.created', 'invitee.canceled']
+      events = ['invitee.created', 'invitee.canceled', 'routing_form_submission.created']
       signing_key = 'secret_string'
       req_body = {url: webhook_url, events: events, organization: @org_uri, scope: 'organization',
 signing_key: signing_key}
@@ -282,6 +282,47 @@ signing_key: signing_key}
       add_stub_request :post, url, req_body: req_body, res_body: res_body, res_status: 201
 
       assert_org_webhook_001 @org.create_webhook webhook_url, events, signing_key: signing_key
+    end
+
+    def test_that_it_returns_routing_forms_in_single_page
+      res_body = load_test_data 'routing_forms_001.json'
+      url = "#{HOST}/routing_forms?#{URI.encode_www_form(@org_params)}"
+      add_stub_request :get, url, res_body: res_body
+
+      assert_forms = proc do |forms|
+        assert_equal 3, forms.length
+        assert_org_routing_form_001 forms[0]
+        assert_org_routing_form_002 forms[1]
+        assert_org_routing_form_003 forms[2]
+      end
+      assert_forms.call @org.routing_forms
+
+      # test the fetched data should save in cache.
+      WebMock.reset!
+      assert_forms.call @org.routing_forms
+
+      add_stub_request :get, url, res_body: res_body
+      assert_forms.call @org.routing_forms!
+    end
+
+    def test_that_it_returns_routing_forms_across_pages
+      base_params = @org_params.merge(count: 2)
+
+      params1 = base_params.merge(sort: 'created_at:desc')
+      res_body1 = load_test_data 'routing_forms_002_page1.json'
+      url1 = "#{HOST}/routing_forms?#{URI.encode_www_form(params1)}"
+      add_stub_request :get, url1, res_body: res_body1
+
+      params2 = base_params.merge(page_token: 'NEXT_PAGE_TOKEN')
+      res_body2 = load_test_data 'routing_forms_002_page2.json'
+      url2 = "#{HOST}/routing_forms?#{URI.encode_www_form(params2)}"
+      add_stub_request :get, url2, res_body: res_body2
+
+      forms = @org.routing_forms options: params1
+      assert_equal 3, forms.length
+      assert_org_routing_form_003 forms[0]
+      assert_org_routing_form_002 forms[1]
+      assert_org_routing_form_001 forms[2]
     end
 
     def test_that_it_parses_uuid_be_formatted_ascii_from_uri

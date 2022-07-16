@@ -561,12 +561,15 @@ module AssertHelper
     assert_equal 'Phone Number Question', qa.question
 
     tracking = inv.tracking
+    assert tracking.is_a? Calendly::InviteeTracking
     assert_equal 'FOOBAR_CAMPAIGN', tracking.utm_campaign
     assert_equal 'FOOBAR_SOURCE', tracking.utm_source
     assert_equal 'FOOBAR_MEDIUM', tracking.utm_medium
     assert_equal 'FOOBAR_CONTENT', tracking.utm_content
     assert_equal 'FOOBAR_TERM', tracking.utm_term
     assert_equal 'FOOBAR_SALESFORCE_UUID', tracking.salesforce_uuid
+
+    assert_nil inv.routing_form_submission
   end
 
   def assert_event201_invitee001(inv)
@@ -606,12 +609,15 @@ module AssertHelper
     assert_equal 'Checkboxes Question', qa.question
 
     tracking = inv.tracking
+    assert tracking.is_a? Calendly::InviteeTracking
     assert_equal 'FOOBAR_CAMPAIGN_1', tracking.utm_campaign
     assert_equal 'FOOBAR_SOURCE_1', tracking.utm_source
     assert_equal 'FOOBAR_MEDIUM_1', tracking.utm_medium
     assert_equal 'FOOBAR_CONTENT_1', tracking.utm_content
     assert_equal 'FOOBAR_TERM_1', tracking.utm_term
     assert_equal 'FOOBAR_SALESFORCE_UUID_1', tracking.salesforce_uuid
+
+    assert_nil inv.routing_form_submission
   end
 
   def assert_event201_invitee002(inv)
@@ -651,12 +657,15 @@ module AssertHelper
     assert_equal 'Checkboxes Question', qa.question
 
     tracking = inv.tracking
+    assert tracking.is_a? Calendly::InviteeTracking
     assert_equal 'FOOBAR_CAMPAIGN_2', tracking.utm_campaign
     assert_equal 'FOOBAR_SOURCE_2', tracking.utm_source
     assert_equal 'FOOBAR_MEDIUM_2', tracking.utm_medium
     assert_equal 'FOOBAR_CONTENT_2', tracking.utm_content
     assert_equal 'FOOBAR_TERM_2', tracking.utm_term
     assert_equal 'FOOBAR_SALESFORCE_UUID_2', tracking.salesforce_uuid
+
+    assert_nil inv.routing_form_submission
   end
 
   def assert_event201_invitee003(inv)
@@ -696,12 +705,15 @@ module AssertHelper
     assert_equal 'Checkboxes Question', qa.question
 
     tracking = inv.tracking
+    assert tracking.is_a? Calendly::InviteeTracking
     assert_equal 'FOOBAR_CAMPAIGN_3', tracking.utm_campaign
     assert_equal 'FOOBAR_SOURCE_3', tracking.utm_source
     assert_equal 'FOOBAR_MEDIUM_3', tracking.utm_medium
     assert_equal 'FOOBAR_CONTENT_3', tracking.utm_content
     assert_equal 'FOOBAR_TERM_3', tracking.utm_term
     assert_equal 'FOOBAR_SALESFORCE_UUID_3', tracking.salesforce_uuid
+
+    assert_nil inv.routing_form_submission
   end
 
   def assert_event301_invitee001(inv)
@@ -759,12 +771,18 @@ module AssertHelper
     assert_equal 'Phone Number Question', qa.question
 
     tracking = inv.tracking
+    assert tracking.is_a? Calendly::InviteeTracking
     assert_equal 'FOOBAR_CAMPAIGN', tracking.utm_campaign
     assert_equal 'FOOBAR_SOURCE', tracking.utm_source
     assert_equal 'FOOBAR_MEDIUM', tracking.utm_medium
     assert_equal 'FOOBAR_CONTENT', tracking.utm_content
     assert_equal 'FOOBAR_TERM', tracking.utm_term
     assert_equal 'FOOBAR_SALESFORCE_UUID', tracking.salesforce_uuid
+
+    submission = inv.routing_form_submission
+    assert submission.is_a? Calendly::RoutingFormSubmission
+    assert_equal 'SUBMISSION001', submission.uuid
+    assert_equal 'https://api.calendly.com/routing_form_submissions/SUBMISSION001', submission.uri
   end
 
   def assert_location_tokyo(loc)
@@ -923,7 +941,7 @@ module AssertHelper
     assert_equal Time.parse('2020-09-17T03:00:00.000000Z'), webhook.updated_at
     assert_equal Time.parse('2020-09-17T04:00:00.000000Z'), webhook.retry_started_at
     assert_equal 'active', webhook.state
-    assert_equal ['invitee.created', 'invitee.canceled'], webhook.events
+    assert_equal ['invitee.created', 'invitee.canceled', 'routing_form_submission.created'], webhook.events
     assert_equal 'organization', webhook.scope
     assert_equal 'ORG001', webhook.organization.uuid
     assert_equal 'https://api.calendly.com/organizations/ORG001', webhook.organization.uri
@@ -1018,6 +1036,250 @@ module AssertHelper
     assert_equal 'https://api.calendly.com/users/U001', webhook.user.uri
     assert_equal 'U001', webhook.creator.uuid
     assert_equal 'https://api.calendly.com/users/U001', webhook.creator.uri
+  end
+
+  def assert_org_routing_form_001(form)
+    assert form.client.is_a? Calendly::Client
+    assert_equal 'ROUTING_FORM001', form.uuid
+    assert_equal 'https://api.calendly.com/routing_forms/ROUTING_FORM001', form.uri
+    assert_equal 'routing-form-001', form.name
+    assert_equal 'published', form.status
+    assert_equal Time.parse('2022-07-13T16:01:56.192155Z'), form.created_at
+    assert_equal Time.parse('2022-07-13T16:17:46.641648Z'), form.updated_at
+    # check form.organization
+    org = form.organization
+    assert org.is_a? Calendly::Organization
+    assert_equal 'ORG001', org.uuid
+    assert_equal 'https://api.calendly.com/organizations/ORG001', org.uri
+    # check form.questions
+    questions = form.questions
+    assert_equal 2, questions.length
+    q = questions[0]
+    assert q.is_a? Calendly::RoutingFormQuestion
+    assert_equal 'question-001', q.uuid
+    assert_equal 'Name question', q.name
+    assert_equal 'name', q.type
+    assert_equal true, q.required
+    assert_equal [], q.answer_choices
+    q = questions[1]
+    assert q.is_a? Calendly::RoutingFormQuestion
+    assert_equal 'question-002', q.uuid
+    assert_equal 'Radio button question', q.name
+    assert_equal 'radios', q.type
+    assert_equal true, q.required
+    assert_equal ['A.event_type', 'B.custom_message', 'C.external_url'], q.answer_choices
+  end
+
+  def assert_org_routing_form_002(form)
+    assert form.client.is_a? Calendly::Client
+    assert_equal 'ROUTING_FORM002', form.uuid
+    assert_equal 'https://api.calendly.com/routing_forms/ROUTING_FORM002', form.uri
+    assert_equal 'routing-form-002', form.name
+    assert_equal 'published', form.status
+    assert_equal Time.parse('2022-07-15T02:38:58.497886Z'), form.created_at
+    assert_equal Time.parse('2022-07-15T03:54:59.959101Z'), form.updated_at
+    # check form.organization
+    org = form.organization
+    assert org.is_a? Calendly::Organization
+    assert_equal 'ORG001', org.uuid
+    assert_equal 'https://api.calendly.com/organizations/ORG001', org.uri
+    # check form.questions
+    questions = form.questions
+    assert_equal 7, questions.length
+    q = questions[0]
+    assert q.is_a? Calendly::RoutingFormQuestion
+    assert_equal 'question-001', q.uuid
+    assert_equal 'Name question', q.name
+    assert_equal 'name', q.type
+    assert_equal true, q.required
+    assert_equal [], q.answer_choices
+    q = questions[1]
+    assert q.is_a? Calendly::RoutingFormQuestion
+    assert_equal 'question-002', q.uuid
+    assert_equal 'Email question', q.name
+    assert_equal 'email', q.type
+    assert_equal true, q.required
+    assert_equal [], q.answer_choices
+    q = questions[2]
+    assert q.is_a? Calendly::RoutingFormQuestion
+    assert_equal 'question-003', q.uuid
+    assert_equal 'Phone number question', q.name
+    assert_equal 'phone', q.type
+    assert_equal false, q.required
+    assert_equal [], q.answer_choices
+    q = questions[3]
+    assert q.is_a? Calendly::RoutingFormQuestion
+    assert_equal 'question-004', q.uuid
+    assert_equal 'Dropdown question', q.name
+    assert_equal 'select', q.type
+    assert_equal false, q.required
+    assert_equal %w[choice1 choice2 choice3], q.answer_choices
+    q = questions[4]
+    assert q.is_a? Calendly::RoutingFormQuestion
+    assert_equal 'question-005', q.uuid
+    assert_equal 'Radio button question', q.name
+    assert_equal 'radios', q.type
+    assert_equal true, q.required
+    assert_equal %w[choice1 choice2 choice3], q.answer_choices
+    q = questions[5]
+    assert q.is_a? Calendly::RoutingFormQuestion
+    assert_equal 'question-006', q.uuid
+    assert_equal 'Short answer question', q.name
+    assert_equal 'text', q.type
+    assert_equal false, q.required
+    assert_equal [], q.answer_choices
+    q = questions[6]
+    assert q.is_a? Calendly::RoutingFormQuestion
+    assert_equal 'question-007', q.uuid
+    assert_equal 'Paragraph question', q.name
+    assert_equal 'textarea', q.type
+    assert_equal false, q.required
+    assert_equal [], q.answer_choices
+  end
+
+  def assert_org_routing_form_003(form)
+    assert form.client.is_a? Calendly::Client
+    assert_equal 'ROUTING_FORM003', form.uuid
+    assert_equal 'https://api.calendly.com/routing_forms/ROUTING_FORM003', form.uri
+    assert_equal 'routing-form-003', form.name
+    assert_equal 'draft', form.status
+    assert_equal Time.parse('2022-07-15T02:39:12.128934Z'), form.created_at
+    assert_equal Time.parse('2022-07-15T02:39:12.128934Z'), form.updated_at
+    # check form.organization
+    org = form.organization
+    assert org.is_a? Calendly::Organization
+    assert_equal 'ORG001', org.uuid
+    assert_equal 'https://api.calendly.com/organizations/ORG001', org.uri
+    # check form.questions
+    questions = form.questions
+    assert_equal 0, questions.length
+  end
+
+  def assert_org_routing_form_submission_001(submission)
+    assert submission.client.is_a? Calendly::Client
+    assert_equal 'SUBMISSION001', submission.uuid
+    assert_equal 'https://api.calendly.com/routing_form_submissions/SUBMISSION001', submission.uri
+    assert_equal 'https://api.calendly.com/scheduled_events/EV001/invitees/INV001', submission.submitter
+    assert_equal 'Invitee', submission.submitter_type
+    assert_equal Time.parse('2022-07-13T16:18:03.837869Z'), submission.created_at
+    assert_equal Time.parse('2022-07-13T16:18:03.837869Z'), submission.updated_at
+    # check submission.organization
+    form = submission.routing_form
+    assert form.is_a? Calendly::RoutingForm
+    assert_equal 'ROUTING_FORM001', form.uuid
+    assert_equal 'https://api.calendly.com/routing_forms/ROUTING_FORM001', form.uri
+    # check submission.questions_and_answers
+    qas = submission.questions_and_answers
+    qa = qas[0]
+    assert qa.is_a? Calendly::RoutingFormSubmissionQuestionAndAnswer
+    assert_equal 'question-001', qa.question_uuid
+    assert_equal 'Name question', qa.question
+    assert_equal 'FooBar1', qa.answer
+    qa = qas[1]
+    assert qa.is_a? Calendly::RoutingFormSubmissionQuestionAndAnswer
+    assert_equal 'question-002', qa.question_uuid
+    assert_equal 'Radio button question', qa.question
+    assert_equal 'A.event_type', qa.answer
+    # check submission.tracking
+    tracking = submission.tracking
+    assert tracking.is_a? Calendly::RoutingFormSubmissionTracking
+    assert_equal 'FOOBAR_CAMPAIGN', tracking.utm_campaign
+    assert_equal 'FOOBAR_SOURCE', tracking.utm_source
+    assert_equal 'FOOBAR_MEDIUM', tracking.utm_medium
+    assert_equal 'FOOBAR_CONTENT', tracking.utm_content
+    assert_equal 'FOOBAR_TERM', tracking.utm_term
+    assert_equal 'FOOBAR_SALESFORCE_UUID', tracking.salesforce_uuid
+    # check submission.result
+    result = submission.result
+    assert result.is_a? Calendly::RoutingFormSubmissionEventTypeResult
+    assert_equal 'event_type', result.type
+    assert_equal 'https://api.calendly.com/event_types/ET001', result.value
+  end
+
+  def assert_org_routing_form_submission_002(submission)
+    assert submission.client.is_a? Calendly::Client
+    assert_equal 'SUBMISSION002', submission.uuid
+    assert_equal 'https://api.calendly.com/routing_form_submissions/SUBMISSION002', submission.uri
+    assert_nil submission.submitter
+    assert_nil submission.submitter_type
+    assert_equal Time.parse('2022-07-13T16:18:18.507958Z'), submission.created_at
+    assert_equal Time.parse('2022-07-13T16:18:28.507958Z'), submission.updated_at
+    # check submission.organization
+    form = submission.routing_form
+    assert form.is_a? Calendly::RoutingForm
+    assert_equal 'ROUTING_FORM001', form.uuid
+    assert_equal 'https://api.calendly.com/routing_forms/ROUTING_FORM001', form.uri
+    # check submission.questions_and_answers
+    qas = submission.questions_and_answers
+    qa = qas[0]
+    assert qa.is_a? Calendly::RoutingFormSubmissionQuestionAndAnswer
+    assert_equal 'question-001', qa.question_uuid
+    assert_equal 'Name question', qa.question
+    assert_equal 'FooBar2', qa.answer
+    qa = qas[1]
+    assert qa.is_a? Calendly::RoutingFormSubmissionQuestionAndAnswer
+    assert_equal 'question-002', qa.question_uuid
+    assert_equal 'Radio button question', qa.question
+    assert_equal 'B.custom_message', qa.answer
+    # check submission.tracking
+    tracking = submission.tracking
+    assert tracking.is_a? Calendly::RoutingFormSubmissionTracking
+    assert_nil tracking.utm_campaign
+    assert_nil tracking.utm_source
+    assert_nil tracking.utm_medium
+    assert_nil tracking.utm_content
+    assert_nil tracking.utm_term
+    assert_nil tracking.salesforce_uuid
+    # check submission.result
+    result = submission.result
+    assert result.is_a? Calendly::RoutingFormSubmissionEventTypeResult
+    assert_equal 'custom_message', result.type
+    expected_value = {
+      headline: 'Thank you for your interest',
+      body: '<p>We aren’t able to offer any meetings at this time.</p>'
+    }
+    assert_equal expected_value, result.value
+  end
+
+  def assert_org_routing_form_submission_003(submission)
+    assert submission.client.is_a? Calendly::Client
+    assert_equal 'SUBMISSION003', submission.uuid
+    assert_equal 'https://api.calendly.com/routing_form_submissions/SUBMISSION003', submission.uri
+    assert_nil submission.submitter
+    assert_nil submission.submitter_type
+    assert_equal Time.parse('2022-07-13T16:19:32.077953Z'), submission.created_at
+    assert_equal Time.parse('2022-07-13T16:19:32.077953Z'), submission.updated_at
+    # check submission.organization
+    form = submission.routing_form
+    assert form.is_a? Calendly::RoutingForm
+    assert_equal 'ROUTING_FORM001', form.uuid
+    assert_equal 'https://api.calendly.com/routing_forms/ROUTING_FORM001', form.uri
+    # check submission.questions_and_answers
+    qas = submission.questions_and_answers
+    qa = qas[0]
+    assert qa.is_a? Calendly::RoutingFormSubmissionQuestionAndAnswer
+    assert_equal 'question-001', qa.question_uuid
+    assert_equal 'Name question', qa.question
+    assert_equal 'FooBar3', qa.answer
+    qa = qas[1]
+    assert qa.is_a? Calendly::RoutingFormSubmissionQuestionAndAnswer
+    assert_equal 'question-002', qa.question_uuid
+    assert_equal 'Radio button question', qa.question
+    assert_equal 'C.external_url', qa.answer
+    # check submission.tracking
+    tracking = submission.tracking
+    assert tracking.is_a? Calendly::RoutingFormSubmissionTracking
+    assert_nil tracking.utm_campaign
+    assert_nil tracking.utm_source
+    assert_nil tracking.utm_medium
+    assert_nil tracking.utm_content
+    assert_nil tracking.utm_term
+    assert_nil tracking.salesforce_uuid
+    # check submission.result
+    result = submission.result
+    assert result.is_a? Calendly::RoutingFormSubmissionEventTypeResult
+    assert_equal 'external_url', result.type
+    assert_equal 'https://example.com', result.value
   end
 
   def assert_schedule_link_001(s_link)

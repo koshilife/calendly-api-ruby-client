@@ -1071,8 +1071,10 @@ module Calendly
       org_uri = "#{HOST}/organizations/ORG001"
       events = ['invitee.created', 'invitee.canceled']
       signing_key = 'secret_string'
-      req_body = {url: webhook_url, events: events, organization: org_uri, scope: 'organization',
-signing_key: signing_key}
+      req_body = {
+        url: webhook_url, events: events, organization: org_uri,
+        scope: 'organization', signing_key: signing_key
+      }
       res_body = load_test_data 'webhook_organization_001.json'
 
       url = "#{HOST}/webhook_subscriptions"
@@ -1103,8 +1105,10 @@ signing_key: signing_key}
       user_uri = "#{HOST}/users/U001"
       events = ['invitee.created', 'invitee.canceled']
       signing_key = 'secret_string'
-      req_body = {url: webhook_url, events: events, organization: org_uri, scope: 'user',
-user: user_uri, signing_key: signing_key}
+      req_body = {
+        url: webhook_url, events: events, organization: org_uri,
+        scope: 'user', user: user_uri, signing_key: signing_key
+      }
       res_body = load_test_data 'webhook_user_001.json'
 
       url = "#{HOST}/webhook_subscriptions"
@@ -1150,6 +1154,168 @@ user: user_uri, signing_key: signing_key}
         @client.delete_webhook ''
       end
       assert_required_error proc_uuid_arg_is_empty, 'uuid'
+    end
+
+    #
+    # test for routing_form
+    #
+
+    def test_that_it_returns_a_specific_routing_form
+      uuid = 'ROUTING_FORM001'
+      res_body = load_test_data 'routing_form_001.json'
+
+      url = "#{HOST}/routing_forms/#{uuid}"
+      add_stub_request :get, url, res_body: res_body
+      assert_org_routing_form_001 @client.routing_form uuid
+    end
+
+    def test_that_it_raises_an_argument_error_on_routing_form
+      proc_uuid_arg_is_empty = proc do
+        @client.routing_form ''
+      end
+      assert_required_error proc_uuid_arg_is_empty, 'uuid'
+    end
+
+    #
+    # test for routing_forms
+    #
+
+    def test_that_it_returns_all_items_of_routing_forms
+      org_uri = "#{HOST}/organizations/ORG001"
+      res_body = load_test_data 'routing_forms_001.json'
+      params = {organization: org_uri}
+
+      url = "#{HOST}/routing_forms?#{URI.encode_www_form(params)}"
+      add_stub_request :get, url, res_body: res_body
+
+      forms, next_params = @client.routing_forms org_uri
+      assert_equal 3, forms.length
+      assert_nil next_params
+      assert_org_routing_form_001 forms[0]
+      assert_org_routing_form_002 forms[1]
+      assert_org_routing_form_003 forms[2]
+    end
+
+    def test_that_it_returns_all_items_of_routing_forms_across_pages
+      org_uri = "#{HOST}/organizations/ORG001"
+      base_params = {
+        organization: org_uri,
+        count: 2
+      }
+      res_body1 = load_test_data 'routing_forms_002_page1.json'
+      params1 = base_params.merge(
+        sort: 'created_at:desc'
+      )
+      url1 = "#{HOST}/routing_forms?#{URI.encode_www_form(params1)}"
+      add_stub_request :get, url1, res_body: res_body1
+
+      res_body2 = load_test_data 'routing_forms_002_page2.json'
+      params2 = base_params.merge(
+        page_token: 'NEXT_PAGE_TOKEN'
+      )
+      url2 = "#{HOST}/routing_forms?#{URI.encode_www_form(params2)}"
+      add_stub_request :get, url2, res_body: res_body2
+
+      # request page1
+      forms1, next_params1 = @client.routing_forms org_uri, options: params1
+      org_uri = next_params1.delete :organization
+      # request page2
+      forms2, next_params2 = @client.routing_forms org_uri, options: next_params1
+
+      assert_equal 2, forms1.length
+      assert_equal 1, forms2.length
+      assert_nil next_params2
+      assert_org_routing_form_003 forms1[0]
+      assert_org_routing_form_002 forms1[1]
+      assert_org_routing_form_001 forms2[0]
+    end
+
+    def test_that_it_raises_an_argument_error_on_routing_forms
+      proc_arg_is_empty = proc do
+        @client.routing_forms ''
+      end
+      assert_required_error proc_arg_is_empty, 'org_uri'
+    end
+
+    #
+    # test for routing_form_submission
+    #
+
+    def test_that_it_returns_a_specific_routing_form_submission
+      uuid = 'SUBMISSION001'
+      res_body = load_test_data 'routing_form_submission_001.json'
+
+      url = "#{HOST}/routing_form_submissions/#{uuid}"
+      add_stub_request :get, url, res_body: res_body
+      assert_org_routing_form_submission_001 @client.routing_form_submission uuid
+    end
+
+    def test_that_it_raises_an_argument_error_on_routing_form_submission
+      proc_uuid_arg_is_empty = proc do
+        @client.routing_form_submission ''
+      end
+      assert_required_error proc_uuid_arg_is_empty, 'uuid'
+    end
+
+    #
+    # test for routing_form_submissions
+    #
+
+    def test_that_it_returns_all_items_of_routing_form_submissions
+      form_uri = "#{HOST}/routing_forms/ROUTING_FORM001"
+      res_body = load_test_data 'routing_form_submissions_001.json'
+      params = {form: form_uri}
+
+      url = "#{HOST}/routing_form_submissions?#{URI.encode_www_form(params)}"
+      add_stub_request :get, url, res_body: res_body
+
+      submissions, next_params = @client.routing_form_submissions form_uri
+      assert_equal 3, submissions.length
+      assert_nil next_params
+      assert_org_routing_form_submission_001 submissions[0]
+      assert_org_routing_form_submission_002 submissions[1]
+      assert_org_routing_form_submission_003 submissions[2]
+    end
+
+    def test_that_it_returns_all_items_of_routing_form_submissions_across_pages
+      form_uri = "#{HOST}/routing_forms/ROUTING_FORM001"
+      base_params = {
+        form: form_uri,
+        count: 2
+      }
+      res_body1 = load_test_data 'routing_form_submissions_002_page1.json'
+      params1 = base_params.merge(
+        sort: 'created_at:desc'
+      )
+      url1 = "#{HOST}/routing_form_submissions?#{URI.encode_www_form(params1)}"
+      add_stub_request :get, url1, res_body: res_body1
+
+      res_body2 = load_test_data 'routing_form_submissions_002_page2.json'
+      params2 = base_params.merge(
+        page_token: 'NEXT_PAGE_TOKEN'
+      )
+      url2 = "#{HOST}/routing_form_submissions?#{URI.encode_www_form(params2)}"
+      add_stub_request :get, url2, res_body: res_body2
+
+      # request page1
+      submissions1, next_params1 = @client.routing_form_submissions form_uri, options: params1
+      form_uri = next_params1.delete :form
+      # request page2
+      submissions2, next_params2 = @client.routing_form_submissions form_uri, options: next_params1
+
+      assert_equal 2, submissions1.length
+      assert_equal 1, submissions2.length
+      assert_nil next_params2
+      assert_org_routing_form_submission_003 submissions1[0]
+      assert_org_routing_form_submission_002 submissions1[1]
+      assert_org_routing_form_submission_001 submissions2[0]
+    end
+
+    def test_that_it_raises_an_argument_error_on_routing_form_submissions
+      proc_arg_is_empty = proc do
+        @client.routing_form_submissions ''
+      end
+      assert_required_error proc_arg_is_empty, 'form_uri'
     end
 
     #

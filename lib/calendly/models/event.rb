@@ -50,15 +50,15 @@ module Calendly
     # Moment when user record was last updated.
     attr_accessor :updated_at
 
-    # @return [EventType]
+    # @return [Calendly::EventType]
     # Reference to Event Type associated with this event.
     attr_accessor :event_type
 
-    # @return [InviteeCancellation]
+    # @return [Calendly::InviteeCancellation]
     # Provides data pertaining to the cancellation of the Invitee.
     attr_accessor :cancellation
 
-    # @return [InviteesCounter]
+    # @return [Calendly::InviteesCounter]
     # invitees counter.
     attr_accessor :invitees_counter
 
@@ -66,11 +66,11 @@ module Calendly
     # location in this event.
     attr_accessor :location
 
-    # @return [Array<User>]
+    # @return [Array<Calendly::User>]
     # Event membership list.
     attr_accessor :event_memberships
 
-    # @return [Array<Guest>]
+    # @return [Array<Calendly::Guest>]
     # Additional people added to an event by an invitee.
     attr_accessor :event_guests
 
@@ -90,7 +90,7 @@ module Calendly
     #
     # @param [Hash] options the optional request parameters. Optional.
     # @option options [String] :reason reason for cancellation.
-    # @return [InviteeCancellation]
+    # @return [Calendly::InviteeCancellation]
     # @raise [Calendly::Error] if the uuid is empty.
     # @raise [Calendly::ApiError] if the api returns error code.
     # @since 0.11.0
@@ -104,11 +104,9 @@ module Calendly
     # @param [Hash] options the optional request parameters. Optional.
     # @option options [Integer] :count Number of rows to return.
     # @option options [String] :email Filter by email.
-    # @option options [String] :page_token
-    # Pass this to get the next portion of collection.
-    # @option opts [String] :sort Order results by the specified field and directin.
-    # Accepts comma-separated list of {field}:{direction} values.
-    # @option opts [String] :status Whether the scheduled event is active or canceled.
+    # @option options [String] :page_token Pass this to get the next portion of collection.
+    # @option options [String] :sort Order results by the specified field and directin. Accepts comma-separated list of {field}:{direction} values.
+    # @option options [String] :status Whether the scheduled event is active or canceled.
     # @return [Array<Calendly::Invitee>]
     # @raise [Calendly::Error] if the uuid is empty.
     # @raise [Calendly::ApiError] if the api returns error code.
