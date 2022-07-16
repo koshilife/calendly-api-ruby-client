@@ -44,6 +44,7 @@
     ],
     "reschedule_url": "https://calendly.com/reschedulings/INV001",
     "rescheduled": true,
+    "routing_form_submission": "https://api.calendly.com/routing_form_submissions/SUBMISSION001",
     "status": "canceled",
     "text_reminder_number": "12345678",
     "timezone": "Asia/Tokyo",

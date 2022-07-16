@@ -561,12 +561,15 @@ module AssertHelper
     assert_equal 'Phone Number Question', qa.question
 
     tracking = inv.tracking
+    assert tracking.is_a? Calendly::InviteeTracking
     assert_equal 'FOOBAR_CAMPAIGN', tracking.utm_campaign
     assert_equal 'FOOBAR_SOURCE', tracking.utm_source
     assert_equal 'FOOBAR_MEDIUM', tracking.utm_medium
     assert_equal 'FOOBAR_CONTENT', tracking.utm_content
     assert_equal 'FOOBAR_TERM', tracking.utm_term
     assert_equal 'FOOBAR_SALESFORCE_UUID', tracking.salesforce_uuid
+
+    assert_nil inv.routing_form_submission
   end
 
   def assert_event201_invitee001(inv)
@@ -606,12 +609,15 @@ module AssertHelper
     assert_equal 'Checkboxes Question', qa.question
 
     tracking = inv.tracking
+    assert tracking.is_a? Calendly::InviteeTracking
     assert_equal 'FOOBAR_CAMPAIGN_1', tracking.utm_campaign
     assert_equal 'FOOBAR_SOURCE_1', tracking.utm_source
     assert_equal 'FOOBAR_MEDIUM_1', tracking.utm_medium
     assert_equal 'FOOBAR_CONTENT_1', tracking.utm_content
     assert_equal 'FOOBAR_TERM_1', tracking.utm_term
     assert_equal 'FOOBAR_SALESFORCE_UUID_1', tracking.salesforce_uuid
+
+    assert_nil inv.routing_form_submission
   end
 
   def assert_event201_invitee002(inv)
@@ -651,12 +657,15 @@ module AssertHelper
     assert_equal 'Checkboxes Question', qa.question
 
     tracking = inv.tracking
+    assert tracking.is_a? Calendly::InviteeTracking
     assert_equal 'FOOBAR_CAMPAIGN_2', tracking.utm_campaign
     assert_equal 'FOOBAR_SOURCE_2', tracking.utm_source
     assert_equal 'FOOBAR_MEDIUM_2', tracking.utm_medium
     assert_equal 'FOOBAR_CONTENT_2', tracking.utm_content
     assert_equal 'FOOBAR_TERM_2', tracking.utm_term
     assert_equal 'FOOBAR_SALESFORCE_UUID_2', tracking.salesforce_uuid
+
+    assert_nil inv.routing_form_submission
   end
 
   def assert_event201_invitee003(inv)
@@ -696,12 +705,15 @@ module AssertHelper
     assert_equal 'Checkboxes Question', qa.question
 
     tracking = inv.tracking
+    assert tracking.is_a? Calendly::InviteeTracking
     assert_equal 'FOOBAR_CAMPAIGN_3', tracking.utm_campaign
     assert_equal 'FOOBAR_SOURCE_3', tracking.utm_source
     assert_equal 'FOOBAR_MEDIUM_3', tracking.utm_medium
     assert_equal 'FOOBAR_CONTENT_3', tracking.utm_content
     assert_equal 'FOOBAR_TERM_3', tracking.utm_term
     assert_equal 'FOOBAR_SALESFORCE_UUID_3', tracking.salesforce_uuid
+
+    assert_nil inv.routing_form_submission
   end
 
   def assert_event301_invitee001(inv)
@@ -759,12 +771,18 @@ module AssertHelper
     assert_equal 'Phone Number Question', qa.question
 
     tracking = inv.tracking
+    assert tracking.is_a? Calendly::InviteeTracking
     assert_equal 'FOOBAR_CAMPAIGN', tracking.utm_campaign
     assert_equal 'FOOBAR_SOURCE', tracking.utm_source
     assert_equal 'FOOBAR_MEDIUM', tracking.utm_medium
     assert_equal 'FOOBAR_CONTENT', tracking.utm_content
     assert_equal 'FOOBAR_TERM', tracking.utm_term
     assert_equal 'FOOBAR_SALESFORCE_UUID', tracking.salesforce_uuid
+
+    submission = inv.routing_form_submission
+    assert submission.is_a? Calendly::RoutingFormSubmission
+    assert_equal 'SUBMISSION001', submission.uuid
+    assert_equal 'https://api.calendly.com/routing_form_submissions/SUBMISSION001', submission.uri
   end
 
   def assert_location_tokyo(loc)

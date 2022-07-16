@@ -46,6 +46,7 @@
         }
       ],
       "reschedule_url": "https://calendly.com/reschedulings/INV001",
+      "routing_form_submission": null,
       "rescheduled": false,
       "status": "active",
       "text_reminder_number": null,
