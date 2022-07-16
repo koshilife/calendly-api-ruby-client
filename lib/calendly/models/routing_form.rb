@@ -38,11 +38,11 @@ module Calendly
     # Moment when user record was last updated.
     attr_accessor :updated_at
 
-    # @return [Organization]
+    # @return [Calendly::Organization]
     # The URI of the organization that's associated with the routing form.
     attr_accessor :organization
 
-    # @return [RoutingFormQuestion]
+    # @return [Calendly::RoutingFormQuestion]
     # An ordered collection of Routing Form non-deleted questions.
     attr_accessor :questions
 

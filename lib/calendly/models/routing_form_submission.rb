@@ -40,19 +40,19 @@ module Calendly
     # Moment when user record was last updated.
     attr_accessor :updated_at
 
-    # @return [RoutingForm]
+    # @return [Calendly::RoutingForm]
     # The routing form that's associated with the submission.
     attr_accessor :routing_form
 
-    # @return [Array<QuestionAndAnswer>]
+    # @return [Array<Calendly::RoutingFormSubmissionQuestionAndAnswer>]
     # All Routing Form Submission questions with answers.
     attr_accessor :questions_and_answers
 
-    # @return [QuestRoutingFormSubmissionTrackingionAndAnswer]
+    # @return [Calendly::RoutingFormSubmissionTracking]
     # All Routing Form Submission questions with answers.
     attr_accessor :tracking
 
-    # @return [Array<QuestionAndAnswer>]
+    # @return [Calendly::RoutingFormSubmissionEventTypeResult]
     # Information about the event type Routing Form Submission result.
     attr_accessor :result
 

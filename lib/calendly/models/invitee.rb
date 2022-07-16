@@ -95,13 +95,13 @@ module Calendly
     # Moment when user record was last updated.
     attr_accessor :updated_at
 
-    # @return [InviteeCancellation] Provides data pertaining to the cancellation of the Invitee.
+    # @return [Calendly::InviteeCancellation] Provides data pertaining to the cancellation of the Invitee.
     attr_accessor :cancellation
 
-    # @return [InviteePayment] Invitee payment.
+    # @return [Calendly::InviteePayment] Invitee payment.
     attr_accessor :payment
 
-    # @return [InviteeNoShow, nil]
+    # @return [Calendly::InviteeNoShow, nil]
     # Provides data pertaining to the associated no show for the Invitee.
     attr_accessor :no_show
 

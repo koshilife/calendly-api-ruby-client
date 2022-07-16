@@ -42,11 +42,11 @@ module Calendly
     # Moment when the last invitation was sent.
     attr_accessor :last_sent_at
 
-    # @return [Organization]
+    # @return [Calendly::Organization]
     # Reference to Organization associated with this invitation.
     attr_accessor :organization
 
-    # @return [User]
+    # @return [Calendly::User]
     # If a person accepted the invitation, a reference to their User.
     attr_accessor :user
 

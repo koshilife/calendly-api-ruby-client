@@ -25,7 +25,7 @@ module Calendly
     # The moment when the no show was created.
     attr_accessor :created_at
 
-    # @return [Invitee, nil]
+    # @return [Calendly::Invitee, nil]
     # The associated Invitee.
     attr_accessor :invitee
 

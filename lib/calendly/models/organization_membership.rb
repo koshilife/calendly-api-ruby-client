@@ -38,7 +38,7 @@ module Calendly
     # Primary account details of a specific user.
     attr_accessor :user
 
-    # @return [Organization]
+    # @return [Calendly::Organization]
     # Reference to Organization associated with this membership.
     attr_accessor :organization
 

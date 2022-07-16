@@ -113,7 +113,7 @@ module Calendly
     # @option options [String] :page_token Pass this to get the next portion of collection.
     # @option options [String] :sort Order results by the specified field and direction. Accepts comma-separated list of {field}:{direction} values.
     # @return [Array<Array<Calendly::EventType>, Hash>]
-    #  - [Array<Calendly::EventType>] event_types
+    #  - [Array<Calendly::EventType>] event types
     #  - [Hash] next_params the parameters to get next data. if thre is no next it returns nil.
     # @raise [Calendly::Error] if the org_uri arg is empty.
     # @raise [Calendly::ApiError] if the api returns error code.
@@ -141,7 +141,7 @@ module Calendly
     # @option options [String] :page_token Pass this to get the next portion of collection.
     # @option options [String] :sort Order results by the specified field and direction. Accepts comma-separated list of {field}:{direction} values.
     # @return [Array<Array<Calendly::EventType>, Hash>]
-    #  - [Array<Calendly::EventType>] event_types
+    #  - [Array<Calendly::EventType>] event types
     #  - [Hash] next_params the parameters to get next data. if thre is no next it returns nil.
     # @raise [Calendly::Error] if the user_uri arg is empty.
     # @raise [Calendly::ApiError] if the api returns error code.
@@ -210,7 +210,7 @@ module Calendly
     # @param [String] uuid the event's unique indentifier.
     # @param [Hash] options the optional request parameters. Optional.
     # @option options [String] :reason reason for cancellation.
-    # @return [InviteeCancellation]
+    # @return [Calendly::InviteeCancellation]
     # @raise [Calendly::Error] if the uuid arg is empty.
     # @raise [Calendly::ApiError] if the api returns error code.
     # @since 0.11.0

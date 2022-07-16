@@ -54,7 +54,7 @@ module Calendly
     # Moment when user record was last updated.
     attr_accessor :updated_at
 
-    # @return [Organization]
+    # @return [Calendly::Organization]
     # user's current organization
     attr_accessor :current_organization
 

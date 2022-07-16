@@ -17,11 +17,11 @@ module Calendly
     # The unique reference to the user associated with the profile
     attr_accessor :owner
 
-    # @return [User]
+    # @return [Calendly::User]
     # The owner user if the profile belongs to a "user" (individual).
     attr_accessor :owner_user
 
-    # @return [Team]
+    # @return [Calendly::Team]
     # The owner team if the profile belongs to a "team".
     attr_accessor :owner_team
 
