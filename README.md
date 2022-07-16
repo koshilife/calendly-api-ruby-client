@@ -104,14 +104,15 @@ invitation.delete
 The webhook usage is below.
 
 ```ruby
-events = ['invitee.created', 'invitee.canceled']
 url = 'https://example.com/received_event'
+subscribable_user_events = ['invitee.created', 'invitee.canceled']
+subscribable_org_events = ['invitee.created', 'invitee.canceled', 'routing_form_submission.created']
 
 #
 # create a user scope webhook
 #
 me = client.me
-user_webhook = me.create_webhook(url, events)
+user_webhook = me.create_webhook(url, subscribable_user_events)
 # => #<Calendly::WebhookSubscription uuid="USER_WEBHOOK_001", state="active", scope="user", events=["invitee.created", "invitee.canceled"], callback_url="https://example.com/received_event", ..>
 
 # list of user scope webhooks
@@ -126,8 +127,8 @@ user_webhook.delete
 # create an organization scope webhook
 #
 org = client.me.current_organization
-org_webhook = org.create_webhook(url, events)
-# => #<Calendly::WebhookSubscription uuid="ORG_WEBHOOK_001", state="active", scope="organization", events=["invitee.created", "invitee.canceled"], callback_url="https://example.com/received_event", ..>
+org_webhook = org.create_webhook(url, subscribable_org_events)
+# => #<Calendly::WebhookSubscription uuid="ORG_WEBHOOK_001", state="active", scope="organization", events=["invitee.created", "invitee.canceled", "routing_form_submission.created"], callback_url="https://example.com/received_event", ..>
 
 # list of organization scope webhooks
 org.webhooks
