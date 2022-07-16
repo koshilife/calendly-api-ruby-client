@@ -941,7 +941,7 @@ module AssertHelper
     assert_equal Time.parse('2020-09-17T03:00:00.000000Z'), webhook.updated_at
     assert_equal Time.parse('2020-09-17T04:00:00.000000Z'), webhook.retry_started_at
     assert_equal 'active', webhook.state
-    assert_equal ['invitee.created', 'invitee.canceled'], webhook.events
+    assert_equal ['invitee.created', 'invitee.canceled', 'routing_form_submission.created'], webhook.events
     assert_equal 'organization', webhook.scope
     assert_equal 'ORG001', webhook.organization.uuid
     assert_equal 'https://api.calendly.com/organizations/ORG001', webhook.organization.uri

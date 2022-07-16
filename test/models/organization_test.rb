@@ -272,7 +272,7 @@ module Calendly
 
     def test_that_it_creates_webhook_with_signing_key
       webhook_url = 'https://example.com/organization/webhook001'
-      events = ['invitee.created', 'invitee.canceled']
+      events = ['invitee.created', 'invitee.canceled', 'routing_form_submission.created']
       signing_key = 'secret_string'
       req_body = {url: webhook_url, events: events, organization: @org_uri, scope: 'organization',
 signing_key: signing_key}
