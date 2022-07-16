@@ -1,5 +1,24 @@
 # CHANGELOG
 
+## 0.12.0 - 2022-07-16
+
+- supported Routing Form APIs. (#55)
+  - `GET /routing_forms`
+  - `GET /routing_forms/{uuid}`
+  - `GET /routing_form_submissions`
+  - `GET /routing_form_submissions/{uuid}`
+  - changed were followings:
+    - Client
+      - (Add method) routing_form
+      - (Add method) routing_forms
+      - (Add method) routing_form_submission
+      - (Add method) routing_form_submissions
+    - Organization model
+      - (Add method) routing_forms
+      - (Add method) routing_forms!
+    - Invitee model
+      - (Add field) routing_form_submission
+
 ## 0.11.1 - 2022-06-29
 
 - specified dependencies:
@@ -9,7 +28,7 @@
 ## 0.11.0 - 2022-05-02
 
 - supported a API `POST /scheduled_events/{uuid}/cancellation`. (#48)
-  - changed files:
+  - changed were followings:
     - Client
       - (Add method) cancel_event
     - Event
@@ -19,7 +38,7 @@
 ## 0.10.0 - 2022-04-15
 
 - supported a API `POST /data_compliance/deletion/invitees`. (#28)
-  - changed files:
+  - changed were followings:
     - Client
       - (Add method) delete_invitee_data
 
@@ -29,7 +48,7 @@
   - `GET /invitee_no_shows/{no_show_uuid}`
   - `POST /invitee_no_shows`
   - `DELETE /invitee_no_shows/{no_show_uuid}`
-  - changed files:
+  - changed were followings:
     - Client
       - (Add method) invitee_no_show
       - (Add method) create_invitee_no_show
@@ -56,7 +75,7 @@
 ## 0.8.0 - 2021-06-03
 
 - used keyword arguments for optional parameters, to be friendly for programmer.
-- changed methods are followings:
+- changed methods were followings:
   - Client
     - event_types
     - event_types_by_user
