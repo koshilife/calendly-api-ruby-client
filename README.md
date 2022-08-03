@@ -64,8 +64,20 @@ me.scheduling_url
 #
 event_types = me.event_types
 # => [#<Calendly::EventType uuid="ET001", name="15 Minute Meeting", type="StandardEventType", slug="15min", active=true, kind="solo", scheduling_url="https://calendly.com/foobar/15min", ..>, #<Calendly::EventType uuid="ET002", name="30 Minute Meeting", type="StandardEventType", slug="30min", active=true, kind="solo", scheduling_url="https://calendly.com/foobar/30min", ..>]
-event_types.first.scheduling_url
+
+event_type = event_types.first
+event_type.scheduling_url
 # => "https://calendly.com/foobar/15min"
+
+#
+# get available times for the event type
+#
+available_times = event_type.available_times
+available_times.map(&:start_time)
+# => [2022-08-04 01:00:00 UTC, 2022-08-04 01:15:00 UTC, 2022-08-04 01:30:00 UTC]
+
+# you can specify the date range
+event_type.available_times(start_time: "2022-08-04T10:30:00Z", end_time: "2022-08-05T10:30:00Z")
 
 #
 # get scheduled events
