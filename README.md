@@ -77,7 +77,7 @@ available_times.map(&:start_time)
 # => [2022-08-04 01:00:00 UTC, 2022-08-04 01:15:00 UTC, 2022-08-04 01:30:00 UTC]
 
 # you can specify the date range
-event_type.available_times(start_time: "2022-08-04T10:30:00Z", end_time: "2022-08-05T10:30:00Z")
+event_type.available_times(start_time: '2022-08-04T10:30:00Z', end_time: '2022-08-05T10:30:00Z')
 
 #
 # get scheduled events
