@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## 0.13.0 - 2022-08-03
+
+- supported List Event Type Available Times API. (#57)
+  - changed were followings:
+    - Client
+      - (Add method) event_type_available_times
+    - EventType model
+      - (Add method) available_times
+
 ## 0.12.0 - 2022-07-16
 
 - supported Routing Form APIs. (#55)

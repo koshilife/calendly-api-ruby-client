@@ -8,6 +8,8 @@ if ENV['CI'] == 'true'
   require 'codecov'
   SimpleCov.formatter = SimpleCov::Formatter::Codecov
 end
+require 'active_support'
+require 'active_support/core_ext'
 require 'minitest/autorun'
 require 'webmock/minitest'
 require 'calendly'
@@ -17,7 +19,7 @@ require 'logger'
 class MyLogger < Logger; end
 
 module Calendly
-  class BaseTest < Minitest::Test
+  class BaseTest < ActiveSupport::TestCase
     include AssertHelper
 
     HOST = Calendly::Client::API_HOST

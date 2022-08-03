@@ -1,0 +1,22 @@
+{
+    "collection": [
+        {
+            "status": "available",
+            "start_time": "2022-08-04T01:15:00Z",
+            "invitees_remaining": 1,
+            "scheduling_url": "https://calendly.com/foobar/15min/2022-08-04T01:15:00Z"
+        },
+        {
+            "status": "available",
+            "start_time": "2022-08-05T05:30:00Z",
+            "invitees_remaining": 2,
+            "scheduling_url": "https://calendly.com/foobar/15min/2022-08-05T05:30:00Z"
+        },
+        {
+            "status": "available",
+            "start_time": "2022-08-10T01:15:00Z",
+            "invitees_remaining": 3,
+            "scheduling_url": "https://calendly.com/foobar/15min/2022-08-10T01:15:00Z"
+        }
+    ]
+}

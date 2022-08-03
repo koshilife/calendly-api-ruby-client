@@ -309,6 +309,33 @@ module AssertHelper
     assert_equal [], ev_type.custom_questions
   end
 
+  def assert_available_times001(available_time)
+    assert available_time.is_a? Calendly::EventTypeAvailableTime
+    assert available_time.client.is_a? Calendly::Client
+    assert_equal 'available', available_time.status
+    assert_equal 1, available_time.invitees_remaining
+    assert_equal Time.parse('2022-08-04T01:15:00Z').to_i, available_time.start_time.to_i
+    assert_equal 'https://calendly.com/foobar/15min/2022-08-04T01:15:00Z', available_time.scheduling_url
+  end
+
+  def assert_available_times002(available_time)
+    assert available_time.is_a? Calendly::EventTypeAvailableTime
+    assert available_time.client.is_a? Calendly::Client
+    assert_equal 'available', available_time.status
+    assert_equal 2, available_time.invitees_remaining
+    assert_equal Time.parse('2022-08-05T05:30:00Z').to_i, available_time.start_time.to_i
+    assert_equal 'https://calendly.com/foobar/15min/2022-08-05T05:30:00Z', available_time.scheduling_url
+  end
+
+  def assert_available_times003(available_time)
+    assert available_time.is_a? Calendly::EventTypeAvailableTime
+    assert available_time.client.is_a? Calendly::Client
+    assert_equal 'available', available_time.status
+    assert_equal 3, available_time.invitees_remaining
+    assert_equal Time.parse('2022-08-10T01:15:00Z').to_i, available_time.start_time.to_i
+    assert_equal 'https://calendly.com/foobar/15min/2022-08-10T01:15:00Z', available_time.scheduling_url
+  end
+
   def assert_event001(ev)
     assert ev.client.is_a? Calendly::Client
     assert_equal 'EV001', ev.id
