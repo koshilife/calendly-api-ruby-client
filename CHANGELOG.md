@@ -3,6 +3,7 @@
 ## 0.13.0 - 2022-08-03
 
 - supported List Event Type Available Times API. (#57)
+  - `GET /event_type_available_times`
   - changed were followings:
     - Client
       - (Add method) event_type_available_times
