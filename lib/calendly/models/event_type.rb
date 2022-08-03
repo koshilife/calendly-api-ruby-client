@@ -119,6 +119,20 @@ module Calendly
     end
 
     #
+    # Returns a list of available times for an event type within a specified date range.
+    # Date range can be no greater than 1 week (7 days).
+    #
+    # @param [String] start_time Start time of the requested availability range.
+    # @param [String] end_time End time of the requested availability range.
+    # @return [Array<Calendly::EventTypeAvailableTime>] The set of available times for the event type matching the criteria.
+    # @raise [Calendly::Error] if the uri is empty.
+    # @raise [Calendly::ApiError] if the api returns error code.
+    # @since 0.13.0
+    def available_times(start_time: nil, end_time: nil)
+      client.event_type_available_times uri, start_time: start_time, end_time: end_time
+    end
+
+    #
     # Create an associated scheduling link.
     #
     # @param [String] max_event_count The max number of events that can be scheduled using this scheduling link.

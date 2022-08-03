@@ -296,6 +296,87 @@ module Calendly
     end
 
     #
+    # test for event_type_available_times
+    #
+
+    def test_that_it_returns_available_times_by_specifying_even_type
+      now = Time.parse('2022-08-03T01:50:10Z')
+      travel_to(now)
+
+      event_type_uri = "#{HOST}/event_types/ET001"
+      expected_start_time = '2022-08-03T01:51:10Z' # now + 1 minute
+      expected_end_time = '2022-08-10T01:51:10Z' # start_time + 7 days
+      params = {event_type: event_type_uri, start_time: expected_start_time, end_time: expected_end_time}
+
+      url = "#{HOST}/event_type_available_times?#{URI.encode_www_form(params)}"
+      res_body = load_test_data 'event_type_available_times_001.json'
+      add_stub_request :get, url, res_body: res_body
+
+      available_times = @client.event_type_available_times event_type_uri
+      assert_available_times001 available_times[0]
+      assert_available_times002 available_times[1]
+      assert_available_times003 available_times[2]
+    end
+
+    def test_that_it_returns_available_times_by_specifying_even_type_and_start_time
+      event_type_uri = "#{HOST}/event_types/ET001"
+      start_time = Time.parse('2022-08-04T09:00:00Z').utc.iso8601
+      expected_end_time = '2022-08-11T09:00:00Z' # start_time + 7 days
+      params = {event_type: event_type_uri, start_time: start_time, end_time: expected_end_time}
+
+      url = "#{HOST}/event_type_available_times?#{URI.encode_www_form(params)}"
+      res_body = load_test_data 'event_type_available_times_001.json'
+      add_stub_request :get, url, res_body: res_body
+
+      available_times = @client.event_type_available_times event_type_uri, start_time: start_time
+      assert_available_times001 available_times[0]
+      assert_available_times002 available_times[1]
+      assert_available_times003 available_times[2]
+    end
+
+    def test_that_it_returns_available_times_by_specifying_even_type_and_end_time
+      now = Time.parse('2022-08-03T01:50:10Z')
+      travel_to(now)
+
+      event_type_uri = "#{HOST}/event_types/ET001"
+      expected_start_time = '2022-08-03T01:51:10Z' # now + 1 minute
+      end_time = Time.parse('2022-08-05T09:00:00Z').utc.iso8601
+      params = {event_type: event_type_uri, start_time: expected_start_time, end_time: end_time}
+
+      url = "#{HOST}/event_type_available_times?#{URI.encode_www_form(params)}"
+      res_body = load_test_data 'event_type_available_times_001.json'
+      add_stub_request :get, url, res_body: res_body
+
+      available_times = @client.event_type_available_times event_type_uri, end_time: end_time
+      assert_available_times001 available_times[0]
+      assert_available_times002 available_times[1]
+      assert_available_times003 available_times[2]
+    end
+
+    def test_that_it_returns_available_times_by_specifying_even_type_and_start_time_and_end_time
+      event_type_uri = 'https://api.calendly.com/event_type_available_times'
+      start_time = Time.parse('2022-08-04T09:00:00Z').utc.iso8601
+      end_time = Time.parse('2022-08-05T09:00:00Z').utc.iso8601
+      params = {event_type: event_type_uri, start_time: start_time, end_time: end_time}
+
+      url = "#{HOST}/event_type_available_times?#{URI.encode_www_form(params)}"
+      res_body = load_test_data 'event_type_available_times_001.json'
+      add_stub_request :get, url, res_body: res_body
+
+      available_times = @client.event_type_available_times event_type_uri, start_time: start_time, end_time: end_time
+      assert_available_times001 available_times[0]
+      assert_available_times002 available_times[1]
+      assert_available_times003 available_times[2]
+    end
+
+    def test_that_it_raises_an_argument_error_on_event_type_available_times
+      proc_arg_is_empty = proc do
+        @client.event_type_available_times ''
+      end
+      assert_required_error proc_arg_is_empty, 'event_type_uri'
+    end
+
+    #
     # test for scheduled_event
     #
 

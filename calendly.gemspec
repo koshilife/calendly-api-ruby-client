@@ -31,6 +31,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'faraday', '>= 1.0.0', '< 3.0.0'
   spec.add_runtime_dependency 'oauth2', '~> 1.4', '>= 1.4.4'
 
+  spec.add_development_dependency 'activesupport'
   spec.add_development_dependency 'bundler'
   spec.add_development_dependency 'codecov'
   spec.add_development_dependency 'minitest'

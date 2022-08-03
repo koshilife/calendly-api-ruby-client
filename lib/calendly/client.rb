@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'time'
 require 'oauth2'
 require 'calendly/loggable'
 
@@ -157,6 +158,35 @@ module Calendly
       items = body[:collection] || []
       ev_types = items.map { |item| EventType.new item, self }
       [ev_types, next_page_params(body)]
+    end
+
+    #
+    # Returns a list of available times for an event type within a specified date range.
+    # Date range can be no greater than 1 week (7 days).
+    #
+    # @param [String] event_type_uri The uri associated with the event type.
+    # @param [String] start_time Start time of the requested availability range.
+    # @param [String] end_time End time of the requested availability range.
+    # @return [Array<Calendly::EventTypeAvailableTime>] The set of available times for the event type matching the criteria.
+    # @raise [Calendly::Error] if the event_type_uri arg is empty.
+    # @raise [Calendly::ApiError] if the api returns error code.
+    # @since 0.13.0
+    def event_type_available_times(event_type_uri, start_time: nil, end_time: nil)
+      check_not_empty event_type_uri, 'event_type_uri'
+
+      start_time_buffer = 60 # For working around an invalid request which be caused by specifying a past time
+      max_date_range = 60 * 60 * 24 * 7 # 7 days
+
+      # If start_time is undefined, set it to now.
+      start_time ||= (Time.now + start_time_buffer).utc.iso8601
+      # If end_time is undefined, set it to in the max date range from start_time.
+      end_time ||= (Time.parse(start_time) + max_date_range).utc.iso8601
+
+      params = {event_type: event_type_uri, start_time: start_time, end_time: end_time}
+      body = request :get, 'event_type_available_times', params: params
+
+      items = body[:collection] || []
+      items.map { |item| EventTypeAvailableTime.new item, self }
     end
 
     #
