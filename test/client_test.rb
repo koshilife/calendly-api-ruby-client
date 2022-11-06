@@ -735,6 +735,80 @@ module Calendly
     end
 
     #
+    # test for activity_log_entries
+    #
+
+    def test_that_it_gets_activity_log_entries
+      org_uri = 'https://api.calendly.com/organizations/ORG001'
+      req_params = {organization: org_uri}
+      res_body = load_test_data 'activity_log_entries_001.json'
+
+      url = "#{HOST}/activity_log_entries?#{URI.encode_www_form(req_params)}"
+      add_stub_request :get, url, res_body: res_body
+
+      log_entries, next_page_token, raw_body = @client.activity_log_entries org_uri
+      assert_equal 2, log_entries.length
+      assert_activity_log_entry001 log_entries[0]
+      assert_activity_log_entry002 log_entries[1]
+      assert_nil next_page_token
+      assert_equal 2, raw_body[:total_count]
+      assert_equal false, raw_body[:exceeds_max_total_count]
+      assert_equal '2022-10-07T14:21:42Z', raw_body[:last_event_time]
+    end
+
+    def test_that_it_gets_activity_log_entries_with_full_options
+      org_uri = 'https://api.calendly.com/organizations/ORG001'
+      # setup options params
+      action = %w[Invite_Sent Succeeded]
+      actor = ['https://api.calendly.com/users/U001', 'https://api.calendly.com/users/U002']
+      count = 2
+      max_occurred_at = '2020-10-01T00:00:00Z'
+      min_occurred_at = '2022-08-01T00:00:00Z'
+      namespace = %w[Login User_Management]
+      page_token = 'NEXT_PAGE_TOKEN'
+      search_term = '*@other-website.com'
+      sort = ['occurred_at:asc', 'namespace:asc']
+      res_body = load_test_data 'activity_log_entries_001.json'
+      req_params = {
+        organization: org_uri,
+        'action[]': action,
+        'actor[]': actor,
+        count: count,
+        max_occurred_at: max_occurred_at,
+        min_occurred_at: min_occurred_at,
+        'namespace[]': namespace,
+        page_token: page_token,
+        search_term: search_term,
+        'sort[]': sort
+      }
+      url = "#{HOST}/activity_log_entries?#{URI.encode_www_form(req_params)}"
+      add_stub_request :get, url, res_body: res_body
+
+      options = {
+        action: action,
+        actor: actor,
+        count: count,
+        max_occurred_at: max_occurred_at,
+        min_occurred_at: min_occurred_at,
+        namespace: namespace,
+        page_token: page_token,
+        search_term: search_term,
+        sort: sort
+      }
+      log_entries, = @client.activity_log_entries org_uri, options: options
+      assert_equal 2, log_entries.length
+      assert_activity_log_entry001 log_entries[0]
+      assert_activity_log_entry002 log_entries[1]
+    end
+
+    def test_that_it_raises_an_argument_error_on_activity_log_entries
+      proc_arg_is_empty = proc do
+        @client.activity_log_entries nil
+      end
+      assert_required_error proc_arg_is_empty, 'org_uri'
+    end
+
+    #
     # test for membership
     #
 

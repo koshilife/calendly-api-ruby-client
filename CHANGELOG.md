@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## 0.14.0 - 2022-11-06
+
+- supported Activity Log API. (#59, thanks to Calendly gave us a sample JSON file)
+  - `GET /activity_log_entries`
+  - changed were followings:
+    - Client
+      - (Add method) activity_log_entries
+    - Organization model
+      - (Add method) activity_log_entries
+
 ## 0.13.0 - 2022-08-03
 
 - supported List Event Type Available Times API. (#57)

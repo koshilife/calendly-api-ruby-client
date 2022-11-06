@@ -401,6 +401,40 @@ module Calendly
     end
 
     #
+    # Returns a list of activity log entries.
+    #
+    # @param [String] org_uri Return activity log entries from the organization associated with this URI.
+    # @param [Hash] options the optional request parameters. Optional.
+    # @option options [Array<String>] :action The action(s) associated with the entries.
+    # @option options [Array<String>] :actor Return entries from the user(s) associated with the provided URIs.
+    # @option options [Integer] :count The number of rows to return.
+    # @option options [String] :max_occurred_at include entries that occurred prior to this time.
+    # @option options [String] :min_occurred_at Include entries that occurred after this time.
+    # @option options [Array<String>] :namespace The categories of the entries.
+    # @option options [String] :page_token The token to pass to get the next portion of the collection.
+    # @option options [String] :search_term Filters entries based on the search term.
+    # @option options [Array<String>] :sort Order results by the specified field and direction. List of {field}:{direction} values.
+    # @return [Array<Array<Calendly::ActivityLogEntry>, Hash, Hash>]
+    #  - [Array<Calendly::ActivityLogEntry>] log_entries
+    #  - [Hash] next_params the parameters to get next data. if thre is no next it returns nil.
+    #  - [Hash] raw_response
+    # @raise [Calendly::Error] if the org_uri arg is empty.
+    # @raise [Calendly::ApiError] if the api returns error code.
+    # @since 0.14.0
+    def activity_log_entries(org_uri, options: nil)
+      check_not_empty org_uri, 'org_uri'
+
+      opts_keys = %i[action actor count max_occurred_at min_occurred_at namespace page_token search_term sort]
+      params = {organization: org_uri}
+      params = merge_options options, opts_keys, params
+      body = request :get, 'activity_log_entries', params: params
+
+      items = body[:collection] || []
+      log_entries = items.map { |item| ActivityLogEntry.new item, self }
+      [log_entries, next_page_params(body), body]
+    end
+
+    #
     # Returns information about a user's organization membership
     #
     # @param [String] uuid the specified membership (organization membership's uuid).
