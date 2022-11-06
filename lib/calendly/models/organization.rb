@@ -193,5 +193,29 @@ module Calendly
       @cached_routing_forms = nil
       routing_forms options: options
     end
+
+    #
+    # Returns a list of activity log entries.
+    #
+    # @param [Hash] options the optional request parameters. Optional.
+    # @option options [Array<String>] :action The action(s) associated with the entries.
+    # @option options [Array<String>] :actor Return entries from the user(s) associated with the provided URIs.
+    # @option options [Integer] :count The number of rows to return.
+    # @option options [String] :max_occurred_at include entries that occurred prior to this time.
+    # @option options [String] :min_occurred_at Include entries that occurred after this time.
+    # @option options [Array<String>] :namespace The categories of the entries.
+    # @option options [String] :page_token The token to pass to get the next portion of the collection.
+    # @option options [String] :search_term Filters entries based on the search term.
+    # @option options [Array<String>] :sort Order results by the specified field and direction. List of {field}:{direction} values.
+    # @return [Array<Array<Calendly::ActivityLogEntry>, Hash, Hash>]
+    #  - [Array<Calendly::ActivityLogEntry>] log_entries
+    #  - [Hash] next_params the parameters to get next data. if thre is no next it returns nil.
+    #  - [Hash] raw_response
+    # @raise [Calendly::Error] if the uri is empty.
+    # @raise [Calendly::ApiError] if the api returns error code.
+    # @since 0.14.0
+    def activity_log_entries(options: nil)
+      client.activity_log_entries uri, options: options
+    end
   end
 end

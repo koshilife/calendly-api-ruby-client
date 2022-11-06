@@ -330,5 +330,26 @@ signing_key: signing_key}
       uri = "#{HOST}/organizations/#{uuid}"
       assert_equal(uuid, Organization.extract_uuid(uri))
     end
+
+    #
+    # test for activity_log_entries
+    #
+
+    def test_that_gets_it_activity_log_entries
+      req_params = {organization: @org_uri}
+      res_body = load_test_data 'activity_log_entries_001.json'
+
+      url = "#{HOST}/activity_log_entries?#{URI.encode_www_form(req_params)}"
+      add_stub_request :get, url, res_body: res_body
+
+      log_entries, next_page_token, raw_body = @org.activity_log_entries
+      assert_equal 2, log_entries.length
+      assert_activity_log_entry001 log_entries[0]
+      assert_activity_log_entry002 log_entries[1]
+      assert_nil next_page_token
+      assert_equal 2, raw_body[:total_count]
+      assert_equal false, raw_body[:exceeds_max_total_count]
+      assert_equal '2022-10-07T14:21:42Z', raw_body[:last_event_time]
+    end
   end
 end

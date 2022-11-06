@@ -874,6 +874,65 @@ module AssertHelper
     assert_equal 'EV001', no_show.invitee.event.uuid
   end
 
+  def assert_activity_log_entry001(log_entry)
+    assert log_entry.client.is_a? Calendly::Client
+    assert_equal 'ACTIVITY_LOG_ENTRY002', log_entry.id
+    assert_equal 'ACTIVITY_LOG_ENTRY002', log_entry.uuid
+    assert_equal 'https://api.calendly.com/activity_log_entries/ACTIVITY_LOG_ENTRY002', log_entry.uri
+    assert_equal Time.parse('2022-10-07T14:21:42.104549Z').to_i, log_entry.occurred_at.to_i
+    expected_actor = {
+      "uri": 'https://api.calendly.com/users/U001',
+      "type": 'User',
+      "organization": {
+        "uri": 'https://api.calendly.com/organizations/ORG001',
+        "role": 'owner'
+      },
+      "group": {
+        "uri": 'https://api.calendly.com/groups/GROUP001',
+        "name": 'Development',
+        "role": 'member'
+      },
+      "display_name": 'Sam Smith',
+      "alternative_identifier": 'sam.smith@gmail.com'
+    }
+    assert_equal expected_actor, log_entry.actor
+    expected_details = {
+      "name": 'test token'
+    }
+    assert_equal expected_details, log_entry.details
+    assert_equal 'API.Token_Created', log_entry.fully_qualified_name
+    assert_equal 'API', log_entry.namespace
+    assert_equal 'Token_Created', log_entry.action
+    assert_equal 'ORG001', log_entry.organization.uuid
+  end
+
+  def assert_activity_log_entry002(log_entry)
+    assert log_entry.client.is_a? Calendly::Client
+    assert_equal 'ACTIVITY_LOG_ENTRY001', log_entry.id
+    assert_equal 'ACTIVITY_LOG_ENTRY001', log_entry.uuid
+    assert_equal 'https://api.calendly.com/activity_log_entries/ACTIVITY_LOG_ENTRY001', log_entry.uri
+    assert_equal Time.parse('2022-09-26T13:41:43.915498Z').to_i, log_entry.occurred_at.to_i
+    expected_actor = {
+      "type": 'System',
+      "display_name": 'Calendly System'
+    }
+    assert_equal expected_actor, log_entry.actor
+    expected_details = {
+      "type": 'Invitee list',
+      "id": '893c514a-b6f7-4599-86f9-4273d16bfe43',
+      "emails": [
+        'alex.smith@gmail.com'
+      ],
+      "requested_by": 'Sam Smith',
+      "uri": 'https://api.calendly.com/users/LOG001'
+    }
+    assert_equal expected_details, log_entry.details
+    assert_equal 'Compliance.Data_Deletion_Completed', log_entry.fully_qualified_name
+    assert_equal 'Compliance', log_entry.namespace
+    assert_equal 'Data_Deletion_Completed', log_entry.action
+    assert_equal 'ORG001', log_entry.organization.uuid
+  end
+
   def assert_org_mem001(org_mem)
     assert org_mem.client.is_a? Calendly::Client
     assert_equal 'MEM001', org_mem.id
