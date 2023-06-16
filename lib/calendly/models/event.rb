@@ -128,11 +128,14 @@ module Calendly
 
     def after_set_attributes(attrs)
       super attrs
-      if event_memberships.is_a? Array # rubocop:disable Style/GuardClause
-        @event_memberships = event_memberships.map do |params|
-          uri = params[:user]
-          User.new({uri: uri}, @client)
-        end
+
+      return unless event_memberships.is_a? Array
+
+      @event_memberships = event_memberships.map do |params|
+        uri = params[:user]
+        email = params[:user_email]
+
+        User.new({uri: uri, email: email}, @client)
       end
     end
   end
