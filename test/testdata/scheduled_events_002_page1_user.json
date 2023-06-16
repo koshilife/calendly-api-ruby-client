@@ -6,10 +6,12 @@
       "event_guests": [],
       "event_memberships": [
         {
-          "user": "https://api.calendly.com/users/U001"
+          "user": "https://api.calendly.com/users/U001",
+          "user_email": "user_U001@email.com"
         },
         {
-          "user": "https://api.calendly.com/users/U103"
+          "user": "https://api.calendly.com/users/U103",
+          "user_email": "user_U103@email.com"
         }
       ],
       "event_type": "https://api.calendly.com/event_types/ET003",
@@ -35,10 +37,12 @@
       "event_guests": [],
       "event_memberships": [
         {
-          "user": "https://api.calendly.com/users/U001"
+          "user": "https://api.calendly.com/users/U001",
+          "user_email": "user_U001@email.com"
         },
         {
-          "user": "https://api.calendly.com/users/U102"
+          "user": "https://api.calendly.com/users/U102",
+          "user_email": "user_U102@email.com"
         }
       ],
       "event_type": "https://api.calendly.com/event_types/ET002",

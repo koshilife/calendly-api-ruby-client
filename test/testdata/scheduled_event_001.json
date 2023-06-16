@@ -16,7 +16,8 @@
     ],
     "event_memberships": [
       {
-        "user": "https://api.calendly.com/users/U001"
+        "user": "https://api.calendly.com/users/U001",
+        "user_email": "user_U001@email.com"
       }
     ],
     "event_type": "https://api.calendly.com/event_types/ET001",

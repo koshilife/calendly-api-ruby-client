@@ -364,6 +364,7 @@ module AssertHelper
     assert user.is_a? Calendly::User
     assert_equal 'U001', user.id
     assert_equal 'https://api.calendly.com/users/U001', user.uri
+    assert_equal 'user_U001@email.com', user.email
 
     assert_equal 1, ev.event_guests.length
     guest = ev.event_guests[0]
@@ -398,6 +399,7 @@ module AssertHelper
     assert user.is_a? Calendly::User
     assert_equal 'U001', user.id
     assert_equal 'https://api.calendly.com/users/U001', user.uri
+    assert_equal 'user_U001@email.com', user.email
 
     assert_equal 2, ev.event_guests.length
     guest = ev.event_guests[0]
@@ -440,10 +442,12 @@ module AssertHelper
     assert user.is_a? Calendly::User
     assert_equal 'U001', user.id
     assert_equal 'https://api.calendly.com/users/U001', user.uri
+    assert_equal 'user_U001@email.com', user.email
     user = ev.event_memberships[1]
     assert user.is_a? Calendly::User
     assert_equal 'U101', user.id
     assert_equal 'https://api.calendly.com/users/U101', user.uri
+    assert_equal 'user_U101@email.com', user.email
 
     assert_equal [], ev.event_guests
   end
@@ -473,10 +477,12 @@ module AssertHelper
     assert user.is_a? Calendly::User
     assert_equal 'U001', user.id
     assert_equal 'https://api.calendly.com/users/U001', user.uri
+    assert_equal 'user_U001@email.com', user.email
     user = ev.event_memberships[1]
     assert user.is_a? Calendly::User
     assert_equal 'U102', user.id
     assert_equal 'https://api.calendly.com/users/U102', user.uri
+    assert_equal 'user_U102@email.com', user.email
 
     assert_equal [], ev.event_guests
   end
@@ -506,10 +512,12 @@ module AssertHelper
     assert user.is_a? Calendly::User
     assert_equal 'U001', user.id
     assert_equal 'https://api.calendly.com/users/U001', user.uri
+    assert_equal 'user_U001@email.com', user.email
     user = ev.event_memberships[1]
     assert user.is_a? Calendly::User
     assert_equal 'U103', user.id
     assert_equal 'https://api.calendly.com/users/U103', user.uri
+    assert_equal 'user_U103@email.com', user.email
 
     assert_equal [], ev.event_guests
   end
