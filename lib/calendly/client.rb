@@ -84,9 +84,9 @@ module Calendly
     # @raise [Calendly::Error] if the uuid arg is empty.
     # @raise [Calendly::ApiError] if the api returns error code.
     # @since 0.0.1
-    def user(uuid = 'me')
-      check_not_empty uuid, 'uuid'
-      body = request :get, "users/#{uuid}"
+    def user(uuid_or_uri = 'me')
+      uri = to_request_uri(uuid_or_uri) { |uuid| "users/#{uuid}" }
+      body = request :get, uri
       User.new body[:resource], self
     end
 
@@ -98,9 +98,9 @@ module Calendly
     # @raise [Calendly::Error] if the uuid arg is empty.
     # @raise [Calendly::ApiError] if the api returns error code.
     # @since 0.4.1
-    def event_type(uuid)
-      check_not_empty uuid, 'uuid'
-      body = request :get, "event_types/#{uuid}"
+    def event_type(uuid_or_uri)
+      uri = to_request_uri(uuid_or_uri) { |uuid| "event_types/#{uuid}" }
+      body = request :get, uri
       EventType.new body[:resource], self
     end
 
@@ -197,9 +197,9 @@ module Calendly
     # @raise [Calendly::Error] if the uuid arg is empty.
     # @raise [Calendly::ApiError] if the api returns error code.
     # @since 0.0.3
-    def scheduled_event(uuid)
-      check_not_empty uuid, 'uuid'
-      body = request :get, "scheduled_events/#{uuid}"
+    def scheduled_event(uuid_or_uri)
+      uri = to_request_uri(uuid_or_uri) { |uuid| "scheduled_events/#{uuid}" }
+      body = request :get, uri
       Event.new body[:resource], self
     end
 
@@ -244,13 +244,13 @@ module Calendly
     # @raise [Calendly::Error] if the uuid arg is empty.
     # @raise [Calendly::ApiError] if the api returns error code.
     # @since 0.11.0
-    def cancel_event(uuid, options: nil)
-      check_not_empty uuid, 'uuid'
+    def cancel_event(uuid_or_uri, options: nil)
+      uri = to_request_uri(uuid_or_uri) { |uuid| "scheduled_events/#{uuid}/cancellation" }
 
       opts_keys = %i[reason]
       params = merge_options options, opts_keys
 
-      body = request :post, "scheduled_events/#{uuid}/cancellation", body: params
+      body = request :post, uri, body: params
       InviteeCancellation.new body[:resource], self
     end
 
@@ -297,10 +297,13 @@ module Calendly
     # @raise [Calendly::Error] if the inv_uuid arg is empty.
     # @raise [Calendly::ApiError] if the api returns error code.
     # @since 0.0.4
-    def event_invitee(ev_uuid, inv_uuid)
-      check_not_empty ev_uuid, 'ev_uuid'
-      check_not_empty inv_uuid, 'inv_uuid'
-      body = request :get, "scheduled_events/#{ev_uuid}/invitees/#{inv_uuid}"
+    def event_invitee(invitee_uri_or_ev_uuid, inv_uuid = nil)
+      check_not_empty invitee_uri_or_ev_uuid, 'invitee_uri_or_ev_uuid'
+      uri = to_request_uri(invitee_uri_or_ev_uuid) do |ev_uuid|
+        check_not_empty inv_uuid, 'inv_uuid'
+        "scheduled_events/#{ev_uuid}/invitees/#{inv_uuid}"
+      end
+      body = request :get, uri
       Invitee.new body[:resource], self
     end
 
@@ -320,12 +323,12 @@ module Calendly
     # @raise [Calendly::Error] if the uuid arg is empty.
     # @raise [Calendly::ApiError] if the api returns error code.
     # @since 0.0.4
-    def event_invitees(uuid, options: nil)
-      check_not_empty uuid, 'uuid'
+    def event_invitees(uuid_or_uri, options: nil)
+      uri = to_request_uri(uuid_or_uri) { |uuid| "scheduled_events/#{uuid}/invitees" }
 
       opts_keys = %i[count email page_token sort status]
       params = merge_options options, opts_keys
-      body = request :get, "scheduled_events/#{uuid}/invitees", params: params
+      body = request :get, uri, params: params
 
       items = body[:collection] || []
       evs = items.map { |item| Invitee.new item, self }
@@ -341,9 +344,9 @@ module Calendly
     # @raise [Calendly::Error] if the uuid arg is empty.
     # @raise [Calendly::ApiError] if the api returns error code.
     # @since 0.9.0
-    def invitee_no_show(uuid)
-      check_not_empty uuid, 'uuid'
-      body = request :get, "invitee_no_shows/#{uuid}"
+    def invitee_no_show(uuid_or_uri)
+      uri = to_request_uri(uuid_or_uri) { |uuid| "invitee_no_shows/#{uuid}" }
+      body = request :get, uri
       InviteeNoShow.new body[:resource], self
     end
 
@@ -442,9 +445,9 @@ module Calendly
     # @raise [Calendly::Error] if the uuid arg is empty.
     # @raise [Calendly::ApiError] if the api returns error code.
     # @since 0.0.5
-    def membership(uuid)
-      check_not_empty uuid, 'uuid'
-      body = request :get, "organization_memberships/#{uuid}"
+    def membership(uuid_or_uri)
+      uri = to_request_uri(uuid_or_uri) { |uuid| "organization_memberships/#{uuid}" }
+      body = request :get, uri
       OrganizationMembership.new body[:resource], self
     end
 
@@ -510,9 +513,9 @@ module Calendly
     # @raise [Calendly::Error] if the uuid arg is empty.
     # @raise [Calendly::ApiError] if the api returns error code.
     # @since 0.0.7
-    def delete_membership(uuid)
-      check_not_empty uuid, 'uuid'
-      request :delete, "organization_memberships/#{uuid}"
+    def delete_membership(uuid_or_uri)
+      uri = to_request_uri(uuid_or_uri) { |uuid| "organization_memberships/#{uuid}" }
+      request :delete, uri
       true
     end
 
@@ -608,9 +611,9 @@ module Calendly
     # @raise [Calendly::Error] if the uuid arg is empty.
     # @raise [Calendly::ApiError] if the api returns error code.
     # @since 0.1.3
-    def webhook(uuid)
-      check_not_empty uuid, 'uuid'
-      body = request :get, "webhook_subscriptions/#{uuid}"
+    def webhook(uuid_or_uri)
+      uri = to_request_uri(uuid_or_uri) { |uuid| "webhook_subscriptions/#{uuid}" }
+      body = request :get, uri
       WebhookSubscription.new body[:resource], self
     end
 
@@ -709,9 +712,9 @@ module Calendly
     # @raise [Calendly::Error] if the uuid arg is empty.
     # @raise [Calendly::ApiError] if the api returns error code.
     # @since 0.1.3
-    def delete_webhook(uuid)
-      check_not_empty uuid, 'uuid'
-      request :delete, "webhook_subscriptions/#{uuid}"
+    def delete_webhook(uuid_or_uri)
+      uri = to_request_uri(uuid_or_uri) { |uuid| "webhook_subscriptions/#{uuid}" }
+      request :delete, uri
       true
     end
 
@@ -723,9 +726,9 @@ module Calendly
     # @raise [Calendly::Error] if the uuid arg is empty.
     # @raise [Calendly::ApiError] if the api returns error code.
     # @since 0.12.0
-    def routing_form(uuid)
-      check_not_empty uuid, 'uuid'
-      body = request :get, "routing_forms/#{uuid}"
+    def routing_form(uuid_or_uri)
+      uri = to_request_uri(uuid_or_uri) { |uuid| "routing_forms/#{uuid}" }
+      body = request :get, uri
       RoutingForm.new body[:resource], self
     end
 
@@ -764,9 +767,9 @@ module Calendly
     # @raise [Calendly::Error] if the uuid arg is empty.
     # @raise [Calendly::ApiError] if the api returns error code.
     # @since 0.12.0
-    def routing_form_submission(uuid)
-      check_not_empty uuid, 'uuid'
-      body = request :get, "routing_form_submissions/#{uuid}"
+    def routing_form_submission(uuid_or_uri)
+      uri = to_request_uri(uuid_or_uri) { |uuid| "routing_form_submissions/#{uuid}" }
+      body = request :get, uri
       RoutingFormSubmission.new body[:resource], self
     end
 
@@ -829,6 +832,13 @@ module Calendly
     end
 
   private
+
+    def to_request_uri(uuid_or_uri)
+      check_not_empty uuid_or_uri, 'uuid_or_uri'
+      return uuid_or_uri if uuid_or_uri.start_with?('http')
+
+      yield uuid_or_uri
+    end
 
     def request(method, path, params: nil, body: nil)
       debug_log "Request #{method.to_s.upcase} #{API_HOST}/#{path} params:#{params}, body:#{body}"
