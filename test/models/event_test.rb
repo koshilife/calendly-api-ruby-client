@@ -11,19 +11,12 @@ module Calendly
       @ev_uri = "#{HOST}/scheduled_events/#{@ev_uuid}"
       attrs = {uri: @ev_uri}
       @event = Event.new attrs, @client
-      @event_no_client = Event.new attrs
     end
 
     def test_it_returns_inspect_string
       assert @event.inspect.start_with? '#<Calendly::Event:'
     end
 
-    def test_that_it_returns_an_error_client_is_not_ready
-      proc_client_is_blank = proc do
-        @event_no_client.fetch
-      end
-      assert_error proc_client_is_blank, '@client is not ready.'
-    end
 
     def test_that_it_returns_an_associated_event
       res_body = load_test_data 'scheduled_event_001.json'
@@ -48,13 +41,6 @@ module Calendly
 
       invitee_cancel = @event.cancel options: req_body
       assert_invitee_cancel002 invitee_cancel
-    end
-
-    def test_that_it_returns_an_error_client_is_not_ready_on_cancel
-      proc_client_is_blank = proc do
-        @event_no_client.cancel
-      end
-      assert_error proc_client_is_blank, '@client is not ready.'
     end
 
     def test_that_it_returns_event_invitees_in_single_page

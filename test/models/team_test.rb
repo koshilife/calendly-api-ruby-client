@@ -11,7 +11,6 @@ module Calendly
       @team_uri = "#{HOST}/teams/#{@team_uuid}"
       attrs = {uri: @team_uri}
       @team = Team.new attrs, @client
-      @team_no_client = Team.new attrs
     end
 
     def test_it_returns_inspect_string

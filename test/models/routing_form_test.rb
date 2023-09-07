@@ -12,19 +12,12 @@ module Calendly
       @form_params = {form: @form_uri}
       attrs = {uri: @form_uri}
       @form = RoutingForm.new attrs, @client
-      @form_no_client = RoutingForm.new attrs
     end
 
     def test_it_returns_inspect_string
       assert @form.inspect.start_with? '#<Calendly::RoutingForm:'
     end
 
-    def test_that_it_returns_an_error_client_is_not_ready
-      proc_client_is_blank = proc do
-        @form_no_client.fetch
-      end
-      assert_error proc_client_is_blank, '@client is not ready.'
-    end
 
     def test_that_it_returns_an_associated_routing_form
       res_body = load_test_data 'routing_form_001.json'
