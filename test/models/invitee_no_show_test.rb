@@ -11,19 +11,12 @@ module Calendly
       @no_show_uri = "#{HOST}/invitee_no_shows/#{@no_show_uuid}"
       attrs = {uri: @no_show_uri}
       @no_show = InviteeNoShow.new attrs, @client
-      @no_show_no_client = InviteeNoShow.new attrs
     end
 
     def test_it_returns_inspect_string
       assert @no_show.inspect.start_with? '#<Calendly::InviteeNoShow:'
     end
 
-    def test_that_it_returns_an_error_client_is_not_ready
-      proc_client_is_blank = proc do
-        @no_show_no_client.fetch
-      end
-      assert_error proc_client_is_blank, '@client is not ready.'
-    end
 
     def test_that_it_returns_an_associated_invitee_no_show
       res_body = load_test_data 'no_show_001.json'

@@ -23,7 +23,7 @@ module Calendly
     # @raise [Calendly::Error] if the client is nil.
     # @since 0.1.0
     def client
-      raise Error.new('@client is not ready.') if !@client || !@client.is_a?(Client)
+      @client = Client.new if !@client || !@client.is_a?(Client)
 
       @client
     end

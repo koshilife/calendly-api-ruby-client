@@ -1549,7 +1549,7 @@ module Calendly
       assert_required_error proc_owner_type_arg_is_empty, 'owner_type'
     end
 
-  private
+    private
 
     def add_refresh_token_stub_request(is_valid: true)
       req_params = {

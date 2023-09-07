@@ -14,19 +14,12 @@ module Calendly
       @user_params = {user: @user_uri}
       attrs = {uri: @user_uri, current_organization: @org_uri}
       @user = User.new attrs, @client
-      @user_no_client = User.new attrs
     end
 
     def test_it_returns_inspect_string
       assert @user.inspect.start_with? '#<Calendly::User:'
     end
 
-    def test_that_it_returns_an_error_client_is_not_ready
-      proc_client_is_blank = proc do
-        @user_no_client.fetch
-      end
-      assert_error proc_client_is_blank, '@client is not ready.'
-    end
 
     def test_that_it_returns_an_associated_user
       res_body = load_test_data 'user_001.json'

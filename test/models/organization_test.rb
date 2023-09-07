@@ -12,18 +12,10 @@ module Calendly
       @org_params = {organization: @org_uri}
       attrs = {uri: @org_uri}
       @org = Organization.new attrs, @client
-      @org_no_client = Organization.new attrs
     end
 
     def test_it_returns_inspect_string
       assert @org.inspect.start_with? '#<Calendly::Organization:'
-    end
-
-    def test_that_it_returns_an_error_client_is_not_ready
-      proc_client_is_blank = proc do
-        @org_no_client.memberships
-      end
-      assert_error proc_client_is_blank, '@client is not ready.'
     end
 
     def test_that_it_returns_memberships_in_single_page

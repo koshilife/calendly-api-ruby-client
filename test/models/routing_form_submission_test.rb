@@ -12,19 +12,12 @@ module Calendly
       @submission_params = {form: @submission_uri}
       attrs = {uri: @submission_uri}
       @submission = RoutingFormSubmission.new attrs, @client
-      @submission_no_client = RoutingFormSubmission.new attrs
     end
 
     def test_it_returns_inspect_string
       assert @submission.inspect.start_with? '#<Calendly::RoutingFormSubmission:'
     end
 
-    def test_that_it_returns_an_error_client_is_not_ready
-      proc_client_is_blank = proc do
-        @submission_no_client.fetch
-      end
-      assert_error proc_client_is_blank, '@client is not ready.'
-    end
 
     def test_that_it_returns_an_associated_submission
       res_body = load_test_data 'routing_form_submission_001.json'
