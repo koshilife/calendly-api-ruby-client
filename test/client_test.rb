@@ -106,8 +106,8 @@ module Calendly
       proc_arg_is_empty = proc do
         @client.user ''
       end
-      assert_required_error proc_arg_is_nil, 'uuid'
-      assert_required_error proc_arg_is_empty, 'uuid'
+      assert_required_error proc_arg_is_nil, 'uuid_or_uri'
+      assert_required_error proc_arg_is_empty, 'uuid_or_uri'
     end
 
     #
@@ -152,7 +152,7 @@ module Calendly
       proc_arg_is_empty = proc do
         @client.event_type ''
       end
-      assert_required_error proc_arg_is_empty, 'uuid'
+      assert_required_error proc_arg_is_empty, 'uuid_or_uri'
     end
 
     #
@@ -395,7 +395,7 @@ module Calendly
       proc_arg_is_empty = proc do
         @client.scheduled_event ''
       end
-      assert_required_error proc_arg_is_empty, 'uuid'
+      assert_required_error proc_arg_is_empty, 'uuid_or_uri'
     end
 
     #
@@ -557,7 +557,7 @@ module Calendly
       proc_arg_is_empty = proc do
         @client.cancel_event ''
       end
-      assert_required_error proc_arg_is_empty, 'uuid'
+      assert_required_error proc_arg_is_empty, 'uuid_or_uri'
     end
 
     #
@@ -583,7 +583,7 @@ module Calendly
       proc_inv_uuid_arg_is_empty = proc do
         @client.event_invitee 'EV001', ''
       end
-      assert_required_error proc_ev_uuid_arg_is_empty, 'ev_uuid'
+      assert_required_error proc_ev_uuid_arg_is_empty, 'invitee_uri_or_ev_uuid'
       assert_required_error proc_inv_uuid_arg_is_empty, 'inv_uuid'
     end
 
@@ -643,7 +643,7 @@ module Calendly
       proc_arg_is_empty = proc do
         @client.event_invitees ''
       end
-      assert_required_error proc_arg_is_empty, 'uuid'
+      assert_required_error proc_arg_is_empty, 'uuid_or_uri'
     end
 
     #
@@ -665,7 +665,7 @@ module Calendly
       proc_arg_is_empty = proc do
         @client.invitee_no_show ''
       end
-      assert_required_error proc_arg_is_empty, 'uuid'
+      assert_required_error proc_arg_is_empty, 'uuid_or_uri'
     end
 
     #
@@ -826,7 +826,7 @@ module Calendly
       proc_arg_is_empty = proc do
         @client.membership ''
       end
-      assert_required_error proc_arg_is_empty, 'uuid'
+      assert_required_error proc_arg_is_empty, 'uuid_or_uri'
     end
 
     #
@@ -915,7 +915,7 @@ module Calendly
       proc_arg_is_empty = proc do
         @client.delete_membership ''
       end
-      assert_required_error proc_arg_is_empty, 'uuid'
+      assert_required_error proc_arg_is_empty, 'uuid_or_uri'
     end
 
     #
@@ -1067,7 +1067,7 @@ module Calendly
       proc_uuid_arg_is_empty = proc do
         @client.webhook ''
       end
-      assert_required_error proc_uuid_arg_is_empty, 'uuid'
+      assert_required_error proc_uuid_arg_is_empty, 'uuid_or_uri'
     end
 
     #
@@ -1308,7 +1308,7 @@ module Calendly
       proc_uuid_arg_is_empty = proc do
         @client.delete_webhook ''
       end
-      assert_required_error proc_uuid_arg_is_empty, 'uuid'
+      assert_required_error proc_uuid_arg_is_empty, 'uuid_or_uri'
     end
 
     #
@@ -1328,7 +1328,7 @@ module Calendly
       proc_uuid_arg_is_empty = proc do
         @client.routing_form ''
       end
-      assert_required_error proc_uuid_arg_is_empty, 'uuid'
+      assert_required_error proc_uuid_arg_is_empty, 'uuid_or_uri'
     end
 
     #
@@ -1409,7 +1409,7 @@ module Calendly
       proc_uuid_arg_is_empty = proc do
         @client.routing_form_submission ''
       end
-      assert_required_error proc_uuid_arg_is_empty, 'uuid'
+      assert_required_error proc_uuid_arg_is_empty, 'uuid_or_uri'
     end
 
     #
