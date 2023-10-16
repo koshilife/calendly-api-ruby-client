@@ -13,7 +13,7 @@ module Calendly
     # @param [Calendly::Client] the api client.
     def initialize(attrs = nil, client = nil)
       @client = client
-      @data = attrs || {}
+      @__data = attrs || {}
       set_attributes attrs
     end
 
@@ -50,7 +50,7 @@ module Calendly
       att_info = []
 
       # Print out all the attributes, showing the key ones (defined in inspect_attributes) first
-      (inspect_attributes + @data.keys).uniq.each do |att|
+      (inspect_attributes + @__data.keys).uniq.each do |att|
         next unless respond_to? att
 
         att_info << "#{att}=#{send(att).inspect}"
@@ -60,7 +60,7 @@ module Calendly
     end
 
     def to_h
-      @data
+      @__data
     end
 
     module ClassMethods
